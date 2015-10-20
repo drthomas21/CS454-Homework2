@@ -5,7 +5,7 @@ CS454 Multiplayer - Homework 2
 - Manish Purohit
 - Vatsal Sevak
 - David Thomas
-- 
+
 # How To Run:
 *will be added later
 
