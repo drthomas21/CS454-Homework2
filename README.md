@@ -7,7 +7,7 @@ CS454 Multiplayer - Homework 2
 - David Thomas
 
 # How To Run:
-*will be added later
+*will be added later*
 
 # Database Scheme:
 *will be added later*
