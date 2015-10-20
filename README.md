@@ -5,9 +5,12 @@ CS454 Multiplayer - Homework 2
 - Manish Purohit
 - Vatsal Sevak
 - David Thomas
+- 
 # How To Run:
-*will be added later*
+*will be added later
+
 # Database Scheme:
 *will be added later*
+
 # Protocols:
 *will be added later*
