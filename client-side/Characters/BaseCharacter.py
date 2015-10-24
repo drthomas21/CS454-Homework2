@@ -7,18 +7,6 @@ class BaseCharacter:
         self.floater.reparentTo(render)
         self.isMoving = False
         
-        World.keyMap = {"left":0, "right":0, "forward":0, "cam-left":0, "cam-right":0}
-        World.accept("escape", sys.exit)
-        World.accept("arrow_left", self.setKey, ["left",1])
-        World.accept("arrow_right", self.setKey, ["right",1])
-        World.accept("arrow_up", self.setKey, ["forward",1])
-        World.accept("a", self.setKey, ["cam-left",1])
-        World.accept("s", self.setKey, ["cam-right",1])
-        World.accept("arrow_left-up", self.setKey, ["left",0])
-        World.accept("arrow_right-up", self.setKey, ["right",0])
-        World.accept("arrow_up-up", self.setKey, ["forward",0])
-        World.accept("a-up", self.setKey, ["cam-left",0])
-        World.accept("s-up", self.setKey, ["cam-right",0])
         self.World = World
     
     def setCharacter(self, _Actor):

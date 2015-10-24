@@ -1,15 +1,16 @@
 # Roaming-Ralph was modified to remove collision part.
 
 import direct.directbase.DirectStart
-from direct.showbase.DirectObject import DirectObject      
-from direct.gui.OnscreenText import OnscreenText 
-from direct.gui.DirectGui import *
-from panda3d.core import *
-from direct.actor.Actor import Actor
-from direct.showbase.DirectObject import DirectObject
-from Characters.RalphCharacter import RalphCharacter
-from Screen.AuthScreen import AuthScreen
-from Screen.CharacterSelectScreen import CharacterSelectScreen
+from direct.showbase.DirectObject   import DirectObject      
+from direct.gui.OnscreenText        import OnscreenText 
+from direct.gui.DirectGui           import *
+from panda3d.core                   import *
+from direct.actor.Actor             import Actor
+from direct.showbase.DirectObject   import DirectObject
+from Characters.RalphCharacter      import RalphCharacter
+from Characters.PandaCharacter      import PandaCharacter
+from Screen.AuthScreen              import AuthScreen
+from Screen.CharacterSelectScreen   import CharacterSelectScreen
 import random, sys, os, math
 
 SPEED = 0.5
@@ -27,13 +28,21 @@ def addTitle(text):
 class World(DirectObject):
 
     def __init__(self):
-        base.setBackgroundColor(1,1,1)
-        World.backgroundImage = OnscreenImage(image="assets/screens/renderpipeline03-full.jpg",scale=(4,1,1))
-        World.backgroundImage.posInterval(70,Point3(2, 0, 0),startPos=Point3(-2,0,0)).start()
+        base.disableMouse()
+        base.setBackgroundColor(0,0,0)
+        self.backgroundImage = OnscreenImage(parent=render2dp,image="assets/screens/renderpipeline03-full.jpg",scale=(4,1,1),pos=(0,-20,0))
+        base.cam2dp.node().getDisplayRegion(0).setSort(-20)
+        self.backgroundImage.posInterval(70,Point3(2, 0, 0),startPos=Point3(-2,0,0)).start()
         self.login = AuthScreen(self,render,base)
+        self.selectCharacter()
         
     def selectCharacter(self):
-        self.select = CharacterSelectScreen(self,render,base)
+        self.characterModels = []
+        self.characterModels.append(["Ralph",RalphCharacter(self,render)])
+        self.characterModels.append(["Panda 1",PandaCharacter(self,render)])
+        self.characterModels.append(["Panda 2",PandaCharacter(self,render)])
+        
+        self.select = CharacterSelectScreen(self,render,base,camera)
         
 w = World()
 run()
