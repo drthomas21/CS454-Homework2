@@ -58,7 +58,7 @@ class AuthScreen:
             self.World.LoginFrame.registerButton = DGG.DISABLED
             self.World.LoginFrame.loginButton = DGG.DISABLED
             self.unloadScreen()
-            self.World.selectCharacter()          
+            self.World.doSelectionScreen()          
         
     def attemptLogin(self):       
         if(self.World.LoginFrame.usernameBox.get() == ""):
@@ -79,5 +79,5 @@ class AuthScreen:
             self.World.LoginFrame.registerButton = DGG.DISABLED
             self.World.LoginFrame.loginButton = DGG.DISABLED
             self.unloadScreen()
-            self.World.selectCharacter()
+            self.World.doSelectionScreen()
             

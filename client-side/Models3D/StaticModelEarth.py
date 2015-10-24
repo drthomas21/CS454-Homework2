@@ -20,8 +20,8 @@ class StaticModelEarth(BaseModel3D):
         self.earthCNode = CollisionNode('earth')
         self.earthCNode.addSolid(CollisionSphere(0, 0, 4, 4))
         self.earthC = self.earth.attachNewNode(self.earthCNode)
-        base.cTrav.addCollider(self.earthC, self.world.pusher)
-        self.world.pusher.addCollider(self.earthC, self.earth, base.drive.node())
+        base.cTrav.addCollider(self.earthC, self.World.pusher)
+        self.World.pusher.addCollider(self.earthC, self.earth, base.drive.node())
         self.day_period_earth = self.earth.hprInterval((60/365.0)*5, Vec3(360, 0, 0))
 
     def rotateEarth(self, task):
@@ -40,5 +40,5 @@ class StaticModelEarth(BaseModel3D):
         return self.earth
 
     def getDistance(self):
-        distanceVector = self.world.ralph.getPos()-self.earth.getPos()
+        distanceVector = self.World.ralph.getPos()-self.earth.getPos()
         return distanceVector.length()

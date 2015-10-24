@@ -37,14 +37,19 @@ class World(DirectObject):
         self.backgroundImage = OnscreenImage(parent=render2dp,image="assets/screens/renderpipeline03-full.jpg",scale=(4,1,1),pos=(0,-20,0))
         base.cam2dp.node().getDisplayRegion(0).setSort(-20)
         self.backgroundImage.posInterval(70,Point3(2, 0, 0),startPos=Point3(-2,0,0)).start()
-        self.login = AuthScreen(self,render,base)
-        self.selectCharacter()
+        base.cTrav = CollisionTraverser()
+        self.pusher = CollisionHandlerPusher()
         
-    def selectCharacter(self):
+        self.doLoginScreen()
+        
+    def doLoginScreen(self):
+        self.login = AuthScreen(self,render,base)
+        
+    def doSelectionScreen(self):
         self.characterModels = []
-        self.characterModels.append(["Ralph",RalphCharacter(self,render)])
-        self.characterModels.append(["Panda 1",PandaCharacter(self,render)])
-        self.characterModels.append(["Panda 2",PandaCharacter(self,render)])
+        self.characterModels.append(["Ralph",RalphCharacter(self,render,base,loader)])
+        self.characterModels.append(["Panda 1",PandaCharacter(self,render,base,loader)])
+        self.characterModels.append(["Panda 2",PandaCharacter(self,render,base,loader)])
         
         self.select = CharacterSelectScreen(self,render,base,camera)
         

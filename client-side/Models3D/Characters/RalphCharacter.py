@@ -23,8 +23,8 @@ class RalphCharacter(BaseCharacter):
         self.cNode.addSolid(CollisionSphere(0, 0, 3, 3))
         # Attach the collision node to the object's model.
         self.smileyC = self.actor.attachNewNode(self.cNode)
-        base.cTrav.addCollider(self.smileyC, self.world.pusher)
-        self.world.pusher.addCollider(self.smileyC, self.actor, base.drive.node())
+        base.cTrav.addCollider(self.smileyC, World.pusher)
+        World.pusher.addCollider(self.smileyC, self.actor, base.drive.node())
         
     def getActor(self):
         return self.actor
@@ -34,3 +34,8 @@ class RalphCharacter(BaseCharacter):
 
     def getMyRalphId(self):
         return self.id
+    
+    def lookAt(self,model):
+        self.actor.lookAt(model)
+        hpr = self.actor.getHpr()
+        self.actor.setHpr(hpr[0]+180,hpr[1],hpr[2])

@@ -20,8 +20,8 @@ class PandaCharacter(BaseCharacter):
         self.cNode = CollisionNode('panda')
         self.cNode.addSolid(CollisionSphere(2, 0, 400, 500))
         self.frowneyC = self.actor.attachNewNode(self.cNode)
-        base.cTrav.addCollider(self.frowneyC, self.world.pusher)
-        self.world.pusher.addCollider(self.frowneyC, self.actor, base.drive.node())
+        base.cTrav.addCollider(self.frowneyC, World.pusher)
+        World.pusher.addCollider(self.frowneyC, self.actor, base.drive.node())
 
     def getActor(self):
         return self.actor
@@ -31,3 +31,8 @@ class PandaCharacter(BaseCharacter):
 
     def getMyPandaId(self):
         return self.id  
+    
+    def lookAt(self,model):
+        self.actor.lookAt(model)
+        hpr = self.actor.getHpr()
+        self.actor.setHpr(hpr[0]+180,hpr[1],hpr[2])

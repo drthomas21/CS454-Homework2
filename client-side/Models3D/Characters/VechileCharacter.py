@@ -22,10 +22,15 @@ class VechileCharacter(BaseCharacter):
         self.carCNode = CollisionNode('car')
         self.carCNode.addSolid(CollisionSphere(0, 0, 3, 3))
         self.carC = self.car.attachNewNode(self.carCNode)
-        base.cTrav.addCollider(self.carC, self.world.pusher)
-        self.world.pusher.addCollider(self.carC, self.car, base.drive.node())
+        base.cTrav.addCollider(self.carC, World.pusher)
+        World.pusher.addCollider(self.carC, self.car, base.drive.node())
 
         #self.actor = self.car
 
     def getMyCar(self):
         return self.car  
+    
+    def lookAt(self,model):
+        self.actor.lookAt(model)
+        hpr = self.actor.getHpr()
+        self.actor.setHpr(hpr[0]+180,hpr[1],hpr[2])

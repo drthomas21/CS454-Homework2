@@ -21,8 +21,8 @@ class StaticModelSun(BaseModel3D):
         self.sunCNode = CollisionNode('sun')
         self.sunCNode.addSolid(CollisionSphere(0, 0, 5, 5))
         self.sunC = self.sun.attachNewNode(self.sunCNode)
-        base.cTrav.addCollider(self.sunC, self.world.pusher)
-        self.world.pusher.addCollider(self.sunC, self.sun, base.drive.node())
+        base.cTrav.addCollider(self.sunC, self.World.pusher)
+        self.World.pusher.addCollider(self.sunC, self.sun, base.drive.node())
 
         self.day_period_sun = self.sun.hprInterval((60/365.0)*5, Vec3(360, 0, 0))
 
@@ -42,5 +42,5 @@ class StaticModelSun(BaseModel3D):
         return Task.cont
 
     def getDistance(self):
-        distanceVector = self.world.ralph.getPos()-self.sun.getPos()
+        distanceVector = self.World.ralph.getPos()-self.sun.getPos()
         return distanceVector.length()

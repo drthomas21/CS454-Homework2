@@ -3,7 +3,6 @@ from direct.gui.OnscreenText            import OnscreenText
 from direct.gui.DirectGui               import *
 from panda3d.core                       import *
 from pandac.PandaModules                import * 
-from Characters.RalphCharacter          import RalphCharacter
 import sys
 
 class CharacterSelectScreen:
@@ -13,25 +12,25 @@ class CharacterSelectScreen:
         
         for model in characterModels:
             print model[1]
-            model[1].Character.name = model[0]
+            model[1].actor.name = model[0]
             
         if len(characterModels) >= 1:
             Character = characterModels[0][1]
-            Character.Character.setPos(0,0,0)
-            camera.setPos(Character.Character.getX(),Character.Character.getY()+10,2)
-            camera.lookAt(Character.Character)
+            Character.actor.setPos(0,0,0)
+            camera.setPos(Character.actor.getX(),Character.actor.getY()+10,2)
+            camera.lookAt(Character.actor)
             Character.lookAt(camera)
             self.availableModels.append(Character)
             
         if len(characterModels) >= 2:
             Character = characterModels[1][1]
-            Character.Character.setPos(2,0,0)
+            Character.actor.setPos(2,0,0)
             Character.lookAt(base.camera)
             self.availableModels.append(Character)
             
         if len(characterModels) >= 3:
             Character = characterModels[2][1]
-            Character.Character.setPos(-2,0,0)
+            Character.actor.setPos(-2,0,0)
             Character.lookAt(base.camera)
             self.availableModels.append(Character)
             
@@ -68,7 +67,7 @@ class CharacterSelectScreen:
     
     def makePickable(self):
         for model in self.availableModels:
-            model.Character.setPythonTag('pickable','true')
+            model.actor.setPythonTag('pickable','true')
         
     def getSelectedObject(self): 
         self.getObjectHit( self.base.mouseWatcherNode.getMouse())
@@ -99,5 +98,5 @@ class CharacterSelectScreen:
         self.World.SelectionFrame.destroy()
         print self.pickedObj
         #for model in self.availableModels:
-        #    if model.Character.name != self.pickedObj.name:
-        #        model.Character.delete()
+        #    if model.actor.name != self.pickedObj.name:
+        #        model.actor.delete()

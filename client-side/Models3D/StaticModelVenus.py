@@ -20,8 +20,8 @@ class StaticModelVenus(BaseModel3D):
         self.venusCNode = CollisionNode('venus')
         self.venusCNode.addSolid(CollisionSphere(0, 0, 3, 3))
         self.venusC = self.venus.attachNewNode(self.venusCNode)
-        base.cTrav.addCollider(self.venusC, self.world.pusher)
-        self.world.pusher.addCollider(self.venusC, self.venus, base.drive.node())
+        base.cTrav.addCollider(self.venusC, self.World.pusher)
+        self.World.pusher.addCollider(self.venusC, self.venus, base.drive.node())
 
         self.day_period_venus = self.venus.hprInterval((60/365.0)*5, Vec3(360,0,0))
 
@@ -41,5 +41,5 @@ class StaticModelVenus(BaseModel3D):
         return Task.cont
 
     def getDistance(self):
-        distanceVector = self.world.ralph.getPos()-self.venus.getPos()
+        distanceVector = self.World.ralph.getPos()-self.venus.getPos()
         return distanceVector.length()
