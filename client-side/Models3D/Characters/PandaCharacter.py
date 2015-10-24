@@ -10,10 +10,10 @@ class PandaCharacter(BaseCharacter):
         PandaCharacter.count += 1
         self.id = PandaCharacter.count
 
-        self.pandaNode=render.attachNewNode('pandaNode')
+        self.node = render.attachNewNode('panda'+str(PandaCharacter.count))
         self.actor=Actor("models/panda-model",
                      {"walk": "models/panda-walk4"})
-        self.actor.reparentTo(self.pandaNode)
+        self.actor.reparentTo(self.node)
         self.actor.setPos(int(self.id) * 30,0,0)
         self.actor.setScale(0.002, 0.002, 0.002)
 

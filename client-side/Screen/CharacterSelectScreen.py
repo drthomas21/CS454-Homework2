@@ -11,7 +11,6 @@ class CharacterSelectScreen:
         self.availableModels = []
         
         for model in characterModels:
-            print model[1]
             model[1].actor.name = model[0]
             
         if len(characterModels) >= 1:
@@ -71,9 +70,14 @@ class CharacterSelectScreen:
         
     def getSelectedObject(self): 
         self.getObjectHit( self.base.mouseWatcherNode.getMouse())
-        if self.pickedObj != None: 
-            #self.World.selectedCharacter(self.pickedObj)
-            self.unloadScreen()
+        if self.pickedObj != None:
+            Character = self.getSelectedCharacter()
+            if Character == None:
+                print "Something went wrong"
+            else:
+                self.World.setPlayerCharacter(Character)
+                self.unloadScreen()
+                #self.World.doGameScreen()
         
     def getObjectHit(self, mpos): #mpos is the position of the mouse on the screen 
         self.pickedObj=None #be sure to reset this 
@@ -82,21 +86,21 @@ class CharacterSelectScreen:
         if self.queue.getNumEntries() > 0: 
             self.queue.sortEntries() 
             self.pickedObj=self.queue.getEntry(0).getIntoNodePath() 
-            
-            parent=self.pickedObj.getParent() 
-            self.pickedObj=None
-            
-            while parent != self.render:
-                if parent.getPythonTag('pickable')=='true': 
-                    self.pickedObj=parent
-                    return parent
-                else:
-                    parent=parent.getParent()
+            self.pickedObj = self.pickedObj.findNetPythonTag('pickable')
+            if not self.pickedObj.isEmpty():
+                return self.pickedObj
         return None  
 
+    def getSelectedCharacter(self):
+        Character = None
+        for model in self.availableModels:
+            if model.node.getName() == self.pickedObj.getParent().getName():
+                Character = model
+            else:
+                model.actor.delete()
+        return Character
     def unloadScreen(self):
         self.World.SelectionFrame.destroy()
-        print self.pickedObj
         #for model in self.availableModels:
         #    if model.actor.name != self.pickedObj.name:
         #        model.actor.delete()

@@ -42,6 +42,9 @@ class World(DirectObject):
         
         self.doLoginScreen()
         
+    def setPlayerCharacter(self,Character):
+        self.Character = Character
+        
     def doLoginScreen(self):
         self.login = AuthScreen(self,render,base)
         
@@ -53,7 +56,7 @@ class World(DirectObject):
         
         self.select = CharacterSelectScreen(self,render,base,camera)
         
-    def loadGame(self):
+    def doGameScreen(self):
         self.staticRefSun = StaticModelSun(self)
         self.staticRefVenus = StaticModelVenus(self)
         self.staticRefEarth = StaticModelEarth(self)

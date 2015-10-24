@@ -10,10 +10,11 @@ class RalphCharacter(BaseCharacter):
         RalphCharacter.count += 1
         self.id = RalphCharacter.count
 
+        self.node = render.attachNewNode('ralph'+str(RalphCharacter.count))
         self.actor = Actor("models/ralph/ralph",
                          {"run":"models/ralph/ralph-run",
                           "walk":"models/ralph/ralph-walk"})
-        self.actor.reparentTo(render)
+        self.actor.reparentTo(self.node)
         self.actor.setScale(.2)
         self.actor.setPos(int(self.id)*20, 0, 0)
 
