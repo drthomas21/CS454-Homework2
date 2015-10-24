@@ -1,16 +1,20 @@
 # Roaming-Ralph was modified to remove collision part.
 
 import direct.directbase.DirectStart
-from direct.showbase.DirectObject   import DirectObject      
-from direct.gui.OnscreenText        import OnscreenText 
-from direct.gui.DirectGui           import *
-from panda3d.core                   import *
-from direct.actor.Actor             import Actor
-from direct.showbase.DirectObject   import DirectObject
-from Characters.RalphCharacter      import RalphCharacter
-from Characters.PandaCharacter      import PandaCharacter
-from Screen.AuthScreen              import AuthScreen
-from Screen.CharacterSelectScreen   import CharacterSelectScreen
+from direct.showbase.DirectObject               import DirectObject      
+from direct.gui.OnscreenText                    import OnscreenText 
+from direct.gui.DirectGui                       import *
+from panda3d.core                               import *
+from direct.actor.Actor                         import Actor
+from direct.showbase.DirectObject               import DirectObject
+from Models3D.Characters.PandaCharacter         import PandaCharacter
+from Models3D.Characters.RalphCharacter         import RalphCharacter
+from Models3D.Characters.VechileCharacter       import VechileCharacter
+from Models3D.StaticModelEarth                  import StaticModelEarth
+from Models3D.StaticModelSun                    import StaticModelSun
+from Models3D.StaticModelVenus                  import StaticModelVenus
+from Screen.AuthScreen                          import AuthScreen
+from Screen.CharacterSelectScreen               import CharacterSelectScreen
 import random, sys, os, math
 
 SPEED = 0.5
@@ -43,6 +47,22 @@ class World(DirectObject):
         self.characterModels.append(["Panda 2",PandaCharacter(self,render)])
         
         self.select = CharacterSelectScreen(self,render,base,camera)
+        
+    def loadGame(self):
+        self.staticRefSun = StaticModelSun(self)
+        self.staticRefVenus = StaticModelVenus(self)
+        self.staticRefEarth = StaticModelEarth(self)
+
+        self.sun = self.staticRefSun.getSun()
+        self.venus = self.staticRefVenus.getVenus()
+        self.earth = self.staticRefEarth.getEarth()
+        
+        taskMgr.add(self.staticRefSun.rotateSun,"rotateSun")
+        taskMgr.add(self.staticRefVenus.rotateVenus,"rotateVenus")
+        taskMgr.add(self.staticRefEarth.rotateEarth,"rotateEarth")
+        taskMgr.add(self.staticRefEarth.stopRotateEarth,"stopRotateEarth")
+        taskMgr.add(self.staticRefSun.stopRotateSun,"stopRotateSun")
+        taskMgr.add(self.staticRefVenus.stopRotateVenus,"stopRotateVenus")
         
 w = World()
 run()
