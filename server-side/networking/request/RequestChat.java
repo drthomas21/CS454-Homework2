@@ -3,9 +3,10 @@ package networking.request;
 // Java Imports
 import java.io.IOException;
 
+import networking.response.GameResponse;
+import networking.response.ResponseChat;
 // Custom Imports
 //import core.GameServer;
-import networking.response.ResponseString;
 import utility.DataReader;
 
 public class RequestChat extends GameRequest {
@@ -13,10 +14,13 @@ public class RequestChat extends GameRequest {
     // Data
     private String message;
     // Responses
-    private ResponseString responseString;
+    private ResponseChat responseString;
 
     public RequestChat() {
-        responses.add(responseString = new ResponseString());
+    	 
+      //  responses.add(responseString = new ResponseString());
+    	responseString = new ResponseChat();
+      
     }
 
     @Override
@@ -26,9 +30,8 @@ public class RequestChat extends GameRequest {
 
     @Override
     public void doBusiness() throws Exception {
-        responseString.setMessage(message);
-        System.out.println(responseString);
-        super.client.getServer().addResponseForAllOnlinePlayers(super.client.getId(), responseString); 
-        
+        System.out.println(message);
+        responseString.setMessage(message); 
+        super.client.getServer().addResponseForAllOnlinePlayers(super.client.getId(), (GameResponse) responseString); 
     }
 }

@@ -15,6 +15,7 @@ import configuration.GameServerConf;
 import metadata.GameRequestTable;
 //import model.Player;
 import networking.response.GameResponse;
+import networking.response.ResponseString;
 import utility.ConfFileParser;
 
 /**
@@ -210,7 +211,7 @@ public class GameServer {
      * @param response is the instance containing the response information
      */
     public void addResponseForAllOnlinePlayers(long player_id, GameResponse response) {
-    	//System.out.println(activeThreads.values() + " " + player_id + " " + response );
+ 
         for (GameClient client : activeThreads.values()) {
             if (client.getId() != player_id) {
                 client.addResponseForUpdate(response);

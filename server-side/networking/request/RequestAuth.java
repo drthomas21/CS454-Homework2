@@ -3,9 +3,9 @@ package networking.request;
 // Java Imports
 import java.io.IOException;
 
+import networking.response.ResponseAuth;
 // Custom Imports
 //import core.GameServer;
-import networking.response.ResponseInt;
 import utility.DataReader;
 import database.Connexion;
 
@@ -15,10 +15,11 @@ public class RequestAuth extends GameRequest {
 	private String username;
 	private String password;
 	// Responses
-	private ResponseInt responseInt;
+	private ResponseAuth responseAuth;
+	private int player_id;
 
 	public RequestAuth() {
-		responses.add(responseInt = new ResponseInt());
+		responses.add(responseAuth = new ResponseAuth());
 	}
 
 	@Override
@@ -31,14 +32,16 @@ public class RequestAuth extends GameRequest {
 	public void doBusiness() throws Exception {
 
 		Connexion db = new Connexion();
-
-		if (db.checkAuth(username, password)) {
+		player_id = db.checkAuth(username, password);
+		if (player_id != -1) {
 			System.out.println("Connected !");
-			responseInt.setNumber(1);
+			responseAuth.setAnswer((short)1);
+			client.authenticated(player_id);
 		} else {
 			System.out.println("Wrong credentials");
-			responseInt.setNumber(0);
+			responseAuth.setAnswer((short)0);
 		}
+		
 
 	}
 }

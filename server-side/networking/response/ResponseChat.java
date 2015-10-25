@@ -4,12 +4,12 @@ package networking.response;
 import metadata.Constants;
 import utility.GamePacket;
 
-public class ResponseString extends GameResponse {
+public class ResponseChat extends GameResponse {
 
     private String message;
 
-    public ResponseString() {
-        responseCode = Constants.RAND_STRING;
+    public ResponseChat() {
+        responseCode = Constants.SMSG_CHAT;
     }
 
     @Override

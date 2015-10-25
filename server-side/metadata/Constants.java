@@ -10,12 +10,21 @@ public class Constants {
     public final static short CMSG_REGISTER = 103;
     public final static short CMSG_CREATE_CHARACTER = 104;
     public final static short SMSG_AUTH = 201;
+    public final static short SMSG_REGISTER = 203;
     public final static short CMSG_CHAT = 112;
     public final static short SMSG_CHAT = 212;
     public final static short CMSG_HEARTBEAT = 113;
     public final static short SMSG_HEARTBEAT = 213;
     public final static short CMSG_SAVE_EXIT_GAME = 119;
     public final static short SMSG_SAVE_EXIT_GAME = 219;
+    public final static short CMSG_POSITION = 105;
+    public final static short SMSG_POSITION = 205;
+    
+    
+    
+    
+    //public final static short SMSG_AUTH_FAILED = 301;
+    //public final static short SMSG_REGISTER_FAILED = 303;
  
 
     //Test Request + Response

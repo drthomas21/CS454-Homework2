@@ -31,6 +31,7 @@ public class GameRequestTable {
         add(Constants.RAND_FLOAT, "RequestFloat");
         add(Constants.CMSG_AUTH, "RequestAuth");
         add(Constants.CMSG_CHAT, "RequestChat");
+        add(Constants.CMSG_HEARTBEAT, "RequestHeartbeat");
     }
 
     /**
