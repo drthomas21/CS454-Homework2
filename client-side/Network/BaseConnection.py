@@ -1,12 +1,11 @@
-from direct.showbase.ShowBase import ShowBase
+#from direct.showbase.ShowBase import ShowBase
 from panda3d.core import ConnectionWriter
 from panda3d.core import QueuedConnectionListener
 from panda3d.core import QueuedConnectionManager
 from panda3d.core import QueuedConnectionReader
 
-class BaseConnection(ShowBase):    
+class BaseConnection:    
     def __init__(self):
-        ShowBase.__init__(self)
         self.cManager = None
         self.cWriter = None
         self.cReader = None

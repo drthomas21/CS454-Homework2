@@ -1,12 +1,15 @@
-from direct.showbase.DirectObject       import DirectObject      
-from direct.gui.OnscreenText            import OnscreenText 
-from direct.gui.DirectGui               import *
-from panda3d.core                       import *
-from pandac.PandaModules                import * 
+from direct.showbase.DirectObject               import DirectObject      
+from direct.gui.OnscreenText                    import OnscreenText 
+from direct.gui.DirectGui                       import *
+from panda3d.core                               import *
+from pandac.PandaModules                        import * 
+from Network.models.CharacterConnectionModel    import CharacterConnectionModel
 import sys
 
 class CharacterSelectScreen:
     def __init__(self,World,render,base,camera):
+        self.characterConnection = CharacterConnectionModel(self)
+        World.ServerConnection.setupConnectionModel(self.characterConnection)
         characterModels = World.characterModels
         self.availableModels = []
         
@@ -76,8 +79,10 @@ class CharacterSelectScreen:
                 print "Something went wrong"
             else:
                 self.World.setPlayerCharacter(Character)
+                if not self.World.bypassServer:
+                    self.characterConnection.sendCharacter(Character.node.getName())
                 self.unloadScreen()
-                #self.World.doGameScreen()
+                self.World.doGameScreen()
         
     def getObjectHit(self, mpos): #mpos is the position of the mouse on the screen 
         self.pickedObj=None #be sure to reset this 

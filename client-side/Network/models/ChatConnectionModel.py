@@ -3,12 +3,15 @@ from direct.distributed.PyDatagram import PyDatagram
 from direct.distributed.PyDatagramIterator import PyDatagramIterator
 from panda3d.core import NetDatagram
 
-class AuthConnectionModel(ServerConnection):
+class ChatConnectionModel(ServerConnection):
     CODE_SEND_MSG = 112
     CODE_RECV_MSG = 212
     
-    def __init(self):
-        self.registerResponseAction(self.CODE_RECV_MSG, self.getChatMessage)
+    def __init__(self,screenModel):
+        self.screenModel = screenModel
+        
+    def getConnectionActions(self):
+        return [[self.CODE_RECV_MSG, self.getChatMessage]];
     
     def sendChatMessage(self,message):
         request = self.buildRequestPackage(self.CODE_SEND_MSG)
@@ -16,4 +19,4 @@ class AuthConnectionModel(ServerConnection):
         self.sendMessage(request)
         
     def getChatMessage(self,data):
-        msg = data.getString()
+        self.screenModel.parseResponse(data.getString())

@@ -3,32 +3,36 @@ from direct.distributed.PyDatagram import PyDatagram
 
 class AuthConnectionModel(ServerConnection):
     CODE_SEND_AUTH=101
-    CODE_SUCCESS_AUTH=201
-    CODE_FAILED_AUTH=301
+    CODE_RESP_AUTH=201
     
     CODE_SEND_REG =103
-    CODE_SUCCESS_REG=203
-    CODE_FAILED_REG=303
+    CODE_RESP_REG=203
     
-    def __init__(self):
-        self.registerResponseAction(self.CODE_SEND_AUTH, self.getReg)
-        self.registerResponseAction(self.CODE_SEND_REG, self.getAuth)
+    def __init__(self,screenModel):
+        self.screenModel = screenModel
+        
+    def getConnectionActions(self):
+        return [
+                [self.CODE_RESP_AUTH, self.getAuth],
+                
+                [self.CODE_RESP_REG, self.getReg],
+                ];
     
     def sendLoginRequest(self,username,password):
-        request = self.buildRequestPackage(self.CODE_AUTH)
+        request = self.buildRequestPackage(self.CODE_SEND_AUTH)
         request.addString(username)
         request.addString(password)
-        self.sendMessage(request)
+        ServerConnection.sendMessage(self,request)
         
     def sendRegisterRequest(self,username,password):
-        request = self.buildRequestPackage(self.CODE_REG)
+        request = self.buildRequestPackage(self.CODE_SEND_REG)
         request.addString(username)
         request.addString(password)
         self.sendMessage(request)
     
     def getAuth(self, data):
-        msg = data.getString()
+        self.screenModel.parseResponse(data.getInt32())
 
     def getReg(self, data):
-        msg = data.getString()
+        self.screenModel.parseResponse(data.getInt32())
         

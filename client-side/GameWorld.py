@@ -5,7 +5,6 @@ from direct.gui.DirectGui import *
 from panda3d.core import *
 from direct.actor.Actor import Actor
 from direct.showbase.DirectObject import DirectObject
-from Characters.RalphCharacter import RalphCharacter
 from Screen.AuthScreen import AuthScreen
 from Screen.CharacterSelectScreen import CharacterSelectScreen
 import random, sys, os, math

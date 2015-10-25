@@ -2,10 +2,13 @@ from direct.showbase.DirectObject       import DirectObject
 from direct.gui.OnscreenText            import OnscreenText 
 from direct.gui.DirectGui               import *
 from panda3d.core                       import *
+from Network.models.AuthConnectionModel  import AuthConnectionModel
 
 class AuthScreen:
     def __init__(self,World,render,base):
         self.World = World;
+        self.authConnection = AuthConnectionModel(self)
+        self.World.ServerConnection.setupConnectionModel(self.authConnection)
         
         boxloc = Vec3(0.0, 0.0, 0.0)
         p = boxloc
@@ -39,7 +42,8 @@ class AuthScreen:
     def unloadScreen(self):
         self.World.LoginFrame.destroy()
         
-    def attemptRegister(self):        
+    def attemptRegister(self):
+        self.whichAction = 1      
         if(self.World.LoginFrame.usernameBox.get() == ""):
             if(self.World.LoginFrame.passwordBox.get() == ""):
                 self.updateStatus("ERROR: You must enter a username and password before logging in.")
@@ -57,10 +61,14 @@ class AuthScreen:
             self.updateStatus("Attempting to Signup...")
             self.World.LoginFrame.registerButton = DGG.DISABLED
             self.World.LoginFrame.loginButton = DGG.DISABLED
-            self.unloadScreen()
-            self.World.doSelectionScreen()          
+            if not self.World.bypassServer:
+                self.authConnection.sendRegisterRequest(self.World.LoginFrame.usernameBox.get(),self.World.LoginFrame.passwordBox.get())
+            else:
+                self.parseResponse(0)
+            
         
-    def attemptLogin(self):       
+    def attemptLogin(self):  
+        self.whichAction = 2     
         if(self.World.LoginFrame.usernameBox.get() == ""):
             if(self.World.LoginFrame.passwordBox.get() == ""):
                 self.updateStatus("ERROR: You must enter a username and password before logging in.")
@@ -77,7 +85,19 @@ class AuthScreen:
         else:
             self.updateStatus("Attempting to login...")
             self.World.LoginFrame.registerButton = DGG.DISABLED
-            self.World.LoginFrame.loginButton = DGG.DISABLED
+            self.World.LoginFrame.loginButton = DGG.DISABLED            
+            if not self.World.bypassServer:
+                self.authConnection.sendLoginRequest(self.World.LoginFrame.usernameBox.get(),self.World.LoginFrame.passwordBox.get())
+            else:
+                self.parseResponse(0)
+            
+    def parseResponse(self,data):
+        if data == 0:
             self.unloadScreen()
             self.World.doSelectionScreen()
-            
+        else: 
+            if self.whichAction == 1:
+                self.updateStatus("Unable to register with that username")
+            else:
+                self.updateStatus("Invalid username/password")
+            self.updateStatus = 0

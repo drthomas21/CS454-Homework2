@@ -1,8 +1,7 @@
-from Network.BaseConnection import BaseConnection
-from Network.models.AuthConnectionModel import AuthConnectionModel
-from direct.distributed.PyDatagram import PyDatagram
-from direct.distributed.PyDatagramIterator import PyDatagramIterator
-from panda3d.core import NetDatagram
+from Network.BaseConnection                     import BaseConnection
+from direct.distributed.PyDatagram              import PyDatagram
+from direct.distributed.PyDatagramIterator      import PyDatagramIterator
+from panda3d.core                               import NetDatagram
 
 class ServerConnection(BaseConnection):
     MODEL_AUTH = 0
@@ -23,22 +22,18 @@ class ServerConnection(BaseConnection):
             BaseConnection.connect(self, host, port)
             taskMgr.add(self.updateRoutine,"NetworkMessages")
     
-    def getConnectionModel(self,modelName):
-        model = None
-        if(modelName == self.MODEL_AUTH):
-            model = AuthConnectionModel()
-        
-        
-        if(model != None):
-            model.cWriter = self.cWriter
-            model.cListener = self.cListener
-            model.cReader = self.cReader
-            model.cManager = self.cManager
-            model.connection = self.connection 
+    def setupConnectionModel(self,model):
+        model.cWriter = self.cWriter
+        model.cListener = self.cListener
+        model.cReader = self.cReader
+        model.cManager = self.cManager
+        model.connection = self.connection
+        for Item in model.getConnectionActions():
+            self.registerResponseAction(Item[0], Item[1])
         return model
     
     def registerResponseAction(self,code,func):
-        self.recvActions.push([code,func])
+        self.recvActions.append([code,func])
     
     def intRequest(self, msg):
         pkg = PyDatagram()
