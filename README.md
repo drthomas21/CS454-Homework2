@@ -13,4 +13,17 @@ CS454 Multiplayer - Homework 2
 *will be added later*
 
 # Protocols:
-*will be added later*
+- Code: 101 = Send login information
+  - String: username
+  - String: password
+- Code: 201 = login successful
+- Code: 301 = login failure
+- Code 102 = Send register information
+  - String: username
+  - String: password
+- Code 202 = register success
+- Code 302 = register failure
+- Code 112 = Send chat message to server
+  - String: message(?)
+- Code 212 = Recieve chat message from server
+  - String: message(?)
