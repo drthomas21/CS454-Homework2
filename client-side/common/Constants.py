@@ -18,7 +18,7 @@ class Constants:
     
     SMSG_AUTH                           = 201   #1- Valid Credentials     0-Invalid Credentials
     SMSG_DISCONNECT                     = 202
-    SMSG_REGISTER                       = 203
+    SMSG_REGISTER                       = 203   #1 - Registration Done    2-User Already exist
     SMSG_CREATE_CHARACTER               = 204
     SMSG_CHAT                           = 205
     SMSG_MOVE                           = 206
