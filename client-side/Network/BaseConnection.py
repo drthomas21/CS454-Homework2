@@ -21,3 +21,8 @@ class BaseConnection:
         self.connection = self.cManager.openTCPClientConnection(host, port, 10000)
         if self.connection:
             self.cReader.addConnection(self.connection)
+            
+    def close(self):
+        if self.connection != None:
+            self.cManager.closeConnection(self.connection)
+            self.connection = None

@@ -32,14 +32,14 @@ class StaticModelVenus(BaseModel3D):
         if self.getDistance()<10 and not self.isVenusRotate:
             self.isVenusRotate = True
             self.day_period_venus.loop()
-        return Task.cont
+        return task.cont
 
     def stopRotateVenus(self, task):
         if self.getDistance() > 10 and self.isVenusRotate:
             self.isVenusRotate = False
             self.day_period_venus.pause()
-        return Task.cont
+        return task.cont
 
     def getDistance(self):
-        distanceVector = self.World.ralph.getPos()-self.venus.getPos()
+        distanceVector = self.World.Character.actor.getPos()-self.venus.getPos()
         return distanceVector.length()

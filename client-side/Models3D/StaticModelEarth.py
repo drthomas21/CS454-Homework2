@@ -28,17 +28,17 @@ class StaticModelEarth(BaseModel3D):
         if self.getDistance()<10 and not self.isEarthRotate:
             self.isEarthRotate = True
             self.day_period_earth.loop()
-        return Task.cont
+        return task.cont
 
     def stopRotateEarth(self, task):
         if self.getDistance() > 10 and self.isEarthRotate:
             self.isEarthRotate = False
             self.day_period_earth.pause()
-        return Task.cont
+        return task.cont
 
     def getEarth(self):
         return self.earth
 
     def getDistance(self):
-        distanceVector = self.World.ralph.getPos()-self.earth.getPos()
+        distanceVector = self.World.Character.actor.getPos()-self.earth.getPos()
         return distanceVector.length()

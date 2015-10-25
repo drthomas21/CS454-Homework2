@@ -33,12 +33,21 @@ class World(DirectObject):
 
     def __init__(self):
         base.disableMouse()
+        
         base.setBackgroundColor(0,0,0)
         self.backgroundImage = OnscreenImage(parent=render2dp,image="assets/screens/renderpipeline03-full.jpg",scale=(4,1,1),pos=(0,-20,0))
         base.cam2dp.node().getDisplayRegion(0).setSort(-20)
         self.backgroundImage.posInterval(70,Point3(2, 0, 0),startPos=Point3(-2,0,0)).start()
+        
         base.cTrav = CollisionTraverser()
         self.pusher = CollisionHandlerPusher()
+        floorNode = render.attachNewNode("Floor NodePath")
+        # Create a collision plane solid.
+        collPlane = CollisionPlane(Plane(Vec3(0, 0, 1), Point3(0, 0, 0)))
+        # Call our function that creates a nodepath with a collision node
+
+        floorCollisionNP = self.makeCollisionNodePath(floorNode, collPlane)
+        
         self.bypassServer = True
         self.ServerConnection = ServerConnection()
         
@@ -65,6 +74,8 @@ class World(DirectObject):
     def doGameScreen(self):
         self.backgroundImage.destroy()
         self.Character.setControls()
+        self.Character.actor.setHpr(0,0,0)
+        taskMgr.add(self.Character.move,"moveTask")
         
         self.title = addTitle("Panda3D Tutorial: Multiplayer (Walking on the Moon)")
         self.inst1 = addInstructions(0.95, "[ESC]: Quit")
@@ -74,7 +85,7 @@ class World(DirectObject):
         self.inst5 = addInstructions(0.75, "[s]: Move Player Backward")
         self.inst6 = addInstructions(0.70, "[shift+w]: Move Player Fast")
         self.inst7 = addInstructions(0.65, "[q]: Rotate Camera Left")
-        self.inst8 = addInstructions(0.60, "[e]: Rotate Camera Right")
+        self.inst8 = addInstructions(0.60, "[e]: Rotate Camera Right")        
         
         # Set up the environment
         self.environ = loader.loadModel("models/square")
@@ -84,9 +95,9 @@ class World(DirectObject):
         self.moon_tex = loader.loadTexture("models/moon_1k_tex.jpg")
         self.environ.setTexture(self.moon_tex, 1)
         
-        self.staticRefSun = StaticModelSun(self)
-        self.staticRefVenus = StaticModelVenus(self)
-        self.staticRefEarth = StaticModelEarth(self)
+        self.staticRefSun = StaticModelSun(self,render,base,loader)
+        self.staticRefVenus = StaticModelVenus(self,render,base,loader)
+        self.staticRefEarth = StaticModelEarth(self,render,base,loader)
 
         self.sun = self.staticRefSun.getSun()
         self.venus = self.staticRefVenus.getVenus()
@@ -111,6 +122,17 @@ class World(DirectObject):
         directionalLight.setSpecularColor(Vec4(1, 1, 1, 1))
         render.setLight(render.attachNewNode(ambientLight))
         render.setLight(render.attachNewNode(directionalLight))
+    
+    def makeCollisionNodePath(self, nodepath, solid):
+        '''
+        Creates a collision node and attaches the collision solid to the
+        supplied NodePath. Returns the nodepath of the collision node.
+        '''
+        # Creates a collision node named after the name of the NodePath.
+        collNode = CollisionNode("%s c_node" % nodepath.getName())
+        collNode.addSolid(solid)
+        collisionNodepath = nodepath.attachNewNode(collNode)
+        return collisionNodepath
         
 w = World()
 run()

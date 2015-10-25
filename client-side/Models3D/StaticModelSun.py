@@ -33,14 +33,14 @@ class StaticModelSun(BaseModel3D):
         if self.getDistance()<10 and not self.isSunRotate:
             self.isSunRotate = True
             self.day_period_sun.loop()
-        return Task.cont
+        return task.cont
 
     def stopRotateSun(self, task):
         if self.getDistance() > 10 and self.isSunRotate:
             self.isSunRotate = False
             self.day_period_sun.pause()
-        return Task.cont
+        return task.cont
 
     def getDistance(self):
-        distanceVector = self.World.ralph.getPos()-self.sun.getPos()
+        distanceVector = self.World.Character.actor.getPos()-self.sun.getPos()
         return distanceVector.length()
