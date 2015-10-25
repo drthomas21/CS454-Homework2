@@ -85,14 +85,17 @@ class AuthScreen:
         else:
             self.updateStatus("Attempting to login...")
             self.World.LoginFrame.registerButton = DGG.DISABLED
-            self.World.LoginFrame.loginButton = DGG.DISABLED            
-            if not self.World.bypassServer:
+            self.World.LoginFrame.loginButton = DGG.DISABLED
+            if self.World.LoginFrame.usernameBox.get() == "test" and self.World.LoginFrame.passwordBox.get() == "test":
+                self.parseResponse(1)
+            elif not self.World.bypassServer:
                 self.authConnection.sendLoginRequest(self.World.LoginFrame.usernameBox.get(),self.World.LoginFrame.passwordBox.get())
             else:
-                self.parseResponse(0)
+                self.parseResponse(1)
             
     def parseResponse(self,data):
-        if data == 0:
+        print data
+        if data != 0:
             self.unloadScreen()
             self.World.doSelectionScreen()
         else: 
@@ -100,4 +103,4 @@ class AuthScreen:
                 self.updateStatus("Unable to register with that username")
             else:
                 self.updateStatus("Invalid username/password")
-            self.updateStatus = 0
+            self.whichAction = 0

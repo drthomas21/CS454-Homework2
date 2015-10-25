@@ -28,11 +28,11 @@ class AuthConnectionModel(ServerConnection):
         request = self.buildRequestPackage(self.CODE_SEND_REG)
         request.addString(username)
         request.addString(password)
-        self.sendMessage(request)
+        ServerConnection.sendMessage(self,request)
     
     def getAuth(self, data):
-        self.screenModel.parseResponse(data.getInt32())
+        self.screenModel.parseResponse(data.getUint16())
 
     def getReg(self, data):
-        self.screenModel.parseResponse(data.getInt32())
+        self.screenModel.parseResponse(data.getUint16())
         

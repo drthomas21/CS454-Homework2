@@ -16,7 +16,7 @@ class CharacterConnectionModel(ServerConnection):
     def sendCharacter(self,message):
         request = self.buildRequestPackage(self.CODE_SEND_MSG)
         request.addString(message)
-        self.sendMessage(request)
+        ServerConnection.sendMessage(self,request)
         
     def getMessage(self,data):
         self.screenModel.parseResponse(data.getString())

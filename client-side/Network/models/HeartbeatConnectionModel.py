@@ -6,16 +6,13 @@ from panda3d.core import NetDatagram
 class HeartbeatConnectionModel(ServerConnection):
     CODE_SEND_MSG = 113
     CODE_RECV_MSG = 213
-    
-    def __init__(self,screenModel):
-        self.screenModel = screenModel
         
     def getConnectionActions(self):
         return [[self.CODE_RECV_MSG, self.getHeartbeat]];
     
-    def sendHeartbeat(self,message):
+    def sendHeartbeat(self):
         request = self.buildRequestPackage(self.CODE_SEND_MSG)
-        self.sendMessage(request)
+        ServerConnection.sendMessage(self,request)
         
     def getHeartbeat(self,data):
-        self.screenModel.parseResponse()
+        self.doNothing = True

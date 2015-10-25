@@ -12,7 +12,7 @@ class BaseCharacter(BaseModel3D):
         self.isMoving = False
         
         self.World.keyMap = {"left":0, "right":0, "forward":0, "cam-left":0, "cam-right":0}
-        self.World.accept("escape", sys.exit)
+        self.World.accept("escape", self.World.endSession)
         self.World.accept("a", self.setKey, ["left",1])
         self.World.accept("d", self.setKey, ["right",1])
         self.World.accept("w", self.setKey, ["forward",1])
@@ -45,7 +45,7 @@ class BaseCharacter(BaseModel3D):
         startpos = self.actor.getPos()
 
         #print self.actor.name
-        print self.World.keyMap
+        #print self.World.keyMap
         if (self.World.keyMap["left"]!=0):
             self.actor.setH(self.actor.getH() + 300 * globalClock.getDt())
         if (self.World.keyMap["right"]!=0):

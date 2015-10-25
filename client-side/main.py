@@ -16,6 +16,8 @@ from Models3D.StaticModelVenus                  import StaticModelVenus
 from Screen.AuthScreen                          import AuthScreen
 from Screen.CharacterSelectScreen               import CharacterSelectScreen
 from Network.ServerConnection                   import ServerConnection
+from Network.models.EndSessionConnectionModel   import EndSessionConnectionModel
+from Network.models.HeartbeatConnectionModel import HeartbeatConnectionModel
 import random, sys, os, math
 
 SPEED = 0.5
@@ -48,7 +50,7 @@ class World(DirectObject):
 
         floorCollisionNP = self.makeCollisionNodePath(floorNode, collPlane)
         
-        self.bypassServer = True
+        self.bypassServer = False
         self.ServerConnection = ServerConnection()
         
         if not self.bypassServer:            
@@ -72,6 +74,9 @@ class World(DirectObject):
         self.select = CharacterSelectScreen(self,render,base,camera)
         
     def doGameScreen(self):
+        self.heartbeatConnection = HeartbeatConnectionModel()
+        self.ServerConnection.setupConnectionModel(self.heartbeatConnection)
+        
         self.backgroundImage.destroy()
         self.Character.setControls()
         self.Character.actor.setHpr(0,0,0)
@@ -109,6 +114,7 @@ class World(DirectObject):
         taskMgr.add(self.staticRefEarth.stopRotateEarth,"stopRotateEarth")
         taskMgr.add(self.staticRefSun.stopRotateSun,"stopRotateSun")
         taskMgr.add(self.staticRefVenus.stopRotateVenus,"stopRotateVenus")
+        taskMgr.doMethodLater(0.1,self.doHeartbeat,"heartbeat")
         
         #Change Camera Position Later
         base.camera.setPos(self.Character.actor.getX(),self.Character.actor.getY()+10,2)
@@ -122,6 +128,10 @@ class World(DirectObject):
         directionalLight.setSpecularColor(Vec4(1, 1, 1, 1))
         render.setLight(render.attachNewNode(ambientLight))
         render.setLight(render.attachNewNode(directionalLight))
+        
+    def doHeartbeat(self,task):
+        self.heartbeatConnection.sendHeartbeat()
+        return task.again
     
     def makeCollisionNodePath(self, nodepath, solid):
         '''
@@ -133,6 +143,19 @@ class World(DirectObject):
         collNode.addSolid(solid)
         collisionNodepath = nodepath.attachNewNode(collNode)
         return collisionNodepath
+    
+    def endSession(self):
+        self.endSession = EndSessionConnectionModel(self.exit)
+        self.ServerConnection.setupConnectionModel(self.endSession)
+        self.endSession.sendMessage(self.Character.actor.getPos())
+        
+        #Forces an exit
+        taskMgr.doMethodLater(3,self.exit,"forceExit")
+        
+    def exit(self,data):
+        if data != 1:
+            print "Houston, we got a problem"
+        sys.exit()
         
 w = World()
 run()

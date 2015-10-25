@@ -16,7 +16,7 @@ class ChatConnectionModel(ServerConnection):
     def sendChatMessage(self,message):
         request = self.buildRequestPackage(self.CODE_SEND_MSG)
         request.addString(message)
-        self.sendMessage(request)
+        ServerConnection.sendMessage(self,request)
         
     def getChatMessage(self,data):
         self.screenModel.parseResponse(data.getString())
