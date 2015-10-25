@@ -31,7 +31,7 @@ class RalphCharacter(BaseCharacter):
         return self.actor
 
     def getRalphCount(self):
-        return MyRalph.count
+        return RalphCharacter.count
 
     def getMyRalphId(self):
         return self.id

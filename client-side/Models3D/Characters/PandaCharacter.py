@@ -27,7 +27,7 @@ class PandaCharacter(BaseCharacter):
         return self.actor
 
     def getPandaCount(self):
-        return MyRalph.count
+        return PandaCharacter.count
 
     def getMyPandaId(self):
         return self.id  

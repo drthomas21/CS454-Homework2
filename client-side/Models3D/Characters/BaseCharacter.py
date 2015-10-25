@@ -5,7 +5,7 @@ from Models3D.BaseModel3D       import BaseModel3D
 class BaseCharacter(BaseModel3D):
     def __init__(self, World, render, base,loader):
         BaseModel3D.__init__(self, World, render, base,loader)
-        
+
     def setControls(self):
         self.floater = NodePath(PandaNode("floater"))
         self.floater.reparentTo(self.render)
@@ -44,14 +44,27 @@ class BaseCharacter(BaseModel3D):
 
         startpos = self.actor.getPos()
 
+        #print self.actor.name
+        print self.World.keyMap
         if (self.World.keyMap["left"]!=0):
             self.actor.setH(self.actor.getH() + 300 * globalClock.getDt())
         if (self.World.keyMap["right"]!=0):
             self.actor.setH(self.actor.getH() - 300 * globalClock.getDt())
-        if (self.World.keyMap["forward"]!=0 and self.World.keyMap["forward"]!=5):
+        if (self.World.keyMap["forward"]!=0 and self.World.keyMap["forward"]!=5 and self.actor.name =='Ralph'):
             self.actor.setY(self.actor, -25 * globalClock.getDt())
-        if (self.World.keyMap["forward"]!=0 and self.World.keyMap["forward"]!=1):
+        if (self.World.keyMap["forward"]!=0 and self.World.keyMap["forward"]!=1 and self.actor.name == 'Ralph'):
             self.actor.setY(self.actor, -100 * globalClock.getDt())
+        if (self.World.keyMap["forward"]!=0 and self.World.keyMap["forward"]!=5 and self.actor.name != 'Ralph'):
+            self.actor.play("walk")
+            self.actor.loop("walk")
+            self.actor.setY(self.actor, -1000 * globalClock.getDt())
+        if (self.World.keyMap["forward"]!=0 and self.World.keyMap["forward"]!=1 and self.actor.name != 'Ralph'):
+            self.actor.play("walk")
+            self.actor.loop("walk")
+            self.actor.setY(self.actor, -2000 * globalClock.getDt())
+
+        #self.actor.stop()
+
         #if (self.World.keyMap["backward"]!=0):
         #    self.actor.setY(self.actor, 25 * globalClock.getDt())
 
