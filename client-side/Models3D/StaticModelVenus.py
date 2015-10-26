@@ -18,7 +18,7 @@ class StaticModelVenus(BaseModel3D):
         self.venus.setScale(0.923 * 0.6)
 
         self.venusCNode = CollisionNode('venus')
-        self.venusCNode.addSolid(CollisionSphere(0, 0, 3, 3))
+        self.venusCNode.addSolid(CollisionSphere(0, 0, 0.01, 1.5))
         self.venusC = self.venus.attachNewNode(self.venusCNode)
         base.cTrav.addCollider(self.venusC, self.World.pusher)
         self.World.pusher.addCollider(self.venusC, self.venus, base.drive.node())

@@ -2,7 +2,7 @@ from direct.showbase.DirectObject       import DirectObject
 from direct.gui.OnscreenText            import OnscreenText 
 from direct.gui.DirectGui               import *
 from panda3d.core                       import *
-from Network.models.AuthConnectionModel  import AuthConnectionModel
+from Network.models.AuthConnectionModel import AuthConnectionModel
 
 class AuthScreen:
     def __init__(self,World,render,base):
@@ -94,7 +94,6 @@ class AuthScreen:
                 self.parseResponse(1)
             
     def parseResponse(self,data):
-        print data
         if data != 0:
             self.unloadScreen()
             self.World.doSelectionScreen()

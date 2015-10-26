@@ -82,7 +82,7 @@ class World(DirectObject):
         self.characterModels = []
         self.characterModels.append(["Ralph",RalphCharacter(self,render,base,loader)])
         self.characterModels.append(["Panda",PandaCharacter(self,render,base,loader)])
-        self.characterModels.append(["Motocycle",PandaCharacter(self,render,base,loader)])
+        self.characterModels.append(["Motocycle",VechileCharacter(self,render,base,loader)])
         
         self.selectScreen = CharacterSelectScreen(self,render,base,camera)
     
@@ -106,7 +106,9 @@ class World(DirectObject):
         self.inst.append(addInstructions(0.70, "[shift+w]: Move Player Fast"))
         self.inst.append(addInstructions(0.65, "[q]: Rotate Camera Left"))
         self.inst.append(addInstructions(0.60, "[e]: Rotate Camera Right"))
-        self.inst.append(addInstructions(0.55, "[t]: Display Chat Window"))   
+        if not self.bypassServer:
+            self.inst.append(addInstructions(0.55, "[t]: Display Chat Window"))
+            #self.inst.append(addInstructions(0.55, "[t]: Display Chat Window")) 
         
         # Set up the environment
         self.environ = loader.loadModel("models/square")

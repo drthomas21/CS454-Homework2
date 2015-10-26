@@ -40,3 +40,55 @@ class RalphCharacter(BaseCharacter):
         self.actor.lookAt(model)
         hpr = self.actor.getHpr()
         self.actor.setHpr(hpr[0]+180,hpr[1],hpr[2])
+        
+    def move(self, task):
+        self.base.camera.lookAt(self.actor)
+        if (self.World.keyMap["cam-left"]!=0):
+            self.base.camera.setX(self.base.camera, -20 * globalClock.getDt())
+        if (self.World.keyMap["cam-right"]!=0):
+            self.base.camera.setX(self.base.camera, +20 * globalClock.getDt())
+
+        startpos = self.actor.getPos()
+
+        #print self.actor.name
+        #print self.World.keyMap
+        if (self.World.keyMap["left"]!=0):
+            self.actor.setH(self.actor.getH() + 300 * globalClock.getDt())
+        if (self.World.keyMap["right"]!=0):
+            self.actor.setH(self.actor.getH() - 300 * globalClock.getDt())
+        if (self.World.keyMap["forward"]!=0 and self.World.keyMap["forward"]!=5):
+            self.actor.setY(self.actor, -25 * globalClock.getDt())
+        if (self.World.keyMap["forward"]!=0 and self.World.keyMap["forward"]!=1):
+            self.actor.setY(self.actor, -100 * globalClock.getDt())
+
+        #self.actor.stop()
+
+        #if (self.World.keyMap["backward"]!=0):
+        #    self.actor.setY(self.actor, 25 * globalClock.getDt())
+
+        if (self.World.keyMap["forward"]!=0) or (self.World.keyMap["left"]!=0) or (self.World.keyMap["right"]!=0):
+            if self.isMoving is False:
+                self.actor.loop("run")
+                self.isMoving = True
+        else:
+            if self.isMoving:
+                self.actor.stop()
+                self.actor.pose("walk",5)
+                self.isMoving = False
+
+        camvec = self.actor.getPos() - self.base.camera.getPos()
+        camvec.setZ(0)
+        camdist = camvec.length()
+        camvec.normalize()
+        if (camdist > 10.0):
+            self.base.camera.setPos(self.base.camera.getPos() + camvec*(camdist-10))
+            camdist = 10.0
+        if (camdist < 5.0):
+            self.base.camera.setPos(self.base.camera.getPos() - camvec*(5-camdist))
+            camdist = 5.0
+
+        self.floater.setPos(self.actor.getPos())
+        self.floater.setZ(self.actor.getZ() + 2.0)
+        self.base.camera.lookAt(self.floater)
+
+        return task.cont

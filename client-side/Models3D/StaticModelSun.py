@@ -19,7 +19,7 @@ class StaticModelSun(BaseModel3D):
         self.sun.setScale(2 * 0.4)
 
         self.sunCNode = CollisionNode('sun')
-        self.sunCNode.addSolid(CollisionSphere(0, 0, 5, 5))
+        self.sunCNode.addSolid(CollisionSphere(0, 0, 0.10, 1))
         self.sunC = self.sun.attachNewNode(self.sunCNode)
         base.cTrav.addCollider(self.sunC, self.World.pusher)
         self.World.pusher.addCollider(self.sunC, self.sun, base.drive.node())
