@@ -62,13 +62,13 @@ public class Connexion {
 
 	// authentication of user
 	public int checkAuth(String username, String password) throws SQLException {
-		String selectSQL = "SELECT * FROM Credentials WHERE username=? AND password =?";
+		String selectSQL = "SELECT * FROM Player WHERE username=? AND password =?";
 		PreparedStatement preparedStatement = conn.prepareStatement(selectSQL);
 		preparedStatement.setObject(1, username);
 		preparedStatement.setObject(2, password);
 		ResultSet rs = preparedStatement.executeQuery();
 		while (rs.next()) {
-			return rs.getInt("Player_idPlayer");
+			return rs.getInt("idPlayer");
 		}
 		return -1;
 
@@ -83,24 +83,21 @@ public class Connexion {
 		try {
 
 			stmt = conn.createStatement();
-			String requete = "insert into Credentials values (?, ?)";
-
+			String requete = "INSERT INTO Player (username, password) VALUES (?, ?)";
 			pstmt = conn.prepareStatement(requete);
 
 			pstmt.setObject(1, username);
 			pstmt.setObject(2, password);
 			pstmt.executeUpdate();
 			close();
+			System.out.println("Created a new player");
 			return 1; 
+			
 
 		} catch (Exception e) {
-			responseString.setMessage("User is already created");
-
 			System.out.println("User is already created :" + e);
 			e.printStackTrace();
 			
-		
-
 			try {
 				conn.close();
 			} catch (Exception ee) {

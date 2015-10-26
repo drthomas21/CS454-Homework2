@@ -30,9 +30,10 @@ public class RequestRegister extends GameRequest {
 
 	@Override
 	public void doBusiness() throws Exception {
+		System.out.println("Hey");
 
 		Connexion db = new Connexion();
-		if (db.create(username, password) == 2) {
+		if (db.create(username, password) == 1) {
 			responseRegister.setNumber(1);
 		} else {
 			responseRegister.setNumber(0);
