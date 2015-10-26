@@ -64,7 +64,7 @@ class AuthScreen:
             if not self.World.bypassServer:
                 self.authConnection.sendRegisterRequest(self.LoginFrame.usernameBox.get(),self.LoginFrame.passwordBox.get())
             else:
-                self.parseResponse(0)
+                self.parseResponse(1)
             
         
     def attemptLogin(self):  

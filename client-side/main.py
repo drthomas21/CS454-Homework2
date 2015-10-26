@@ -59,7 +59,7 @@ class World(DirectObject):
         
         
         if not self.bypassServer:
-            self.ServerConnection.connect(config['host'],config['port'])
+            self.ServerConnection.connect(self.config['host'],self.config['port'])
        
         
         if self.jumpTo == 1:

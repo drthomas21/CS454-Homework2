@@ -2,6 +2,6 @@
 	"host":"localhost",
 	"port":9252,
 	"heartbeatRate":0.1,
-	"bypassServer":true,
-	"jumpTo":2
+	"bypassServer":false,
+	"jumpTo":1
 }
