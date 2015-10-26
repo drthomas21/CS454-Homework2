@@ -19,7 +19,7 @@ from Screen.ChatScreen                          import ChatScreen
 from Network.ServerConnection                   import ServerConnection
 from Network.models.EndSessionConnectionModel   import EndSessionConnectionModel
 from Network.models.HeartbeatConnectionModel import HeartbeatConnectionModel
-import random, sys, os, math
+import random, sys, os, math, json
 
 SPEED = 0.5
 # Function to put instructions on the screen.
@@ -51,12 +51,14 @@ class World(DirectObject):
 
         floorCollisionNP = self.makeCollisionNodePath(floorNode, collPlane)
         
-        self.bypassServer = False
+        self.bypassServer = True
         self.jumpTo = 1
         self.ServerConnection = ServerConnection()
-        
-        if not self.bypassServer:            
-            self.ServerConnection.connect("localhost",9252)
+        if not self.bypassServer:
+            with open('config.json') as data_file:    
+                config = json.load(data_file)
+            print config
+            self.ServerConnection.connect(config['host'],config['port'])
        
         
         if self.jumpTo == 1:
