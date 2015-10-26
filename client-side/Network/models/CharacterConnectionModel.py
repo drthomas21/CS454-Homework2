@@ -4,8 +4,8 @@ from direct.distributed.PyDatagramIterator import PyDatagramIterator
 from panda3d.core import NetDatagram
 
 class CharacterConnectionModel(ServerConnection):
-    CODE_SEND_MSG = 104
-    #CODE_RECV_MSG = 104
+    CODE_SEND_MSG = 106
+    CODE_RECV_MSG = 206
     
     def __init__(self,screenModel):
         self.screenModel = screenModel

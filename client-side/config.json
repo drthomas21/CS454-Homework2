@@ -1,4 +1,5 @@
 {
 	"host":"localhost",
-	"port":9252
+	"port":9252,
+	"heartbeatRate":0.1
 }

@@ -54,10 +54,10 @@ class World(DirectObject):
         self.bypassServer = True
         self.jumpTo = 1
         self.ServerConnection = ServerConnection()
+        
+        with open('config.json') as data_file:    
+            self.config = json.load(data_file)
         if not self.bypassServer:
-            with open('config.json') as data_file:    
-                config = json.load(data_file)
-            print config
             self.ServerConnection.connect(config['host'],config['port'])
        
         
@@ -88,6 +88,7 @@ class World(DirectObject):
     def doGameScreen(self):
         self.heartbeatConnection = HeartbeatConnectionModel()
         self.ServerConnection.setupConnectionModel(self.heartbeatConnection)
+        self.stopHeartbeat = False
         
         self.backgroundImage.destroy()
         self.Character.setControls()
@@ -128,7 +129,8 @@ class World(DirectObject):
         taskMgr.add(self.staticRefEarth.stopRotateEarth,"stopRotateEarth")
         taskMgr.add(self.staticRefSun.stopRotateSun,"stopRotateSun")
         taskMgr.add(self.staticRefVenus.stopRotateVenus,"stopRotateVenus")
-        taskMgr.doMethodLater(1,self.doHeartbeat,"heartbeat")
+        if not self.bypassServer:
+            taskMgr.doMethodLater(float(self.config['heartbeatRate']),self.doHeartbeat,"heartbeat")
         
         #Change Camera Position Later
         base.camera.setPos(self.Character.actor.getX(),self.Character.actor.getY()+10,2)
@@ -143,11 +145,14 @@ class World(DirectObject):
         render.setLight(render.attachNewNode(ambientLight))
         render.setLight(render.attachNewNode(directionalLight))
         
-        self.chatScreen = ChatScreen(self,render,base)
-        self.chatScreen.hideScreen()
+        if not self.bypassServer:
+            self.chatScreen = ChatScreen(self,render,base)
+            self.chatScreen.hideScreen()
         
     def doHeartbeat(self,task):
-        self.heartbeatConnection.sendHeartbeat()
+        if self.stopHeartbeat:
+            return None
+            self.heartbeatConnection.sendHeartbeat()
         return task.again
     
     def makeCollisionNodePath(self, nodepath, solid):
@@ -162,9 +167,12 @@ class World(DirectObject):
         return collisionNodepath
     
     def endSession(self):
+        self.stopHeartbeat = True
         self.endSession = EndSessionConnectionModel(self.exit)
         self.ServerConnection.setupConnectionModel(self.endSession)
-        self.endSession.sendMessage(self.Character.actor.getPos())
+        
+        if not self.bypassServer:
+            self.endSession.sendMessage(self.Character.actor.getPos())
         
         #Forces an exit
         taskMgr.doMethodLater(3,self.exit,"forceExit")

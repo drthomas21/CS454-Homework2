@@ -104,3 +104,7 @@ class CharacterSelectScreen:
     def unloadScreen(self):
         self.SelectionFrame.destroy()
         self.World.ignore('mouse1')
+        
+    def parseResponse(self,data):
+        pos = data.split('')
+        self.World.Character.setPos(pos[0],pos[1],pos[2])
