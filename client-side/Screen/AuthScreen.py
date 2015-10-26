@@ -2,7 +2,7 @@ from direct.showbase.DirectObject       import DirectObject
 from direct.gui.OnscreenText            import OnscreenText 
 from direct.gui.DirectGui               import *
 from panda3d.core                       import *
-from Network.models.AuthConnectionModel  import AuthConnectionModel
+from Network.models.AuthConnectionModel import AuthConnectionModel
 
 class AuthScreen:
     def __init__(self,World,render,base):
@@ -12,89 +12,88 @@ class AuthScreen:
         
         boxloc = Vec3(0.0, 0.0, 0.0)
         p = boxloc
-        World.LoginFrame = DirectFrame(frameColor=(0,0,0,0.4),frameSize=(-0.5,0.41,-0.25,0.1),pos=p)       
+        self.LoginFrame = DirectFrame(frameColor=(0,0,0,0.4),frameSize=(-0.5,0.41,-0.25,0.1),pos=p)       
 
         p = boxloc + Vec3(-0.5, 0, 0.0)                                 
-        World.LoginFrame.textObject = OnscreenText(parent=World.LoginFrame, text = "Username:", pos = p, scale = 0.07,fg=(1, 1, 1, 1),align=TextNode.ALeft)
+        self.LoginFrame.textObject = OnscreenText(parent=self.LoginFrame, text = "Username:", pos = p, scale = 0.07,fg=(1, 1, 1, 1),align=TextNode.ALeft)
         
         p = boxloc + Vec3(-0.1, 0.0, 0.0)
-        World.LoginFrame.usernameBox = DirectEntry(parent=World.LoginFrame, text = "" , pos = p, scale=.05, initialText="", numLines = 1)
+        self.LoginFrame.usernameBox = DirectEntry(parent=self.LoginFrame, text = "" , pos = p, scale=.05, initialText="", numLines = 1)
         
         p = boxloc + Vec3(-0.5, -0.1, 0.0)        
-        World.LoginFrame.textObject = OnscreenText(parent=World.LoginFrame, text = "Password:", pos = p, scale = 0.07,fg=(1, 1, 1, 1),align=TextNode.ALeft)
+        self.LoginFrame.textObject = OnscreenText(parent=self.LoginFrame, text = "Password:", pos = p, scale = 0.07,fg=(1, 1, 1, 1),align=TextNode.ALeft)
         
         p = boxloc + Vec3(-0.1, 0, -0.1)
-        World.LoginFrame.passwordBox = DirectEntry(parent=World.LoginFrame, text = "" , pos = p, scale=.05, initialText="", numLines = 1, obscured = 1)
+        self.LoginFrame.passwordBox = DirectEntry(parent=self.LoginFrame, text = "" , pos = p, scale=.05, initialText="", numLines = 1, obscured = 1)
         
         p = boxloc + Vec3(-0.2, 0, -0.2)
-        World.LoginFrame.loginButton = DirectButton(parent=World.LoginFrame, text = ("Login", "Login", "Login", "Login"), pos = p, scale = 0.075, command=self.attemptLogin)
+        self.LoginFrame.loginButton = DirectButton(parent=self.LoginFrame, text = ("Login", "Login", "Login", "Login"), pos = p, scale = 0.075, command=self.attemptLogin)
         
         p = boxloc + Vec3(0.2, 0, -0.2)
-        World.LoginFrame.registerButton = DirectButton(parent=World.LoginFrame, text = ("Signup", "Signup", "Signup", "Signup"), pos = p, scale = 0.075, command=self.attemptRegister)
+        self.LoginFrame.registerButton = DirectButton(parent=self.LoginFrame, text = ("Signup", "Signup", "Signup", "Signup"), pos = p, scale = 0.075, command=self.attemptRegister)
         
         p = boxloc + Vec3(0, -0.4, 0)
-        World.LoginFrame.statusText = OnscreenText(parent=World.LoginFrame, text = "", pos = p, scale = 0.075, fg = (1, 0, 0, 1), align=TextNode.ACenter)
+        self.LoginFrame.statusText = OnscreenText(parent=self.LoginFrame, text = "", pos = p, scale = 0.075, fg = (1, 0, 0, 1), align=TextNode.ACenter)
 
         
     def updateStatus(self, statustext):
-        self.World.LoginFrame.statusText.setText(statustext)
+        self.LoginFrame.statusText.setText(statustext)
         
     def unloadScreen(self):
-        self.World.LoginFrame.destroy()
+        self.LoginFrame.destroy()
         
     def attemptRegister(self):
         self.whichAction = 1      
-        if(self.World.LoginFrame.usernameBox.get() == ""):
-            if(self.World.LoginFrame.passwordBox.get() == ""):
+        if(self.LoginFrame.usernameBox.get() == ""):
+            if(self.LoginFrame.passwordBox.get() == ""):
                 self.updateStatus("ERROR: You must enter a username and password before logging in.")
             else:
                 self.updateStatus("ERROR: You must specify a username")
-            self.World.LoginFrame.passwordBox['focus'] = 0
-            self.World.LoginFrame.usernameBox['focus'] = 1
+            self.LoginFrame.passwordBox['focus'] = 0
+            self.LoginFrame.usernameBox['focus'] = 1
                 
-        elif(self.World.LoginFrame.passwordBox.get() == ""):
+        elif(self.LoginFrame.passwordBox.get() == ""):
             self.updateStatus("ERROR: You must enter a password")
-            self.World.LoginFrame.usernameBox['focus'] = 0
-            self.World.LoginFrame.passwordBox['focus'] = 1
+            self.LoginFrame.usernameBox['focus'] = 0
+            self.LoginFrame.passwordBox['focus'] = 1
             
         else:
             self.updateStatus("Attempting to Signup...")
-            self.World.LoginFrame.registerButton = DGG.DISABLED
-            self.World.LoginFrame.loginButton = DGG.DISABLED
+            self.LoginFrame.registerButton = DGG.DISABLED
+            self.LoginFrame.loginButton = DGG.DISABLED
             if not self.World.bypassServer:
-                self.authConnection.sendRegisterRequest(self.World.LoginFrame.usernameBox.get(),self.World.LoginFrame.passwordBox.get())
+                self.authConnection.sendRegisterRequest(self.LoginFrame.usernameBox.get(),self.LoginFrame.passwordBox.get())
             else:
-                self.parseResponse(0)
+                self.parseResponse(1)
             
         
     def attemptLogin(self):  
         self.whichAction = 2     
-        if(self.World.LoginFrame.usernameBox.get() == ""):
-            if(self.World.LoginFrame.passwordBox.get() == ""):
+        if(self.LoginFrame.usernameBox.get() == ""):
+            if(self.LoginFrame.passwordBox.get() == ""):
                 self.updateStatus("ERROR: You must enter a username and password before logging in.")
             else:
                 self.updateStatus("ERROR: You must specify a username")
-            self.World.LoginFrame.passwordBox['focus'] = 0
-            self.World.LoginFrame.usernameBox['focus'] = 1
+            self.LoginFrame.passwordBox['focus'] = 0
+            self.LoginFrame.usernameBox['focus'] = 1
                 
-        elif(self.World.LoginFrame.passwordBox.get() == ""):
+        elif(self.LoginFrame.passwordBox.get() == ""):
             self.updateStatus("ERROR: You must enter a password")
-            self.World.LoginFrame.usernameBox['focus'] = 0
-            self.World.LoginFrame.passwordBox['focus'] = 1
+            self.LoginFrame.usernameBox['focus'] = 0
+            self.LoginFrame.passwordBox['focus'] = 1
             
         else:
             self.updateStatus("Attempting to login...")
-            self.World.LoginFrame.registerButton = DGG.DISABLED
-            self.World.LoginFrame.loginButton = DGG.DISABLED
-            if self.World.LoginFrame.usernameBox.get() == "test" and self.World.LoginFrame.passwordBox.get() == "test":
+            self.LoginFrame.registerButton = DGG.DISABLED
+            self.LoginFrame.loginButton = DGG.DISABLED
+            if self.LoginFrame.usernameBox.get() == "test" and self.LoginFrame.passwordBox.get() == "test":
                 self.parseResponse(1)
             elif not self.World.bypassServer:
-                self.authConnection.sendLoginRequest(self.World.LoginFrame.usernameBox.get(),self.World.LoginFrame.passwordBox.get())
+                self.authConnection.sendLoginRequest(self.LoginFrame.usernameBox.get(),self.LoginFrame.passwordBox.get())
             else:
                 self.parseResponse(1)
             
     def parseResponse(self,data):
-        print data
         if data != 0:
             self.unloadScreen()
             self.World.doSelectionScreen()

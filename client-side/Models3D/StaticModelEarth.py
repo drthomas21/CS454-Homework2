@@ -18,7 +18,7 @@ class StaticModelEarth(BaseModel3D):
         self.earth.setPos( 30, 20, 1)
 
         self.earthCNode = CollisionNode('earth')
-        self.earthCNode.addSolid(CollisionSphere(0, 0, 4, 4))
+        self.earthCNode.addSolid(CollisionSphere(0, 0,0.10, 1.1))
         self.earthC = self.earth.attachNewNode(self.earthCNode)
         base.cTrav.addCollider(self.earthC, self.World.pusher)
         self.World.pusher.addCollider(self.earthC, self.earth, base.drive.node())

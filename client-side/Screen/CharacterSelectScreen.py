@@ -12,9 +12,6 @@ class CharacterSelectScreen:
         World.ServerConnection.setupConnectionModel(self.characterConnection)
         characterModels = World.characterModels
         self.availableModels = []
-        
-        for model in characterModels:
-            model[1].actor.name = model[0]
             
         if len(characterModels) >= 1:
             Character = characterModels[0][1]
@@ -38,10 +35,10 @@ class CharacterSelectScreen:
             
         boxloc = Vec3(0.0, 0.0, 0.0)
         p = boxloc + Vec3(0.0, 0.0, -0.5)
-        World.SelectionFrame = DirectFrame(frameColor=(0,0,0,0.4),frameSize=(-1,1,-0.1,0.2),pos=p)       
+        self.SelectionFrame = DirectFrame(frameColor=(0,0,0,0.4),frameSize=(-1,1,-0.1,0.2),pos=p)       
 
         p = boxloc + Vec3(0.0, 0.0, 0.0)                                 
-        World.SelectionFrame.textObject = OnscreenText(parent=World.SelectionFrame, text = "Select Your Character", pos = p, scale = 0.2,fg=(1, 1, 1, 1),align=TextNode.ACenter)
+        self.SelectionFrame.textObject = OnscreenText(parent=self.SelectionFrame, text = "Select Your Character", pos = p, scale = 0.2,fg=(1, 1, 1, 1),align=TextNode.ACenter)
         
         self.makePickable()
         self.picker= CollisionTraverser() 
@@ -105,7 +102,9 @@ class CharacterSelectScreen:
                 model.actor.delete()
         return Character
     def unloadScreen(self):
-        self.World.SelectionFrame.destroy()
-        #for model in self.availableModels:
-        #    if model.actor.name != self.pickedObj.name:
-        #        model.actor.delete()
+        self.SelectionFrame.destroy()
+        self.World.ignore('mouse1')
+        
+    def parseResponse(self,data):
+        pos = data.split('')
+        self.World.Character.setPos(pos[0],pos[1],pos[2])
