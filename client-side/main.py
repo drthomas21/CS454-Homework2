@@ -15,6 +15,7 @@ from Models3D.StaticModelSun                    import StaticModelSun
 from Models3D.StaticModelVenus                  import StaticModelVenus
 from Screen.AuthScreen                          import AuthScreen
 from Screen.CharacterSelectScreen               import CharacterSelectScreen
+from Screen.ChatScreen                          import ChatScreen
 from Network.ServerConnection                   import ServerConnection
 from Network.models.EndSessionConnectionModel   import EndSessionConnectionModel
 from Network.models.HeartbeatConnectionModel import HeartbeatConnectionModel
@@ -51,28 +52,37 @@ class World(DirectObject):
         floorCollisionNP = self.makeCollisionNodePath(floorNode, collPlane)
         
         self.bypassServer = False
+        self.jumpTo = 1
         self.ServerConnection = ServerConnection()
         
         if not self.bypassServer:            
             self.ServerConnection.connect("localhost",9252)
        
         
-        self.doLoginScreen()
+        if self.jumpTo == 1:
+            self.doAuthScreen()
+        elif self.jumpTo == 2:
+            self.doSelectionScreen()
+        elif self.jumpTo == 3:
+            self.setPlayerCharacter(RalphCharacter(self,render,base,loader))
+            self.doGameScreen()
+        else:
+            self.doAuthScreen()
         
     def setPlayerCharacter(self,Character):
         self.Character = Character
         
-    def doLoginScreen(self):
-        self.login = AuthScreen(self,render,base)
+    def doAuthScreen(self):
+        self.authScreen = AuthScreen(self,render,base)
         
     def doSelectionScreen(self):
         self.characterModels = []
         self.characterModels.append(["Ralph",RalphCharacter(self,render,base,loader)])
-        self.characterModels.append(["Panda 1",PandaCharacter(self,render,base,loader)])
-        self.characterModels.append(["Panda 2",PandaCharacter(self,render,base,loader)])
+        self.characterModels.append(["Panda",PandaCharacter(self,render,base,loader)])
+        self.characterModels.append(["Motocycle",PandaCharacter(self,render,base,loader)])
         
-        self.select = CharacterSelectScreen(self,render,base,camera)
-        
+        self.selectScreen = CharacterSelectScreen(self,render,base,camera)
+    
     def doGameScreen(self):
         self.heartbeatConnection = HeartbeatConnectionModel()
         self.ServerConnection.setupConnectionModel(self.heartbeatConnection)
@@ -83,14 +93,16 @@ class World(DirectObject):
         taskMgr.add(self.Character.move,"moveTask")
         
         self.title = addTitle("Panda3D Tutorial: Multiplayer (Walking on the Moon)")
-        self.inst1 = addInstructions(0.95, "[ESC]: Quit")
-        self.inst2 = addInstructions(0.90, "[a]: Rotate Player Left")
-        self.inst3 = addInstructions(0.85, "[d]: Rotate Player Right")
-        self.inst4 = addInstructions(0.80, "[w]: Move Player Forward")
-        self.inst5 = addInstructions(0.75, "[s]: Move Player Backward")
-        self.inst6 = addInstructions(0.70, "[shift+w]: Move Player Fast")
-        self.inst7 = addInstructions(0.65, "[q]: Rotate Camera Left")
-        self.inst8 = addInstructions(0.60, "[e]: Rotate Camera Right")        
+        self.inst = []
+        self.inst.append(addInstructions(0.95, "[ESC]: Quit/Close Chat Window"))
+        self.inst.append(addInstructions(0.90, "[a]: Rotate Player Left"))
+        self.inst.append(addInstructions(0.85, "[d]: Rotate Player Right"))
+        self.inst.append(addInstructions(0.80, "[w]: Move Player Forward"))
+        self.inst.append(addInstructions(0.75, "[s]: Move Player Backward"))
+        self.inst.append(addInstructions(0.70, "[shift+w]: Move Player Fast"))
+        self.inst.append(addInstructions(0.65, "[q]: Rotate Camera Left"))
+        self.inst.append(addInstructions(0.60, "[e]: Rotate Camera Right"))
+        self.inst.append(addInstructions(0.55, "[t]: Display Chat Window"))   
         
         # Set up the environment
         self.environ = loader.loadModel("models/square")
@@ -114,7 +126,7 @@ class World(DirectObject):
         taskMgr.add(self.staticRefEarth.stopRotateEarth,"stopRotateEarth")
         taskMgr.add(self.staticRefSun.stopRotateSun,"stopRotateSun")
         taskMgr.add(self.staticRefVenus.stopRotateVenus,"stopRotateVenus")
-        taskMgr.doMethodLater(0.1,self.doHeartbeat,"heartbeat")
+        taskMgr.doMethodLater(1,self.doHeartbeat,"heartbeat")
         
         #Change Camera Position Later
         base.camera.setPos(self.Character.actor.getX(),self.Character.actor.getY()+10,2)
@@ -128,6 +140,9 @@ class World(DirectObject):
         directionalLight.setSpecularColor(Vec4(1, 1, 1, 1))
         render.setLight(render.attachNewNode(ambientLight))
         render.setLight(render.attachNewNode(directionalLight))
+        
+        self.chatScreen = ChatScreen(self,render,base)
+        self.chatScreen.hideScreen()
         
     def doHeartbeat(self,task):
         self.heartbeatConnection.sendHeartbeat()

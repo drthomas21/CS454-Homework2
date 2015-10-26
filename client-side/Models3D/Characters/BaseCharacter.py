@@ -3,13 +3,15 @@ from panda3d.core               import PandaNode,NodePath,Camera,TextNode
 from Models3D.BaseModel3D       import BaseModel3D
 
 class BaseCharacter(BaseModel3D):
+    floater = None
     def __init__(self, World, render, base,loader):
         BaseModel3D.__init__(self, World, render, base,loader)
 
     def setControls(self):
-        self.floater = NodePath(PandaNode("floater"))
-        self.floater.reparentTo(self.render)
-        self.isMoving = False
+        if self.floater == None:
+            self.floater = NodePath(PandaNode("floater"))
+            self.floater.reparentTo(self.render)
+            self.isMoving = False
         
         self.World.keyMap = {"left":0, "right":0, "forward":0, "cam-left":0, "cam-right":0}
         self.World.accept("escape", self.World.endSession)
@@ -24,6 +26,20 @@ class BaseCharacter(BaseModel3D):
         self.World.accept("q-up", self.setKey, ["cam-left",0])
         self.World.accept("e-up", self.setKey, ["cam-right",0])
         self.World.accept("shift-w",self.setKey, ["forward",5])
+        
+    def blockControls(self):
+        self.World.ignore("escape")
+        self.World.ignore("a")
+        self.World.ignore("d")
+        self.World.ignore("w")
+        self.World.ignore("q")
+        self.World.ignore("e")
+        self.World.ignore("a-up")
+        self.World.ignore("d-up")
+        self.World.ignore("w-up")
+        self.World.ignore("q-up")
+        self.World.ignore("e-up")
+        self.World.ignore("shift-w")
     
     def setCharacter(self, _Actor):
         self.actor = _Actor

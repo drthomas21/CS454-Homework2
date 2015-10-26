@@ -14,8 +14,8 @@ class PandaCharacter(BaseCharacter):
         self.actor=Actor("models/panda-model",
                      {"walk": "models/panda-walk4"})
         self.actor.reparentTo(self.node)
-        self.actor.setPos(int(self.id) * 30,0,0)
         self.actor.setScale(0.002, 0.002, 0.002)
+        self.actor.name = "Panda"
 
         self.cNode = CollisionNode('panda')
         self.cNode.addSolid(CollisionSphere(2, 0, 400, 500))

@@ -16,7 +16,7 @@ class RalphCharacter(BaseCharacter):
                           "walk":"models/ralph/ralph-walk"})
         self.actor.reparentTo(self.node)
         self.actor.setScale(.2)
-        self.actor.setPos(int(self.id)*20, 0, 0)
+        self.actor.name = "Ralph"
 
         # Create a collsion node for this object.
         self.cNode = CollisionNode('ralph')
