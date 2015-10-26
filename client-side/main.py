@@ -50,13 +50,14 @@ class World(DirectObject):
         # Call our function that creates a nodepath with a collision node
 
         floorCollisionNP = self.makeCollisionNodePath(floorNode, collPlane)
-        
-        self.bypassServer = True
-        self.jumpTo = 1
-        self.ServerConnection = ServerConnection()
-        
         with open('config.json') as data_file:    
             self.config = json.load(data_file)
+        
+        self.bypassServer = self.config['bypassServer']
+        self.jumpTo = self.config['jumpTo']
+        self.ServerConnection = ServerConnection()
+        
+        
         if not self.bypassServer:
             self.ServerConnection.connect(config['host'],config['port'])
        
@@ -130,7 +131,7 @@ class World(DirectObject):
         taskMgr.add(self.staticRefSun.stopRotateSun,"stopRotateSun")
         taskMgr.add(self.staticRefVenus.stopRotateVenus,"stopRotateVenus")
         if not self.bypassServer:
-            taskMgr.doMethodLater(float(self.config['heartbeatRate']),self.doHeartbeat,"heartbeat")
+            taskMgr.doMethodLater(self.config['heartbeatRate'],self.doHeartbeat,"heartbeat")
         
         #Change Camera Position Later
         base.camera.setPos(self.Character.actor.getX(),self.Character.actor.getY()+10,2)
