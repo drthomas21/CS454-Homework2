@@ -6,6 +6,7 @@ import java.io.IOException;
 // Custom Imports
 //import core.GameServer;
 import networking.response.ResponseInt;
+import networking.response.ResponseRegister;
 import utility.DataReader;
 import database.Connexion;
 
@@ -15,10 +16,10 @@ public class RequestRegister extends GameRequest {
 	private String username;
 	private String password;
 	// Responses
-	private ResponseInt responseInt;
+	private ResponseRegister responseRegister;
 
 	public RequestRegister() {
-		responses.add(responseInt = new ResponseInt());
+		responses.add(responseRegister = new ResponseRegister());
 	}
 
 	@Override
@@ -31,7 +32,11 @@ public class RequestRegister extends GameRequest {
 	public void doBusiness() throws Exception {
 
 		Connexion db = new Connexion();
-		db.create(username, password);
+		if (db.create(username, password) == 2) {
+			responseRegister.setNumber(1);
+		} else {
+			responseRegister.setNumber(0);
+		}
 
 	}
 }
