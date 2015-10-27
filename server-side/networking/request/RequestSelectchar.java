@@ -37,15 +37,20 @@ public class RequestSelectchar extends GameRequest {
 
 		// Should return last position from the database
 		Connexion db = client.getServer().getDAO();
-		position = db.lastPostion(client.getPlayer().getUsername(), client.getPlayer().getID());
+		position = db.lastPostion(character, client.getPlayer().getID());
 		if(position != null)
 		{
 		String data[] = position.split(",");
+		
 		x = data[0];
 		y = data[1];
 		z = data[2];
+		System.out.println(x);
+		System.out.println(y);
+		System.out.println(z);
+		
 
-		responseSelect.setPosition(Double.parseDouble("x"), Double.parseDouble("y"), Double.parseDouble("z"));
+		responseSelect.setPosition(Double.valueOf(x).longValue(), Double.valueOf(y).longValue(),Double.valueOf(z).longValue());
 	
 		}
 		else {

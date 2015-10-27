@@ -57,21 +57,19 @@ public class Connexion {
 	// get character ID from a name
 	public int characterIDFromName(String name) throws SQLException {
 		try {
-			String selectSQL = "SELECT idCharacter FROM Character WHERE name = ?";
+			String selectSQL = "SELECT * FROM CharacterList WHERE name = ?";
 			PreparedStatement preparedStatement = conn.prepareStatement(selectSQL);
+			System.out.println("Name : " + name);
 			preparedStatement.setObject(1, name);
 			ResultSet rs = preparedStatement.executeQuery();
 			while (rs.next()) {
+				System.out.println("id_character : "+ rs.getInt("idCharacter"));
 				return rs.getInt("idCharacter");
 			}
 
 		} catch (Exception e) {
 			System.out.println("Exception in connect :" + e);
 			e.printStackTrace();
-			try {
-				conn.close();
-			} catch (Exception ee) {
-			}
 		}
 		return -1;
 
@@ -79,14 +77,34 @@ public class Connexion {
 
 	// last position of character
 	public void UpdateIsPlaying(int player_id, int characterID, String position) throws SQLException {
+		boolean result = false; 
+		System.out.println(position);
 		try {
-			String selectSQL = "SELECT idIsPlaying FROM Users isPlaying WHERE Character_idCharacter = ? AND Player_idPlayer = ?";
-			PreparedStatement preparedStatement = conn.prepareStatement(selectSQL);
+			String selectSQL = "SELECT * FROM isPlaying WHERE Character_idCharacter = ? AND Player_idPlayer = ?";
+			PreparedStatement preparedStatement = conn.prepareStatement(selectSQL, rset.TYPE_SCROLL_INSENSITIVE,rset.CONCUR_UPDATABLE);
 			preparedStatement.setObject(1, characterID);
 			preparedStatement.setObject(2, player_id);
-			ResultSet rs = preparedStatement.executeQuery();
-			while (rs.next()) {
-				rs.updateString("lastPosition", position);
+			rset = preparedStatement.executeQuery();
+			while (rset.next()) {
+				String selectSQL2 = "UPDATE isPlaying SET lastPosition  = ? WHERE Character_idCharacter = ? AND Player_idPlayer = ?";
+				PreparedStatement preparedStatement2 = conn.prepareStatement(selectSQL2);
+				preparedStatement2.setObject(1, position);
+				preparedStatement2.setObject(2, characterID);
+				preparedStatement2.setObject(3, player_id);
+				preparedStatement2.executeUpdate();
+				result = true; 
+				System.out.println("Hey");
+			}
+			if (result == false)
+			{
+				String requete = "INSERT INTO isPlaying (Character_idCharacter, Player_idPlayer, lastPosition) VALUES (?, ?, ?)";
+				pstmt = conn.prepareStatement(requete);
+
+				pstmt.setObject(1, characterID);
+				pstmt.setObject(2, player_id);
+				pstmt.setObject(3, position);
+			
+				pstmt.executeUpdate();
 			}
 		} catch (Exception e) {
 			System.out.println("Exception in connect :" + e);
@@ -157,12 +175,12 @@ public class Connexion {
 
 	}
 
-	public String lastPostion(String username, int player_idPlayer) {
+	public String lastPostion(String charactername, int player_idPlayer) {
 		String lastPosition = null;
 		try {		
-			String selectSQL = "SELECT lastPosition FROM isPlaying WHERE Character_idCharacter = ? AND passowrd = ?";
+			String selectSQL = "SELECT lastPosition FROM isPlaying WHERE Character_idCharacter = ? AND Player_idPlayer = ?";
 			PreparedStatement preparedStatement = conn.prepareStatement(selectSQL);
-			preparedStatement.setObject(1, characterIDFromName(username));
+			preparedStatement.setObject(1, characterIDFromName(charactername));
 			preparedStatement.setObject(2, player_idPlayer);
 			ResultSet rs = preparedStatement.executeQuery();
 			while (rs.next()) {

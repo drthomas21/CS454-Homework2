@@ -16,7 +16,7 @@ public class ResponseSelectchar extends GameResponse {
     @Override
     public byte[] constructResponseInBytes() {
         GamePacket packet = new GamePacket(responseCode);
-        packet.addString(message);
+        packet.addString(position);
         return packet.getBytes();
     }
     
