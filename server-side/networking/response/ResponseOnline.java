@@ -6,7 +6,8 @@ import utility.GamePacket;
 
 public class ResponseOnline extends GameResponse {
 
-    private String user;
+    private String username;
+    private String character;
 
     public ResponseOnline() {
         responseCode = Constants.SMSG_ONLINE;
@@ -14,16 +15,25 @@ public class ResponseOnline extends GameResponse {
 
     @Override
     public byte[] constructResponseInBytes() {
-        GamePacket packet = new GamePacket(responseCode);
-        packet.addString(user);
+        GamePacket packet = new GamePacket(responseCode);    
+        packet.addString(username);
+        packet.addString(character);
         return packet.getBytes();
     }
     
-	public String getUser() {
-		return user;
+	public String getUsername() {
+		return username;
 	}
 
-	public void setUser(String user) {
-		this.user = user;
+	public void setUsername(String username) {
+		this.username = username;
+	}
+	public String getCharacter()
+	{
+		return character;
+	}
+	public void setCharacter(String character)
+	{
+		this.character = character;
 	}
 }

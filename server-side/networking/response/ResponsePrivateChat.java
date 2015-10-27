@@ -16,6 +16,7 @@ public class ResponsePrivateChat extends GameResponse {
     @Override
     public byte[] constructResponseInBytes() {
         GamePacket packet = new GamePacket(responseCode);
+        packet.addString(username);
         packet.addString(message);
         return packet.getBytes();
     }

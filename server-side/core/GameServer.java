@@ -5,9 +5,11 @@ import java.io.IOException;
 import java.net.Socket;
 import java.net.ServerSocket;
 import java.sql.SQLException;
+import java.util.ArrayList;
 //import java.util.ArrayList;
 import java.util.HashMap;
 //import java.util.List;
+import java.util.List;
 
 // Custom Imports
 import configuration.GameServerConf;
@@ -18,6 +20,7 @@ import metadata.GameRequestTable;
 import networking.response.GameResponse;
 import networking.response.ResponseString;
 import utility.ConfFileParser;
+import utility.Player;
 
 /**
  * The GameServer class serves as the main module that runs the server.
@@ -32,7 +35,7 @@ public class GameServer {
     private boolean ready = false; // Used to keep server looping
     private HashMap<Long, GameClient> activeThreads = new HashMap<Long, GameClient>(); // Stores active threads by thread ID
     private Connexion DAO; 
-    //private HashMap<Integer, Player> activePlayers = new HashMap<Integer, Player>(); // Stores active players by player ID
+    private HashMap<Integer, Player> activePlayers = new HashMap<Integer, Player>(); // Stores active players by player ID
 
     /**
      * Initialize the GameServer by setting up the request types and creating a
@@ -154,6 +157,10 @@ public class GameServer {
      */
     public GameClient getThreadByPlayerUserName(String userName) {
         for (GameClient aClient : activeThreads.values()) {
+        	if(aClient.getPlayer() == null)
+        	{
+        		continue;
+        	}
             if (aClient.getPlayer().getUsername().equals(userName)) {
                 return aClient;
             }
@@ -170,7 +177,12 @@ public class GameServer {
         activeThreads.put(client.getId(), client);
     }
     
-    /*public List<Player> getActivePlayers() {
+    public HashMap<Long, GameClient> getActiveThreads()
+    {
+    	return this.activeThreads;
+    }
+    
+    public List<Player> getActivePlayers() {
         return new ArrayList<Player>(activePlayers.values());
     }
 
@@ -184,7 +196,7 @@ public class GameServer {
     
     public void removeActivePlayer(int player_id) {
         activePlayers.remove(player_id);
-    }*/
+    }
 
     public void deletePlayerThreadOutOfActiveThreads(Long threadID) {
         activeThreads.remove(threadID);

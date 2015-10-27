@@ -20,7 +20,6 @@ public class RequestAuth extends GameRequest {
 	// Responses
 	private ResponseAuth responseAuth;
 	private int player_id;
-	
 
 	public RequestAuth() {
 		responses.add(responseAuth = new ResponseAuth());
@@ -36,19 +35,22 @@ public class RequestAuth extends GameRequest {
 	@Override
 	public void doBusiness() throws Exception {
 
-		Connexion db = client.getServer().getDAO();
-		player_id = db.checkAuth(username, password);
-		if (player_id != -1) {
-			System.out.println("Connected !");
-			responseAuth.setAnswer((short)1);
-			client.setPlayer(new Player(username, player_id)); 
+		if (client.getServer().getThreadByPlayerUserName(username) != null) {
+			responseAuth.setAnswer((short) 2);
+
 		} else {
-			System.out.println("Wrong credentials");
-			responseAuth.setAnswer((short)0);
+			Connexion db = client.getServer().getDAO();
+			player_id = db.checkAuth(username, password);
+
+			if (player_id != -1) {
+				System.out.println("Connected !");
+				responseAuth.setAnswer((short) 1);
+				client.setPlayer(new Player(username, player_id));
+			} else {
+				System.out.println("Wrong credentials");
+				responseAuth.setAnswer((short) 0);
+			}
 		}
-	
-		
-		
 
 	}
 }
