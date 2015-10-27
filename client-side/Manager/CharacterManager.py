@@ -23,6 +23,7 @@ class CharacterManager:
             model = RalphCharacter(World=self.World,render=self.render,base=self.base,loader=self.loader)
         model.actor.setPos(pos[0],pos[1],pos[2])
         model.actor.setHpr(hpr[0],hpr[1],hpr[2])
+        model.username = username
         
         self.characters[username] = model
     
@@ -31,3 +32,10 @@ class CharacterManager:
         if not self.characters[username]:
             self.createCharacter(username,"",pos)
         self.characters[username].setPos(pos[0],pos[1],pos[2])
+        
+    def getCharacters(self):
+        list = []
+        for model in self.characters:
+            list.append(model.username)
+            
+        return list
