@@ -20,11 +20,11 @@ public class RequestAuth extends GameRequest {
 	// Responses
 	private ResponseAuth responseAuth;
 	private int player_id;
-	private ResponseOnline responseOnline; 
+	
 
 	public RequestAuth() {
 		responses.add(responseAuth = new ResponseAuth());
-		responseOnline = new ResponseOnline(); 
+
 	}
 
 	@Override
@@ -41,10 +41,7 @@ public class RequestAuth extends GameRequest {
 		if (player_id != -1) {
 			System.out.println("Connected !");
 			responseAuth.setAnswer((short)1);
-			client.setPlayer(new Player(username, player_id));
-			//Sending the new online player to every users
-			responseOnline.setCharacter(username);
-			client.getServer().addResponseForAllOnlinePlayers(super.client.getId(), (GameResponse) responseOnline); 
+			client.setPlayer(new Player(username, player_id)); 
 		} else {
 			System.out.println("Wrong credentials");
 			responseAuth.setAnswer((short)0);

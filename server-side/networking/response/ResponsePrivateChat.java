@@ -7,6 +7,7 @@ import utility.GamePacket;
 public class ResponsePrivateChat extends GameResponse {
 
     private String message;
+    private String username; 
 
     public ResponsePrivateChat() {
         responseCode = Constants.SMSG_PRIVATE_CHAT;
@@ -25,5 +26,15 @@ public class ResponsePrivateChat extends GameResponse {
 
 	public void setMessage(String message) {
 		this.message = message;
+	}
+	
+	public void setUsername(String username)
+	{
+		this.username= username;
+	}
+	
+	public String getUsername()
+	{
+		return this.username; 
 	}
 }

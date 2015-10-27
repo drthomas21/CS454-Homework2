@@ -14,12 +14,12 @@ public class RequestChat extends GameRequest {
     // Data
     private String message;
     // Responses
-    private ResponseChat responseString;
+    private ResponseChat responseChat;
 
     public RequestChat() {
     	 
       //  responses.add(responseString = new ResponseString());
-    	responseString = new ResponseChat();
+    	responseChat = new ResponseChat();
       
     }
 
@@ -31,7 +31,8 @@ public class RequestChat extends GameRequest {
     @Override
     public void doBusiness() throws Exception {
         System.out.println(message);
-        responseString.setMessage(message); 
-        client.getServer().addResponseForAllOnlinePlayers(client.getId(), (GameResponse) responseString); 
+        responseChat.setUsername(client.getPlayer().getUsername()); 
+        responseChat.setMessage(message); 
+        client.getServer().addResponseForAllOnlinePlayers(client.getId(), (GameResponse) responseChat); 
     }
 }

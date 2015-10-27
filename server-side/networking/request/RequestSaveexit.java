@@ -14,7 +14,7 @@ public class RequestSaveexit extends GameRequest {
 
     // Data
     private String position;
-    private int x, y, z;
+    //private double x, y, z;
     // Responses
     private ResponseSaveexit responseSE;
 

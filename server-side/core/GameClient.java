@@ -118,10 +118,7 @@ public class GameClient extends Thread {
 							for (GameResponse response : request.getResponses()) {
 								// Transform the response into bytes and pass it
 								// into the output stream
-								if(response.getClass().getName().equals("networking.response.ResponseHeartbeat") == false)
-								{
-								 System.out.println("Bla");
-								}
+							
 								
 								outputStream.write(response.constructResponseInBytes());
 							}

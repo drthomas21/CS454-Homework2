@@ -7,6 +7,7 @@ import utility.GamePacket;
 public class ResponseSelectchar extends GameResponse {
 
     private String message;
+    private String position; 
 
     public ResponseSelectchar() {
         responseCode = Constants.SMSG_SELECTION;
@@ -25,5 +26,18 @@ public class ResponseSelectchar extends GameResponse {
 
 	public void setMessage(String message) {
 		this.message = message;
+	}
+	
+	public void setPosition(double x, double y, double z) {
+		this.position = x + "," + y + "," + z;
+	}
+	public String getPosition()
+	{
+		return this.position; 
+	}
+
+	public void setPosition() {
+		this.position = "";
+		
 	}
 }

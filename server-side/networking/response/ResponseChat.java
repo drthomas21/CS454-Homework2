@@ -7,6 +7,7 @@ import utility.GamePacket;
 public class ResponseChat extends GameResponse {
 
     private String message;
+    private String username; 
 
     public ResponseChat() {
         responseCode = Constants.SMSG_CHAT;
@@ -15,6 +16,7 @@ public class ResponseChat extends GameResponse {
     @Override
     public byte[] constructResponseInBytes() {
         GamePacket packet = new GamePacket(responseCode);
+        packet.addString(username);
         packet.addString(message);
         return packet.getBytes();
     }
@@ -25,5 +27,13 @@ public class ResponseChat extends GameResponse {
 
 	public void setMessage(String message) {
 		this.message = message;
+	}
+	public void setUsername(String username)
+	{
+		this.username = username;
+	}
+	public String getUsername()
+	{
+		return this.username;
 	}
 }

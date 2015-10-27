@@ -12,31 +12,41 @@ import utility.DataReader;
 
 public class RequestPosition extends GameRequest {
 
-    // Data
-    private String position;
-    private int x, y, z; 
-    // Responses
-    private ResponsePosition responsepos;
+	// Data
+	private String position;
+	private double x, y, z;
+	private Boolean skipbusiness;
+	// Responses
+	private ResponsePosition responsepos;
 
-    public RequestPosition() {
-    	 
-      //  responses.add(responseString = new ResponseString());
-    	responsepos = new ResponsePosition();
-      
-    }
+	public RequestPosition() {
 
-    @Override
-    public void parse() throws IOException {
-       position = DataReader.readString(dataInput);
-       String[] parts = position.split(",");
-       x = Integer.parseInt(parts[0]);
-       y = Integer.parseInt(parts[1]);
-       z = Integer.parseInt(parts[2]);
-    }
+		// responses.add(responseString = new ResponseString());
+		responsepos = new ResponsePosition();
+		skipbusiness = false;
 
-    @Override
-    public void doBusiness() throws Exception {
-        responsepos.setPosition(x, y, z); 
-        client.getServer().addResponseForAllOnlinePlayers(client.getId(),responsepos); 
-    }
+	}
+
+	@Override
+	public void parse() throws IOException {
+		position = DataReader.readString(dataInput);
+		String[] parts = position.split(",");
+		try {
+			x = Double.parseDouble(parts[0]);
+			y = Double.parseDouble(parts[1]);
+			z = Double.parseDouble(parts[2]);
+		} catch (Exception e) {
+			this.skipbusiness = true;
+			e.printStackTrace();
+		}
+	}
+
+	@Override
+	public void doBusiness() throws Exception {
+		if (skipbusiness == false) {
+			responsepos.setPosition(x, y, z);
+			responsepos.setUsername(client.getPlayer().getUsername());
+			client.getServer().addResponseForAllOnlinePlayers(client.getId(), responsepos);
+		}
+	}
 }

@@ -156,4 +156,22 @@ public class Connexion {
 		return 0;
 
 	}
+
+	public String lastPostion(String username, int player_idPlayer) {
+		String lastPosition = null;
+		try {		
+			String selectSQL = "SELECT lastPosition FROM isPlaying WHERE Character_idCharacter = ? AND passowrd = ?";
+			PreparedStatement preparedStatement = conn.prepareStatement(selectSQL);
+			preparedStatement.setObject(1, characterIDFromName(username));
+			preparedStatement.setObject(2, player_idPlayer);
+			ResultSet rs = preparedStatement.executeQuery();
+			while (rs.next()) {
+				lastPosition = rs.getString("lastPosition");
+			}
+		} catch (Exception ae) {
+			ae.printStackTrace();
+		}
+
+		return lastPosition;
+	}
 }
