@@ -1,5 +1,5 @@
 {
-	"host":"localhost",
+	"host":"172.20.10.2",
 	"port":9252,
 	"heartbeatRate":0.1,
 	"sendMoveRate": 0.1,

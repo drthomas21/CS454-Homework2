@@ -140,7 +140,7 @@ class World(DirectObject):
         taskMgr.add(self.staticRefVenus.stopRotateVenus,"stopRotateVenus")
         if not self.bypassServer:
             taskMgr.doMethodLater(self.config['heartbeatRate'],self.doHeartbeat,"heartbeat")
-            taskMgr.doMethodLater(self.config['sendMoveRate'],self.MoveManager.sendMoves,"movement")
+            #taskMgr.doMethodLater(self.config['sendMoveRate'],self.MoveManager.sendMoves,"movement")
         
         #Change Camera Position Later
         base.camera.setPos(self.Character.actor.getX(),self.Character.actor.getY()+10,2)
@@ -164,7 +164,6 @@ class World(DirectObject):
     def doHeartbeat(self,task):
         if self.stopHeartbeat:
             return None
-        
         self.heartbeatConnection.sendHeartbeat()
         return task.again
     
@@ -181,6 +180,7 @@ class World(DirectObject):
     
     def endSession(self):
         self.stopHeartbeat = True
+        self.stopSendingMovement = True
         self.endSession = EndSessionConnectionModel(self.exit)
         self.ServerConnection.setupConnectionModel(self.endSession)
         

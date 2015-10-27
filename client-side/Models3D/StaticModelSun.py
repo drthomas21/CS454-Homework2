@@ -43,4 +43,8 @@ class StaticModelSun(BaseModel3D):
 
     def getDistance(self):
         distanceVector = self.World.Character.actor.getPos()-self.sun.getPos()
+        for model in self.World.CharacterManager.getCharacters():
+            temp = model.actor.getPos()-self.earth.getPos()
+            if temp < distanceVector:
+                distanceVector = temp
         return distanceVector.length()
