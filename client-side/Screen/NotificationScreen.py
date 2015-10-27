@@ -13,7 +13,6 @@ class NotificationScreen:
         boxloc = Vec3(0.0, 0.0, 0.0)
         p = boxloc
         self.LoginFrame = DirectFrame(frameColor=(0,0,0,0.4),frameSize=(-0.5,0.41,-0.25,0.1),pos=p)
-
         
     def updateStatus(self, statustext):
         self.LoginFrame.statusText.setText(statustext)
