@@ -12,7 +12,8 @@ class MoveManager:
         self.actions = []
     
     def appendAction(self,left,right,forward,pos):
-        self.actions.append([left,right,forward,pos])
+        if len(self.actions) == 0 or (len(self.actions) > 0 and self.actions[len(self.actions)-1][3] != pos):
+            self.actions.append([left,right,forward,pos])
         
     def flushActions(self):
         actions = self.actions

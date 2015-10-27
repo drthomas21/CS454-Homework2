@@ -106,5 +106,6 @@ class CharacterSelectScreen:
         self.World.ignore('mouse1')
         
     def parseResponse(self,data):
-        pos = data.split('')
-        self.World.Character.setPos(pos[0],pos[1],pos[2])
+        pos = data.split(',')
+        if len(pos) == 3:
+            self.World.Character.actor.setPos(float(pos[0]),float(pos[1]),float(pos[2]))
