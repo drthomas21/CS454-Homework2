@@ -19,4 +19,4 @@ class EndSessionConnectionModel(ServerConnection):
         ServerConnection.sendMessage(self,request)
         
     def getMessage(self,data):
-        self.callback(data)
+        self.callback(data.getUint16())

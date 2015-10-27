@@ -111,3 +111,6 @@ class BaseCharacter(BaseModel3D):
         self.base.camera.lookAt(self.floater)
 
         return task.cont
+    
+    def moveCharacterTo(self,pos):
+        self.actor.setPos(float(pos[0]),float(pos[1]),float(pos[2]))

@@ -31,6 +31,7 @@ class PandaCharacter(BaseCharacter):
 
     def getMyPandaId(self):
         return self.id  
+    #def moveCharacterTo(self):
     
     def lookAt(self,model):
         self.actor.lookAt(model)

@@ -11,7 +11,7 @@ class CharacterManager:
         self.base = base
         self.loader = loader
     
-    def createCharacter(self,username="", modelName="", pos=(0,0,0), hpr=(0,0,0)):
+    def createCharacter(self,username="", modelName="", pos=(0.0,0.0,0.0), hpr=(0.0,0.0,0.0)):
         print "New Player",username
         model = None
         if modelName == "PandaCharacter":
@@ -22,23 +22,26 @@ class CharacterManager:
             model = VechileCharacter(World=self.World,render=self.render,base=self.base,loader=self.loader)
         else:
             model = RalphCharacter(World=self.World,render=self.render,base=self.base,loader=self.loader)
-        model.actor.setPos(pos[0],pos[1],pos[2])
-        model.actor.setHpr(hpr[0],hpr[1],hpr[2])
+        model.actor.setPos(float(pos[0]),float(pos[1]),float(pos[2]))
+        model.actor.setHpr(float(hpr[0]),float(hpr[1]),float(hpr[2]))
         model.username = username
         
         self.characters.append(model)
         return model
     
     def moveCharacter(self, username, time, pos):
+        print "Move:",username,pos
         pos = pos.split(',')
         model = self.getModel(username)
-        if model != None:
-            model = self.createCharacter(username,"",pos)
+        if model == None:
+            #model = self.createCharacter(username,"",pos)
+            return False
         
-        model.actor.setPos(pos[0],pos[1],pos[2])
+        model.moveCharacterTo(pos)
     
     def getModel(self,username):
         for model in self.characters:
+            print model.username,username
             if(model.username == username):
                 return model
         return None

@@ -8,7 +8,7 @@ class VechileCharacter(BaseCharacter):
     def __init__(self,World, render,base,loader):
         BaseCharacter.__init__(self,World, render,base,loader)
         VechileCharacter.count += 1
-        self.node = render.attachNewNode('vechile'+str(VechileCharacter.count))
+        self.node = render.attachNewNode('vehicle'+str(VechileCharacter.count))
         
         self.car = loader.loadModel("models/knucklehead")
         self.car_tex = loader.loadTexture("models/knucklehead.jpg")
@@ -20,7 +20,7 @@ class VechileCharacter(BaseCharacter):
         self.car.setColorScale(0.6, 0.6, 1.0, 1.0)
         self.actor = Actor(self.car)
         self.actor.reparentTo(self.node)
-        self.actor.name = "Motocycle"       
+        self.actor.name = "vehicle"       
 
         self.cNode = CollisionNode('car')
         self.cNode.addSolid(CollisionTube(0.0,0.5,1.0,0.0,-0.5,1.0,1.0))
