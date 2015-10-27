@@ -45,7 +45,15 @@ public class GameServer {
 
         // Initialize the table with request codes and classes for static retrieval
         GameRequestTable.init();
-        DAO = new Connexion(); 
+        
+        try{
+        DAO = new Connexion();
+        }
+        catch (Exception e)
+        {
+        	System.out.println(e + ": Error connecting to the database");
+        	e.printStackTrace();
+        }
         // Initialize database connection
         if (DAO.getInstance() == null) {
             System.err.println("Failed to connect to database.");

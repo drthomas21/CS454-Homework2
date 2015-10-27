@@ -33,6 +33,8 @@ public class RequestPrivateChat extends GameRequest {
     @Override
     public void doBusiness() throws Exception {
         System.out.println(message);
+        //Set username of the client that sent the message
+        responsePrivateChat.setUsername(client.getPlayer().getUsername());
         responsePrivateChat.setMessage(message);
         client.getServer().addResponseForUser(username, responsePrivateChat);
          
