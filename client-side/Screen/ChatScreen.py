@@ -35,7 +35,7 @@ class ChatScreen:
             frameSize=size,
             frameColor = (0,0,0,0.0),
             #pos=p,
-            numItemsVisible = 6,
+            numItemsVisible = 4,
             #forceHeight = 0.11,
             itemFrame_frameSize = (-0.35, 0.35, -0.37, 0.11),
             itemFrame_pos = (0.35, 0, 0.4),
@@ -78,11 +78,11 @@ class ChatScreen:
         self.World.accept("enter", self.sendMessage) 
         
     def sendMessage(self):  
-        self.parseResponse("You: " + self.ChatFrame.messageBox.get())
+        self.parseResponse("You", self.ChatFrame.messageBox.get())
         if not self.World.bypassServer:
             self.chatConnection.sendChatMessage(self.ChatFrame.messageBox.get())
         self.ChatFrame.messageBox.set("")
             
-    def parseResponse(self,message):
-        l = DirectLabel(text = message, frameSize=(-0.35, 0.35, -0.05, 0.06),text_scale=0.05,frameColor=(0,0,0,0),text_fg=(1,1,1,1))
+    def parseResponse(self,username,message):
+        l = DirectLabel(text = username+": "+message, frameSize=(-0.35, 0.35, -0.05, 0.06),text_scale=0.05,frameColor=(0,0,0,0),text_fg=(1,1,1,1))
         self.ChatFrame.scrolledList.addItem(l)          

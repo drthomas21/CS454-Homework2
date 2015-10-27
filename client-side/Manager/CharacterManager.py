@@ -26,7 +26,7 @@ class CharacterManager:
         model.username = username
         
         self.characters.append(model)
-        #self.World.
+        self.World.NotificationScreen.updateStatus(model.username)
         return model
     
     def moveCharacter(self, username, time, pos):

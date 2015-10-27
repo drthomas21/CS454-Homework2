@@ -20,4 +20,4 @@ class PrivateChatConnectionModel(ServerConnection):
         ServerConnection.sendMessage(self,request)
         
     def getChatMessage(self,data):
-        self.screenModel.parseResponse(data.getString())
+        self.screenModel.parseResponse(data.getString(),data.getString())

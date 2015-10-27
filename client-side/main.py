@@ -17,6 +17,7 @@ from Screen.AuthScreen                          import AuthScreen
 from Screen.CharacterSelectScreen               import CharacterSelectScreen
 from Screen.ChatScreen                          import ChatScreen
 from Screen.PrivateChatScreen                   import PrivateChatScreen
+from Screen.NotificationScreen                  import NotificationScreen
 from Network.ServerConnection                   import ServerConnection
 from Network.models.EndSessionConnectionModel   import EndSessionConnectionModel
 from Network.models.HeartbeatConnectionModel    import HeartbeatConnectionModel
@@ -59,6 +60,7 @@ class World(DirectObject):
         self.bypassServer = self.config['bypassServer']
         self.jumpTo = self.config['jumpTo']
         self.ServerConnection = ServerConnection()
+        self.NotificationScreen = NotificationScreen(self)
         
         
         if not self.bypassServer:
