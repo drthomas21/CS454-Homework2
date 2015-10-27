@@ -7,15 +7,17 @@ class PositionConnectionModel(ServerConnection):
     CODE_SEND_POS = 105
     CODE_RECV_POS = 205
     
-    def __init__(self,screenModel):
-        self.screenModel = screenModel
+    def __init__(self,callback):
+        self.callback = callback
         
     def getConnectionActions(self):
         return [[self.CODE_RECV_POS, self.getPosMessage]];
     
     def sendPos(self,message):
         request = self.buildRequestPackage(self.CODE_SEND_POS)
+        request.addString(message)
         ServerConnection.sendMessage(self,request)
         
     def getPosMessage(self,data):
-        self.screenModel.parseResponse()
+        print data
+        self.callback(data.getInt32(),data.getString())

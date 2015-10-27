@@ -64,11 +64,15 @@ class ChatScreen:
         self.World.ignore("escape")
         self.World.ignore("enter")
         self.World.Character.setControls()
+        self.World.accept("t",self.toggleScreen)
+        self.World.accept("p",self.World.pChatScreen.toggleScreen)
         
     def showScreen(self):
         self.ChatFrame.show()        
         self.hidden = False
         self.World.Character.blockControls()
+        self.World.ignore("p")
+        self.World.ignore("t")
         self.ChatFrame.messageBox.setFocus()
         self.World.accept("escape", self.hideScreen)
         self.World.accept("enter", self.sendMessage) 
