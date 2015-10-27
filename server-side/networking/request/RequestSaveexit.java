@@ -34,6 +34,7 @@ public class RequestSaveexit extends GameRequest {
     	Connexion db = client.getServer().getDAO();
     	db.saveAndExit(position, client.getPlayer().getID(), client.getPlayer().getCharacter());
         responseSE.setAnswer((short)1);
+        client.getServer().removeActivePlayer(client.getPlayer().getID());
         client.stopClient();
         
     }

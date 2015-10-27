@@ -24,14 +24,6 @@ public class Constants {
     public final static short SMSG_PRIVATE_CHAT = 215;
     public final static short SMSG_SAVE_EXIT_GAME = 219;
    
-   
-    
-    
-    
-    
-    //public final static short SMSG_AUTH_FAILED = 301;
-    //public final static short SMSG_REGISTER_FAILED = 303;
- 
 
     //Test Request + Response
     public final static short RAND_INT = 1;
