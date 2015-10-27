@@ -18,6 +18,7 @@ CS454 Multiplayer - Homework 2
   - String: username
   - String: password
   - *Return values* **Code: 201**
+    - Short : 2 for already looged in
     - Short : 1 for successful authentication
     - Short : 0 for failure
 - Code: 103 = Register request (+Authentication)
