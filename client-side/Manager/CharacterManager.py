@@ -11,7 +11,7 @@ class CharacterManager:
         self.base = base
         self.loader = loader
     
-    def createCharacter(self,username, modelName, pos=(0,0,0), hpr=(0,0,0)):
+    def createCharacter(self,username="", modelName="", pos=(0,0,0), hpr=(0,0,0)):
         model = None
         if modelName == "PandaCharacter":
             model = PandaCharacter(World=self.World,render=self.render,base=self.base,loader=self.loader)
