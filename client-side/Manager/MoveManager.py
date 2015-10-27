@@ -10,10 +10,12 @@ class MoveManager:
         self.PositionConnectionModel = PositionConnectionModel(World.CharacterManager.moveCharacter)
         World.ServerConnection.setupConnectionModel(self.PositionConnectionModel)
         self.actions = []
+        self.lastAction = []
     
     def appendAction(self,left,right,forward,pos):
-        if len(self.actions) == 0 or (len(self.actions) > 0 and self.actions[len(self.actions)-1][3] != pos):
+        if len(self.lastAction) == 0 or (len(self.lastAction) > 0 and self.lastAction[3] != pos):
             self.actions.append([left,right,forward,pos])
+            self.lastAction = [left,right,forward,pos]
         
     def flushActions(self):
         actions = self.actions
@@ -25,9 +27,11 @@ class MoveManager:
             return None
         
         if not self.World.bypassServer:
-            for moves in self.flushActions():
-                pos = moves[3]
-                self.PositionConnectionModel.sendPos(str(pos[0])+","+str(pos[1])+","+str(pos[2]))
+            if len(self.actions) > 0:
+                print "send position"
+                for moves in self.flushActions():
+                    pos = moves[3]
+                    self.PositionConnectionModel.sendPos(str(pos[0])+","+str(pos[1])+","+str(pos[2]))
         else:
             self.flushActions()
         return task.again

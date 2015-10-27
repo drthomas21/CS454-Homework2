@@ -12,6 +12,7 @@ class CharacterManager:
         self.loader = loader
     
     def createCharacter(self,username="", modelName="", pos=(0,0,0), hpr=(0,0,0)):
+        print "New Player",username
         model = None
         if modelName == "PandaCharacter":
             model = PandaCharacter(World=self.World,render=self.render,base=self.base,loader=self.loader)
@@ -26,14 +27,15 @@ class CharacterManager:
         model.username = username
         
         self.characters.append(model)
+        return model
     
     def moveCharacter(self, username, time, pos):
         pos = pos.split(',')
-        if not self.characters[username]:
-            self.createCharacter(username,"",pos)
-        model = self.getMode(username)
+        model = self.getModel(username)
         if model != None:
-            self.characters[username].setPos(pos[0],pos[1],pos[2])
+            model = self.createCharacter(username,"",pos)
+        
+        model.actor.setPos(pos[0],pos[1],pos[2])
     
     def getModel(self,username):
         for model in self.characters:
