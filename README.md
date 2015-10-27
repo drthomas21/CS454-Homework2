@@ -10,7 +10,7 @@ CS454 Multiplayer - Homework 2
 *will be added later*
 
 ## Database Scheme:
-![alt tag](https://raw.github.com/drthomas21/CS454-Homework2/model.png)
+![alt tag](https://github.com/drthomas21/CS454-Homework2/blob/master/model.png)
 
 ## Protocols **return order matters**:
 
