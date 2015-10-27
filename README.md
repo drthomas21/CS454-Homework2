@@ -51,7 +51,7 @@ CS454 Multiplayer - Homework 2
     - *To the target user* String : username
     - *To the target user* String : message
 - Code: 119 = Save and exit request
-  -String: position
+  - String: position
   - *Return values* **Code 219**
     - Short : 1 for success
     - Short : 0 for failure
