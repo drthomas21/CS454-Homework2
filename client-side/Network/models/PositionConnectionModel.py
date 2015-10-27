@@ -15,7 +15,9 @@ class PositionConnectionModel(ServerConnection):
     
     def sendPos(self,message):
         request = self.buildRequestPackage(self.CODE_SEND_POS)
+        request.addString(message)
         ServerConnection.sendMessage(self,request)
         
     def getPosMessage(self,data):
+        print data
         self.callback(data.getInt32(),data.getString())

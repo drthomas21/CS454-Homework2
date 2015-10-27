@@ -25,7 +25,8 @@ class MoveManager:
         
         if not self.World.bypassServer:
             for moves in self.flushActions():
-                self.PositionConnectionModel.sendPos(str(pos[0])+","+pos[1]+","+pos[2])
+                pos = moves[3]
+                self.PositionConnectionModel.sendPos(str(pos[0])+","+str(pos[1])+","+str(pos[2]))
         else:
             self.flushActions()
         return task.again

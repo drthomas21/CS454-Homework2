@@ -16,6 +16,7 @@ from Models3D.StaticModelVenus                  import StaticModelVenus
 from Screen.AuthScreen                          import AuthScreen
 from Screen.CharacterSelectScreen               import CharacterSelectScreen
 from Screen.ChatScreen                          import ChatScreen
+from Screen.PrivateChatScreen                   import PrivateChatScreen
 from Network.ServerConnection                   import ServerConnection
 from Network.models.EndSessionConnectionModel   import EndSessionConnectionModel
 from Network.models.HeartbeatConnectionModel    import HeartbeatConnectionModel
@@ -113,7 +114,7 @@ class World(DirectObject):
         self.inst.append(addInstructions(0.60, "[e]: Rotate Camera Right"))
         if not self.bypassServer:
             self.inst.append(addInstructions(0.55, "[t]: Display Chat Window"))
-            #self.inst.append(addInstructions(0.55, "[t]: Display Chat Window")) 
+            self.inst.append(addInstructions(0.50, "[p]: Display PM Window")) 
         
         # Set up the environment
         self.environ = loader.loadModel("models/square")
@@ -139,7 +140,7 @@ class World(DirectObject):
         taskMgr.add(self.staticRefVenus.stopRotateVenus,"stopRotateVenus")
         if not self.bypassServer:
             taskMgr.doMethodLater(self.config['heartbeatRate'],self.doHeartbeat,"heartbeat")
-            taskMgr.doMethodLater(self.config['sendMoveRate'],self.MoveManager.sendMove,"movement")
+            taskMgr.doMethodLater(self.config['sendMoveRate'],self.MoveManager.sendMoves,"movement")
         
         #Change Camera Position Later
         base.camera.setPos(self.Character.actor.getX(),self.Character.actor.getY()+10,2)
@@ -155,8 +156,10 @@ class World(DirectObject):
         render.setLight(render.attachNewNode(directionalLight))
         
         if not self.bypassServer:
-            self.chatScreen = ChatScreen(self,render,base)
+            self.chatScreen = ChatScreen(self,render,base)            
+            self.pChatScreen = PrivateChatScreen(self,render,base)
             self.chatScreen.hideScreen()
+            self.pChatScreen.hideScreen()
         
     def doHeartbeat(self,task):
         if self.stopHeartbeat:
