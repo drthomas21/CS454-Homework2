@@ -18,7 +18,9 @@ from Screen.CharacterSelectScreen               import CharacterSelectScreen
 from Screen.ChatScreen                          import ChatScreen
 from Network.ServerConnection                   import ServerConnection
 from Network.models.EndSessionConnectionModel   import EndSessionConnectionModel
-from Network.models.HeartbeatConnectionModel import HeartbeatConnectionModel
+from Network.models.HeartbeatConnectionModel    import HeartbeatConnectionModel
+from Manager.MoveManager                        import MoveManager
+from Manager.CharacterManager                   import CharacterManager
 import random, sys, os, math, json
 
 SPEED = 0.5
@@ -74,6 +76,8 @@ class World(DirectObject):
         
     def setPlayerCharacter(self,Character):
         self.Character = Character
+        self.CharacterManager = CharacterManager(self, render, base,loader)
+        self.MoveManager = MoveManager(self)
         
     def doAuthScreen(self):
         self.authScreen = AuthScreen(self,render,base)
@@ -90,6 +94,7 @@ class World(DirectObject):
         self.heartbeatConnection = HeartbeatConnectionModel()
         self.ServerConnection.setupConnectionModel(self.heartbeatConnection)
         self.stopHeartbeat = False
+        self.stopSendingMovement = False
         
         self.backgroundImage.destroy()
         self.Character.setControls()
@@ -134,6 +139,7 @@ class World(DirectObject):
         taskMgr.add(self.staticRefVenus.stopRotateVenus,"stopRotateVenus")
         if not self.bypassServer:
             taskMgr.doMethodLater(self.config['heartbeatRate'],self.doHeartbeat,"heartbeat")
+            taskMgr.doMethodLater(self.config['sendMoveRate'],self.MoveManager.sendMove,"movement")
         
         #Change Camera Position Later
         base.camera.setPos(self.Character.actor.getX(),self.Character.actor.getY()+10,2)
@@ -155,7 +161,8 @@ class World(DirectObject):
     def doHeartbeat(self,task):
         if self.stopHeartbeat:
             return None
-            self.heartbeatConnection.sendHeartbeat()
+        
+        self.heartbeatConnection.sendHeartbeat()
         return task.again
     
     def makeCollisionNodePath(self, nodepath, solid):

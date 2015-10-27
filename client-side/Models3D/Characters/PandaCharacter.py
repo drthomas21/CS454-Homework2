@@ -61,6 +61,8 @@ class PandaCharacter(BaseCharacter):
             if not self.actor.getAnimControl("walk").isPlaying():
                 self.actor.loop("walk")
             self.actor.setY(self.actor, -2000 * globalClock.getDt())
+            
+        self.World.MoveManager.appendAction(left = self.World.keyMap["left"], right = self.World.keyMap["right"], forward = self.World.keyMap["forward"], pos = self.actor.getPos())
 
         #self.actor.stop()
 

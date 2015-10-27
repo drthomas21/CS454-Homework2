@@ -79,6 +79,7 @@ class BaseCharacter(BaseModel3D):
             self.actor.loop("walk")
             self.actor.setY(self.actor, -2000 * globalClock.getDt())
 
+        self.World.MoveManager.appendAction(left = self.World.keyMap["left"], right = self.World.keyMap["right"], forward = self.World.keyMap["forward"], pos = self.actor.getPos())
         #self.actor.stop()
 
         #if (self.World.keyMap["backward"]!=0):
