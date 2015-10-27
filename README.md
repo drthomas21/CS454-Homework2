@@ -46,7 +46,7 @@ CS454 Multiplayer - Homework 2
     - All the responses in the queue
     - **Code: 213** Hearthbeat response
 - Code: 115 = Privatechat request (from a user to an other player)
-  -String: message
+  - String: message
   - *Return values* **Code 215**
     - *To the target user* String : username
     - *To the target user* String : message
