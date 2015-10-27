@@ -12,13 +12,12 @@ class CharacterManager:
         self.loader = loader
     
     def createCharacter(self,username="", modelName="", pos=(0.0,0.0,0.0), hpr=(0.0,0.0,0.0)):
-        print "New Player",username
         model = None
-        if modelName == "PandaCharacter":
+        if modelName == "panda1":
             model = PandaCharacter(World=self.World,render=self.render,base=self.base,loader=self.loader)
-        elif modelName == "RalphCharacter":
+        elif modelName == "ralph1":
             model = RalphCharacter(World=self.World,render=self.render,base=self.base,loader=self.loader)
-        elif model == "VechileCharacter":
+        elif model == "vehicle1":
             model = VechileCharacter(World=self.World,render=self.render,base=self.base,loader=self.loader)
         else:
             model = RalphCharacter(World=self.World,render=self.render,base=self.base,loader=self.loader)
@@ -27,6 +26,7 @@ class CharacterManager:
         model.username = username
         
         self.characters.append(model)
+        #self.World.
         return model
     
     def moveCharacter(self, username, time, pos):

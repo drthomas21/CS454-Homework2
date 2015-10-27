@@ -27,4 +27,7 @@ class CharacterConnectionModel(ServerConnection):
         self.screenModel.parseResponse(data.getString())
         
     def getNewPlayer(self,data):
-        self.screenModel.World.CharacterManager.createCharacter(username=data.getString())
+        username = data.getString()
+        print username
+        modelName = data.getString()
+        self.screenModel.World.CharacterManager.createCharacter(username=username,modelName=modelName)

@@ -94,11 +94,13 @@ class AuthScreen:
                 self.parseResponse(1)
             
     def parseResponse(self,data):
-        if data != 0:
+        if data == 1:
             self.unloadScreen()
             self.World.doSelectionScreen()
         else: 
-            if self.whichAction == 1:
+            if data == 2:
+                self.updateStatus("Already logged in")
+            elif self.whichAction == 1:
                 self.updateStatus("Unable to register with that username")
             else:
                 self.updateStatus("Invalid username/password")

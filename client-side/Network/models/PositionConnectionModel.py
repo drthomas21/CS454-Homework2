@@ -19,7 +19,4 @@ class PositionConnectionModel(ServerConnection):
         ServerConnection.sendMessage(self,request)
         
     def getPosMessage(self,data):
-        #return True;
-        #self.callback(data.getUInt64(),data.getString())
-        print "got something"
         self.callback(username=data.getString(),time="",pos=data.getString())
