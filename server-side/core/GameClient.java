@@ -22,6 +22,7 @@ import metadata.GameRequestTable;
 import networking.request.GameRequest;
 import networking.response.GameResponse;
 import utility.DataReader;
+import utility.Player;
 
 /**
  * The GameClient class is an extension of the Thread class that represents an
@@ -42,9 +43,7 @@ public class GameClient extends Thread {
 	private boolean isPlaying;
 	private Queue<GameResponse> updates; // Temporarily store responses for
 											// client
-	private boolean authenticated;
-	private int player_id; 
-	private String character; 
+	private Player player; 
 
 	/**
 	 * Initialize the GameClient using the client socket and creating both input
@@ -64,7 +63,7 @@ public class GameClient extends Thread {
 		inputStream = mySocket.getInputStream();
 		outputStream = mySocket.getOutputStream();
 		dataInputStream = new DataInputStream(inputStream);
-		authenticated = false;
+		player = null;
 	}
 
 	/**
@@ -96,8 +95,12 @@ public class GameClient extends Thread {
 					dataInput = new DataInputStream(new ByteArrayInputStream(buffer));
 					// Extract the request code number
 					requestCode = DataReader.readShort(dataInput);
+					if(requestCode != 113)
+					{
+					System.out.println("Requesting : " +requestCode);
+					}
 					// Preventing response to be sent if user not authenticated
-					if (requestCode == Constants.CMSG_AUTH || authenticated == true) {
+					if (requestCode == Constants.CMSG_AUTH ||requestCode == Constants.CMSG_REGISTER || player != null) {
 						// Determine the type of request
 						GameRequest request = GameRequestTable.get(requestCode);
 						// If the request exists, process like following:
@@ -115,6 +118,11 @@ public class GameClient extends Thread {
 							for (GameResponse response : request.getResponses()) {
 								// Transform the response into bytes and pass it
 								// into the output stream
+								if(response.getClass().getName().equals("networking.response.ResponseHeartbeat") == false)
+								{
+								 System.out.println("Bla");
+								}
+								
 								outputStream.write(response.constructResponseInBytes());
 							}
 						}
@@ -136,6 +144,7 @@ public class GameClient extends Thread {
 
 		System.out.println(new SimpleDateFormat("MM/dd/yyyy HH:mm:ss").format(new Date()));
 		System.out.println("The client stops playing.");
+		
 
 		/*
 		 * if (player != null) { try { long seconds =
@@ -152,11 +161,7 @@ public class GameClient extends Thread {
 		server.deletePlayerThreadOutOfActiveThreads(getId());
 	}
 	
-	public void authenticated(int player_id) 
-	{
-		this.player_id = player_id; 
-		authenticated = true; 
-	}
+
 
 	public void stopClient() {
 		isPlaying = false;
@@ -166,11 +171,11 @@ public class GameClient extends Thread {
 		return server;
 	}
 
-	/*
-	 * public Player getPlayer() { return player; }
-	 * 
-	 * public Player setPlayer(Player player) { return this.player = player; }
-	 */
+	
+	 public Player getPlayer() { return player; }
+	  
+	 public Player setPlayer(Player player) { return this.player = player; }
+	 
 
 	public boolean addResponseForUpdate(GameResponse response) {
 		return updates.add(response);
@@ -207,18 +212,6 @@ public class GameClient extends Thread {
 		return mySocket.getInetAddress().getHostAddress();
 	}
 	
-	public void setCharacter(String character)
-	{
-		this.character = character;
-	}
-	public String getCharacter()
-	{
-		return character; 
-	}
-	public int getPlayerId()
-	{
-		return this.player_id;
-	}
 
 	@Override
 	public String toString() {

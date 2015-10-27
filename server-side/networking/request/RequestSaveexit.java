@@ -3,7 +3,7 @@ package networking.request;
 // Java Imports
 import java.io.IOException;
 
-import database.Connexion;
+import dataAccessLayer.Connexion;
 import networking.response.ResponseSaveexit;
 // Custom Imports
 //import core.GameServer;
@@ -31,9 +31,10 @@ public class RequestSaveexit extends GameRequest {
     public void doBusiness() throws Exception {
     	
     	//Need to handle the saving
-    	Connexion db = new Connexion();
-    	db.saveAndExit(position, client.getPlayerId(), client.getCharacter());
+    	Connexion db = client.getServer().getDAO();
+    	db.saveAndExit(position, client.getPlayer().getID(), client.getPlayer().getCharacter());
         responseSE.setAnswer((short)1);
+        client.stopClient();
         
     }
 }

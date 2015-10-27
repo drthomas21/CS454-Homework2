@@ -11,12 +11,7 @@ import networking.response.ResponseHeartbeat;
 public class RequestHeartbeat extends GameRequest {
 	public RequestHeartbeat() {
 
-		for (GameResponse reponse : client.getUpdates()) {
-			responses.add(reponse);
-			responses.add(new ResponseHeartbeat());
-		}
-
-		client.clearUpdateBuffer();
+	
 
 	}
 
@@ -26,6 +21,12 @@ public class RequestHeartbeat extends GameRequest {
 
 	@Override
 	public void doBusiness() throws Exception {
+		
+		for (GameResponse reponse : client.getUpdates()) {
+			responses.add(reponse);	
+		}
+		responses.add(new ResponseHeartbeat());
+		client.clearUpdateBuffer();
 
 	}
 }

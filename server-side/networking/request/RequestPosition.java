@@ -37,6 +37,6 @@ public class RequestPosition extends GameRequest {
     @Override
     public void doBusiness() throws Exception {
         responsepos.setPosition(x, y, z); 
-        super.client.getServer().addResponseForAllOnlinePlayers(super.client.getId(), (GameResponse) responsepos); 
+        client.getServer().addResponseForAllOnlinePlayers(client.getId(),responsepos); 
     }
 }

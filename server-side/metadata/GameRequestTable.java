@@ -25,13 +25,19 @@ public class GameRequestTable {
         add(Constants.CMSG_CHAT, "RequestChat");
         add(Constants.CMSG_HEARTBEAT, "RequestHeartbeat");
         add(Constants.CMSG_SAVE_EXIT_GAME, "RequestExitGame");*/
-        add(Constants.RAND_INT, "RequestInt");
-        add(Constants.RAND_STRING, "RequestString");
-        add(Constants.RAND_SHORT, "RequestShort");
-        add(Constants.RAND_FLOAT, "RequestFloat");
+        
         add(Constants.CMSG_AUTH, "RequestAuth");
         add(Constants.CMSG_CHAT, "RequestChat");
+        add(Constants.RAND_FLOAT, "RequestFloat");
         add(Constants.CMSG_HEARTBEAT, "RequestHeartbeat");
+        add(Constants.RAND_INT, "RequestInt");
+        add(Constants.CMSG_POSITION, "RequestPosition");
+        add(Constants.CMSG_PRIVATE_CHAT, "RequestPrivateChat");
+        add(Constants.CMSG_REGISTER, "RequestRegister");
+        add(Constants.CMSG_SAVE_EXIT_GAME, "RequestSaveexit");
+        add(Constants.CMSG_SELECTION, "RequestSelectchar");
+        add(Constants.RAND_SHORT, "RequestShort");
+        add(Constants.RAND_STRING, "RequestString");
     }
 
     /**

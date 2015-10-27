@@ -11,6 +11,7 @@ import java.util.HashMap;
 
 // Custom Imports
 import configuration.GameServerConf;
+import dataAccessLayer.Connexion;
 //import dataAccessLayer.DAO;
 import metadata.GameRequestTable;
 //import model.Player;
@@ -30,23 +31,31 @@ public class GameServer {
     private GameServerConf configuration; // Stores server config. variables
     private boolean ready = false; // Used to keep server looping
     private HashMap<Long, GameClient> activeThreads = new HashMap<Long, GameClient>(); // Stores active threads by thread ID
+    private Connexion DAO; 
     //private HashMap<Integer, Player> activePlayers = new HashMap<Integer, Player>(); // Stores active players by player ID
 
     /**
      * Initialize the GameServer by setting up the request types and creating a
      * connection with the database.
+     * @throws SQLException 
+     * @throws ClassNotFoundException 
      */
-    public GameServer() {
+    public GameServer() throws ClassNotFoundException, SQLException {
         configuration = new GameServerConf();
 
         // Initialize the table with request codes and classes for static retrieval
         GameRequestTable.init();
-
+        DAO = new Connexion(); 
         // Initialize database connection
-       /* if (DAO.getInstance() == null) {
+        if (DAO.getInstance() == null) {
             System.err.println("Failed to connect to database.");
             System.exit(-1);
-        }*/
+        }
+    }
+    
+    public Connexion getDAO() 
+    {
+    	return this.DAO; 
     }
 
     /**
@@ -99,6 +108,7 @@ public class GameServer {
 
                     // Create a thread to represent a client that holds the client socket
                     GameClient client = new GameClient(clientSocket, this);
+                    addToActiveThreads(client);
                     // Run the thread
                     client.start();
                 } catch (IOException e) {
@@ -134,7 +144,7 @@ public class GameServer {
      * @param username holds the username
      * @return the GameClient thread
      */
-    /*public GameClient getThreadByPlayerUserName(String userName) {
+    public GameClient getThreadByPlayerUserName(String userName) {
         for (GameClient aClient : activeThreads.values()) {
             if (aClient.getPlayer().getUsername().equals(userName)) {
                 return aClient;
@@ -142,7 +152,7 @@ public class GameServer {
         }
 
         return null;
-    }*/
+    }
 
     public int getNumberOfCurrentThreads() {
         return activeThreads.size();
@@ -194,7 +204,7 @@ public class GameServer {
      * @param username holds the username
      * @param response is the instance containing the response information
      */
-    /*public void addResponseForUser(String username, GameResponse response) {
+    public void addResponseForUser(String username, GameResponse response) {
         GameClient client = getThreadByPlayerUserName(username);
 
         if (client != null) {
@@ -202,7 +212,7 @@ public class GameServer {
         } else {
             System.out.println("In addResponseForUser--client is null");
         }
-    }*/
+    }
 
     /**
      * Push a pending response to all users' queue except one user.
@@ -223,7 +233,7 @@ public class GameServer {
         return gameServer;
     }
 
-    public static void main(String args[]) throws SQLException {
+    public static void main(String args[]) throws SQLException, ClassNotFoundException {
         gameServer = new GameServer();
 
         gameServer.getReady();

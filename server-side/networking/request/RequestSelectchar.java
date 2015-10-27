@@ -27,7 +27,7 @@ public class RequestSelectchar extends GameRequest {
 	@Override
 	public void doBusiness() throws Exception {
 
-		client.setCharacter(character);
+		client.getPlayer().setCharacter(character);
 		
 		
 		//Should return last position from the database

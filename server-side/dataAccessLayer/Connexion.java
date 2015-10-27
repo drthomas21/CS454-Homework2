@@ -1,4 +1,4 @@
-package database;
+package dataAccessLayer;
 
 import java.sql.*;
 import java.util.*;
@@ -11,12 +11,6 @@ public class Connexion {
 	protected ResultSet rset;
 	protected ResultSetMetaData rsetMeta;
 	protected PreparedStatement pstmt;
-
-	// static public Connection conn;
-	// static public Statement stmt;
-	// static public ResultSet rset;
-	// static public ResultSetMetaData rsetMeta;
-	// static public PreparedStatement pstmt;
 
 	public String userName = "panda";
 	public String password = "panda";
@@ -32,10 +26,6 @@ public class Connexion {
 			// setproperty only accept the string.
 			connectionProps.setProperty("user", this.userName);
 			connectionProps.setProperty("password", this.password);
-
-			// connectionProps.put("user", this.userName);
-			// connectionProps.put("password", this.password);
-			// connectionProps.put("password", this.password);
 
 			conn = DriverManager.getConnection("jdbc:mysql://" + this.serverName + ":" + this.portNumber + "/panda",
 					connectionProps);
@@ -60,61 +50,17 @@ public class Connexion {
 		}
 	}
 
-	// authentication of user
-	public int checkAuth(String username, String password) throws SQLException {
-		String selectSQL = "SELECT * FROM Player WHERE username=? AND password =?";
-		PreparedStatement preparedStatement = conn.prepareStatement(selectSQL);
-		preparedStatement.setObject(1, username);
-		preparedStatement.setObject(2, password);
-		ResultSet rs = preparedStatement.executeQuery();
-		while (rs.next()) {
-			return rs.getInt("idPlayer");
-		}
-		return -1;
-
+	public Connection getInstance() {
+		return conn;
 	}
 
-	boolean UserIsNotExist;
-
-	private ResponseString responseString;
-
-	// store the username and password into db
-	public int create(String username, String password) throws SQLException {
-		try {
-
-			stmt = conn.createStatement();
-			String requete = "INSERT INTO Player (username, password) VALUES (?, ?)";
-			pstmt = conn.prepareStatement(requete);
-
-			pstmt.setObject(1, username);
-			pstmt.setObject(2, password);
-			pstmt.executeUpdate();
-			close();
-			System.out.println("Created a new player");
-			return 1; 
-			
-
-		} catch (Exception e) {
-			System.out.println("User is already created :" + e);
-			e.printStackTrace();
-			
-			try {
-				conn.close();
-			} catch (Exception ee) {
-			}
-			return 0; 
-		}
-
-	}
-
-	// character id of selected player
+	// get character ID from a name
 	public int characterIDFromName(String name) throws SQLException {
 		try {
 			String selectSQL = "SELECT idCharacter FROM Character WHERE name = ?";
 			PreparedStatement preparedStatement = conn.prepareStatement(selectSQL);
 			preparedStatement.setObject(1, name);
 			ResultSet rs = preparedStatement.executeQuery();
-			close();
 			while (rs.next()) {
 				return rs.getInt("idCharacter");
 			}
@@ -145,21 +91,69 @@ public class Connexion {
 		} catch (Exception e) {
 			System.out.println("Exception in connect :" + e);
 			e.printStackTrace();
-			try {
-				conn.close();
-			} catch (Exception ee) {
-			}
 		}
 
 	}
 
-	public void saveAndExit(String position, int player_id, String character) throws SQLException {
+	public void saveAndExit(String position, int player_id, String character)
+			throws SQLException, ClassNotFoundException {
 
 		// Getting chracterID from charactername
-
 		int characterID = characterIDFromName(character);
+
 		UpdateIsPlaying(player_id, characterID, position);
 
 	}
 
+	public int create(String username, String password) throws SQLException {
+		try {
+
+			stmt = conn.createStatement();
+			String requete = "INSERT INTO Player (username, password) VALUES (?, ?)";
+			pstmt = conn.prepareStatement(requete);
+
+			pstmt.setObject(1, username);
+			pstmt.setObject(2, password);
+			pstmt.executeUpdate();
+			System.out.println("Created a new player");
+			return getPlayerID(username);
+
+		} catch (Exception e) {
+			System.out.println("User is already created :" + e);
+			e.printStackTrace();
+			return 0;
+		}
+
+	}
+
+	// Player authentication
+	public int checkAuth(String username, String password) throws SQLException {
+		String selectSQL = "SELECT * FROM Player WHERE username=? AND password =?";
+		PreparedStatement preparedStatement = conn.prepareStatement(selectSQL);
+		preparedStatement.setObject(1, username);
+		preparedStatement.setObject(2, password);
+		ResultSet rs = preparedStatement.executeQuery();
+		while (rs.next()) {
+			return rs.getInt("idPlayer");
+		}
+		return -1;
+
+	}
+
+	public int getPlayerID(String username) {
+		try {
+			String selectSQL = "SELECT idPlayer FROM Player WHERE username = ?";
+			PreparedStatement preparedStatement = conn.prepareStatement(selectSQL);
+			preparedStatement.setObject(1, username);
+			ResultSet rs = preparedStatement.executeQuery();
+			while (rs.next()) {
+				return rs.getInt("idPlayer");
+			}
+		} catch (Exception e) {
+			System.out.println("Exception in connect :" + e);
+			e.printStackTrace();
+		}
+		return 0;
+
+	}
 }
