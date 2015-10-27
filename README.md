@@ -16,7 +16,8 @@ CS454 Multiplayer - Homework 2
 - Code: 101 = Send login information (Authentication)
   - String: username
   - String: password
-    - Return : test
+    - *Return values* --> Short : 1 for successful authentication
+                      --> Short : 0 for failure
 - Code: 201 = login successful
 - Code: 301 = login failure
 - Code 102 = Send register information
