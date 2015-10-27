@@ -60,6 +60,8 @@ class RalphCharacter(BaseCharacter):
             self.actor.setY(self.actor, -25 * globalClock.getDt())
         if (self.World.keyMap["forward"]!=0 and self.World.keyMap["forward"]!=1):
             self.actor.setY(self.actor, -100 * globalClock.getDt())
+            
+        self.World.MoveManager.appendAction(left = self.World.keyMap["left"], right = self.World.keyMap["right"], forward = self.World.keyMap["forward"], pos = self.actor.getPos())
 
         #self.actor.stop()
 

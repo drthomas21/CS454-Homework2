@@ -16,9 +16,12 @@ from Models3D.StaticModelVenus                  import StaticModelVenus
 from Screen.AuthScreen                          import AuthScreen
 from Screen.CharacterSelectScreen               import CharacterSelectScreen
 from Screen.ChatScreen                          import ChatScreen
+from Screen.PrivateChatScreen                   import PrivateChatScreen
 from Network.ServerConnection                   import ServerConnection
 from Network.models.EndSessionConnectionModel   import EndSessionConnectionModel
-from Network.models.HeartbeatConnectionModel import HeartbeatConnectionModel
+from Network.models.HeartbeatConnectionModel    import HeartbeatConnectionModel
+from Manager.MoveManager                        import MoveManager
+from Manager.CharacterManager                   import CharacterManager
 import random, sys, os, math, json
 
 SPEED = 0.5
@@ -74,6 +77,8 @@ class World(DirectObject):
         
     def setPlayerCharacter(self,Character):
         self.Character = Character
+        self.CharacterManager = CharacterManager(self, render, base,loader)
+        self.MoveManager = MoveManager(self)
         
     def doAuthScreen(self):
         self.authScreen = AuthScreen(self,render,base)
@@ -90,6 +95,7 @@ class World(DirectObject):
         self.heartbeatConnection = HeartbeatConnectionModel()
         self.ServerConnection.setupConnectionModel(self.heartbeatConnection)
         self.stopHeartbeat = False
+        self.stopSendingMovement = False
         
         self.backgroundImage.destroy()
         self.Character.setControls()
@@ -108,7 +114,7 @@ class World(DirectObject):
         self.inst.append(addInstructions(0.60, "[e]: Rotate Camera Right"))
         if not self.bypassServer:
             self.inst.append(addInstructions(0.55, "[t]: Display Chat Window"))
-            #self.inst.append(addInstructions(0.55, "[t]: Display Chat Window")) 
+            self.inst.append(addInstructions(0.50, "[p]: Display PM Window")) 
         
         # Set up the environment
         self.environ = loader.loadModel("models/square")
@@ -134,6 +140,7 @@ class World(DirectObject):
         taskMgr.add(self.staticRefVenus.stopRotateVenus,"stopRotateVenus")
         if not self.bypassServer:
             taskMgr.doMethodLater(self.config['heartbeatRate'],self.doHeartbeat,"heartbeat")
+            #taskMgr.doMethodLater(self.config['sendMoveRate'],self.MoveManager.sendMoves,"movement")
         
         #Change Camera Position Later
         base.camera.setPos(self.Character.actor.getX(),self.Character.actor.getY()+10,2)
@@ -149,13 +156,15 @@ class World(DirectObject):
         render.setLight(render.attachNewNode(directionalLight))
         
         if not self.bypassServer:
-            self.chatScreen = ChatScreen(self,render,base)
+            self.chatScreen = ChatScreen(self,render,base)            
+            self.pChatScreen = PrivateChatScreen(self,render,base)
             self.chatScreen.hideScreen()
+            self.pChatScreen.hideScreen()
         
     def doHeartbeat(self,task):
         if self.stopHeartbeat:
             return None
-            self.heartbeatConnection.sendHeartbeat()
+        self.heartbeatConnection.sendHeartbeat()
         return task.again
     
     def makeCollisionNodePath(self, nodepath, solid):
@@ -171,6 +180,7 @@ class World(DirectObject):
     
     def endSession(self):
         self.stopHeartbeat = True
+        self.stopSendingMovement = True
         self.endSession = EndSessionConnectionModel(self.exit)
         self.ServerConnection.setupConnectionModel(self.endSession)
         
