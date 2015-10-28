@@ -9,6 +9,7 @@ class NotificationScreen:
         self.World = World;
         self.World.accept("tab",self.toggleScreen)
         self.NotifyMessage = None
+        self.hidden= True
         
     def toggleScreen(self):
         if self.hidden:
