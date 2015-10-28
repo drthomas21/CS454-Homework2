@@ -10,8 +10,8 @@ class CharacterListScreen:
         self.items = []
         
         #boxloc = Vec3(0.65, 0.0, 0.7)
-        boxloc = Vec3(0.0,0.0,0.0)
-        frameSize = Vec4(0.0, 0.7, -0.05, 0.59)
+        boxloc = Vec3(-0.35,0.0,0.0)
+        frameSize = Vec4(-0.35, 0.35, -0.05, 0.59)
         p = boxloc
         self.CharListFrame = DirectFrame(frameColor=(0,0,0,0.4),frameSize=frameSize,pos=p)       
 

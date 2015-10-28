@@ -46,9 +46,17 @@ class PrivateChatScreen:
         p = boxloc + Vec3(-0.05,0.0,0.695)
         self.ChatFrame.toButton = DirectButton(parent=self.ChatFrame, text = ("Mesg", "Mesg", "Mesg", "Mesg"), pos = p, scale = 0.075, command=self.showMessage)
         
+        p = boxloc + Vec3(-0.75,0.0,0.7)
+        self.ChatFrame.toBoxLabel = OnscreenText(parent=self.ChatFrame, text = "To: " , pos = p, scale=.05,align=TextNode.ALeft)
+        
         p = boxloc + Vec3(-0.64,0.0,0.7)
-        self.ChatFrame.toBox = DirectEntry(parent=self.ChatFrame, text = "To:  " , pos = p, scale=.05, initialText="")
+        self.ChatFrame.toBox = DirectEntry(parent=self.ChatFrame, pos = p, scale=.05, initialText="")
+        
+        self.ChatFrame.sendButton = None
+        self.ChatFrame.messageBox = None
+        
     def showMessage(self):
+        self.ChatFrame.toBoxLabel.hide()
         self.ChatFrame.toButton.hide()
         self.ChatFrame.toBox.hide()
         
@@ -70,13 +78,23 @@ class PrivateChatScreen:
         self.ChatFrame.destroy()
         
     def hideScreen(self):
-        self.ChatFrame.hide()
+        self.ChatFrame.toBoxLabel.show()
+        self.ChatFrame.toButton.show()
+        self.ChatFrame.toBox.show()        
+        
+        if self.ChatFrame.sendButton != None:
+            self.ChatFrame.sendButton.hide()
+            self.ChatFrame.messageBox.hide()
+            
+        self.ChatFrame.hide()        
         self.hidden = True
         self.World.ignore("escape")
         self.World.ignore("enter")
         self.World.accept("t",self.World.chatScreen.toggleScreen)
         self.World.accept("p",self.toggleScreen)
         self.World.Character.setControls()
+        
+        
         
     def showScreen(self):
         self.ChatFrame.show()        
@@ -86,13 +104,20 @@ class PrivateChatScreen:
         self.World.ignore("t")
         self.ChatFrame.toBox.setFocus()
         self.World.accept("escape", self.hideScreen)
-        self.World.accept("enter", self.sendMessage) 
+        #self.World.accept("enter", self.sendMessage) 
         
     def sendMessage(self):  
         self.parseResponse("To " + self.ChatFrame.toBox.get(),self.ChatFrame.messageBox.get())
         if not self.World.bypassServer:
             self.chatConnection.sendChatMessage(self.ChatFrame.toBox.get(), self.ChatFrame.messageBox.get())
         self.ChatFrame.messageBox.set("")
+        
+        self.ChatFrame.toBoxLabel.show()
+        self.ChatFrame.toButton.show()
+        self.ChatFrame.toBox.show()
+        
+        self.ChatFrame.sendButton.hide()
+        self.ChatFrame.messageBox.hide()
             
     def parseResponse(self,username,message):
         l = DirectLabel(text = username+": "+message, frameSize=(-0.35, 0.35, -0.05, 0.06),text_scale=0.05,frameColor=(0,0,0,0),text_fg=(1,1,1,1))
