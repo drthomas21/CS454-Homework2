@@ -1,4 +1,4 @@
-import sys
+import sys, random
 from panda3d.core               import PandaNode,NodePath,Camera,TextNode
 from Models3D.BaseModel3D       import BaseModel3D
 
@@ -6,13 +6,12 @@ class BaseCharacter(BaseModel3D):
     floater = None
     def __init__(self, World, render, base,loader):
         BaseModel3D.__init__(self, World, render, base,loader)
-
-    def setControls(self):
         if self.floater == None:
             self.floater = NodePath(PandaNode("floater"))
             self.floater.reparentTo(self.render)
-            self.isMoving = False
-        
+        self.isMoving = False
+
+    def setControls(self):
         self.World.keyMap = {"left":0, "right":0, "forward":0, "cam-left":0, "cam-right":0}
         self.World.accept("escape", self.World.endSession)
         self.World.accept("a", self.setKey, ["left",1])
@@ -112,3 +111,12 @@ class BaseCharacter(BaseModel3D):
     
     def moveCharacterTo(self,pos):
         self.actor.setPos(float(pos[0]),float(pos[1]),float(pos[2]))
+        
+    def placeAt(self,pos):
+        for model in self.World.CharacterManager.getCharacters():
+            distance = Vec3(pos[0],pos[1],0) - model.actor.getPos()
+            if( abs(distance) < 10):
+                self.placeAt((pos[0]+random.uniform(-5.0, 5.0), pos[1]+random.uniform(-5.0, 5.0), 0))
+                return False
+        
+        self.actor.setPos(pos[0],pos[1],0)

@@ -2,6 +2,7 @@ from Models3D.Characters.BaseCharacter  import BaseCharacter
 from panda3d.core                       import *
 from pandac.PandaModules                import *
 from direct.actor.Actor                 import Actor
+import math
 
 class VehicleCharacter(BaseCharacter):
     count=0
@@ -20,7 +21,7 @@ class VehicleCharacter(BaseCharacter):
         self.car.setColorScale(0.6, 0.6, 1.0, 1.0)
         self.actor = Actor(self.car)
         self.actor.reparentTo(self.node)
-        self.actor.name = "vehicle"       
+        self.actor.name = "vehicle" 
 
         self.cNode = CollisionNode('car')
         self.cNode.addSolid(CollisionTube(0.0,0.5,1.0,0.0,-0.5,1.0,1.0))
@@ -86,3 +87,8 @@ class VehicleCharacter(BaseCharacter):
         self.base.camera.lookAt(self.floater)
 
         return task.cont
+    
+    def moveCharacterTo(self,pos):
+        self.floater.setPos(float(pos[0]),float(pos[1]),float(pos[2]))
+        self.lookAt(self.floater)
+        self.actor.setPos(float(pos[0]),float(pos[1]),float(pos[2]))

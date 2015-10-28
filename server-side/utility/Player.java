@@ -27,5 +27,4 @@ public class Player {
 	{
 		return this.player_id;
 	}
-
 }

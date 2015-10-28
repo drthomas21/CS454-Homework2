@@ -21,7 +21,7 @@ class CharacterManager:
             model = VehicleCharacter(World=self.World,render=self.render,base=self.base,loader=self.loader)
         else:
             model = RalphCharacter(World=self.World,render=self.render,base=self.base,loader=self.loader)
-        model.actor.setPos(float(pos[0]),float(pos[1]),float(pos[2]))
+        model.placeAt((float(pos[0]),float(pos[1]),float(pos[2])))
         model.actor.setHpr(float(hpr[0]),float(hpr[1]),float(hpr[2]))
         model.username = username
         

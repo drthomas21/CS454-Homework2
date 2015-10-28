@@ -40,6 +40,8 @@ def addTitle(text):
 class World(DirectObject):
 
     def __init__(self):
+        self.taskMgr = taskMgr
+        self.CharacterManager = CharacterManager(self, render, base,loader)
         base.disableMouse()
         
         base.setBackgroundColor(0,0,0)
@@ -82,7 +84,7 @@ class World(DirectObject):
         
     def setPlayerCharacter(self,Character):
         self.Character = Character
-        self.CharacterManager = CharacterManager(self, render, base,loader)
+        self.Character.placeAt((random.uniform(-10.0,10.0),random.uniform(-10.0,10.0),0))
         self.MoveManager = MoveManager(self)
         
     def doAuthScreen(self):

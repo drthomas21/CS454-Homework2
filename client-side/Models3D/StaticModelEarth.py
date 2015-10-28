@@ -43,6 +43,6 @@ class StaticModelEarth(BaseModel3D):
         distanceVector = self.World.Character.actor.getPos()-self.earth.getPos()
         for model in self.World.CharacterManager.getCharacters():
             temp = model.actor.getPos()-self.earth.getPos()
-            if temp < distanceVector:
+            if temp.length() < distanceVector.length():
                 distanceVector = temp
         return distanceVector.length()

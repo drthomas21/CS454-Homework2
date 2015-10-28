@@ -2,6 +2,7 @@ from Models3D.Characters.BaseCharacter  import BaseCharacter
 from panda3d.core                       import *
 from pandac.PandaModules                import *
 from direct.actor.Actor                 import Actor
+import math
 
 class PandaCharacter(BaseCharacter):
     count=0
@@ -10,6 +11,7 @@ class PandaCharacter(BaseCharacter):
         PandaCharacter.count += 1
         self.id = PandaCharacter.count
 
+        self.taskName = 'panda'+str(PandaCharacter.count)
         self.node = render.attachNewNode('panda'+str(PandaCharacter.count))
         self.actor=Actor("models/panda-model",
                      {"walk": "models/panda-walk4"})
@@ -94,3 +96,20 @@ class PandaCharacter(BaseCharacter):
         self.base.camera.lookAt(self.floater)
 
         return task.cont
+    
+    def moveCharacterTo(self,pos):
+        self.World.taskMgr.remove(self.taskName)
+        self.floater.setPos(float(pos[0]),float(pos[1]),float(pos[2]))
+        self.lookAt(self.floater)
+        self.actor.setPos(float(pos[0]),float(pos[1]),float(pos[2]))
+        
+        if not self.isMoving:
+            self.isMoving = True
+            self.actor.loop("walk")
+        
+        self.World.taskMgr.doMethodLater(0.3,self.stopAnimation,self.taskName)
+        
+    def stopAnimation(self, task):
+        self.isMoving = False
+        self.actor.stop()
+        self.actor.pose("walk",5)

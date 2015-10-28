@@ -49,19 +49,23 @@ public class RequestSelectchar extends GameRequest {
 
 			responseSelect.setPosition(Double.valueOf(x).longValue(), Double.valueOf(y).longValue(),
 					Double.valueOf(z).longValue());
-
-			// Sending the list of online clients
-			for (Player player : client.getServer().getActivePlayers()) {
-				ResponseOnline onlineclient = new ResponseOnline();
-				onlineclient.setUsername(player.getUsername());
-				onlineclient.setCharacter(player.getCharacter());
-				responses.add(onlineclient);
-			}
 		} else { //If the character's player is new, empty array
 			responseSelect.setPosition();
 		}
 		//The player is now active
 		client.getServer().setActivePlayer(client.getPlayer());
+		
+		// Sending the list of online clients
+		for (Player player : client.getServer().getActivePlayers()) {
+			if( player.getUsername().equals(client.getPlayer().getUsername())) {
+				continue;
+			}
+			ResponseOnline onlineclient = new ResponseOnline();
+			onlineclient.setUsername(player.getUsername());
+			onlineclient.setCharacter(player.getCharacter());
+			responses.add(onlineclient);
+		}
+					
 		// Sending the new online player to every users
 		responseOnline.setUsername(client.getPlayer().getUsername());
 		responseOnline.setCharacter(client.getPlayer().getCharacter());

@@ -183,6 +183,7 @@ public class GameServer {
     }
     
     public List<Player> getActivePlayers() {
+    	System.out.println(activePlayers.values());
         return new ArrayList<Player>(activePlayers.values());
     }
 

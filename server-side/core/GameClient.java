@@ -143,7 +143,7 @@ public class GameClient extends Thread {
 
 		System.out.println(new SimpleDateFormat("MM/dd/yyyy HH:mm:ss").format(new Date()));
 		System.out.println("The client stops playing.");
-		
+		getServer().removeActivePlayer(player.getID());
 
 		/*
 		 * if (player != null) { try { long seconds =
