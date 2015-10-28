@@ -1,5 +1,5 @@
 import sys, random
-from panda3d.core               import PandaNode,NodePath,Camera,TextNode
+from panda3d.core               import *
 from Models3D.BaseModel3D       import BaseModel3D
 
 class BaseCharacter(BaseModel3D):
@@ -115,7 +115,7 @@ class BaseCharacter(BaseModel3D):
     def placeAt(self,pos):
         for model in self.World.CharacterManager.getCharacters():
             distance = Vec3(pos[0],pos[1],0) - model.actor.getPos()
-            if( abs(distance) < 10):
+            if( abs(distance.length()) < 5):
                 self.placeAt((pos[0]+random.uniform(-5.0, 5.0), pos[1]+random.uniform(-5.0, 5.0), 0))
                 return False
         

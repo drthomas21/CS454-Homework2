@@ -34,3 +34,7 @@ class MoveManager:
         else:
             self.flushActions()
         return task.again
+    
+    def sendUpdatePosition(self):
+        pos = self.Player.actor.getPos()
+        self.PositionConnectionModel.sendPos(str(pos[0])+","+str(pos[1])+","+str(pos[2]))

@@ -16,9 +16,13 @@ class NotificationScreen:
         else:
             self.hideScreen()
             
-    def updateStatus(self, username):
+    def joinStatus(self, username):
         self.showScreen()
-        self.NotifyMessage.setText("Now Online: " + username)        
+        self.NotifyMessage.setText("Now Online: " + username)
+        
+    def leftStatus(self, username):
+        self.showScreen()
+        self.NotifyMessage.setText("Now Offline: " + username)        
         
     def unloadScreen(self):
         if self.NotifyMessage != None:

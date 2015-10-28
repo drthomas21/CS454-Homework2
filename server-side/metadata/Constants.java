@@ -19,6 +19,7 @@ public class Constants {
     public final static short SMSG_POSITION = 205;
     public final static short SMSG_SELECTION = 206;
     public final static short SMSG_ONLINE = 207;
+    public final static short SMSG_DISCONNECTED = 208;
     public final static short SMSG_CHAT = 212;
     public final static short SMSG_HEARTBEAT = 213;
     public final static short SMSG_PRIVATE_CHAT = 215;
@@ -33,5 +34,5 @@ public class Constants {
     // Other
     public static final int SAVE_INTERVAL = 60000;
     public static final String CLIENT_VERSION = "1.00";
-    public static final int TIMEOUT_SECONDS = 90;
+    public static final int TIMEOUT_SECONDS = 10;
 }

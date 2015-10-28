@@ -53,7 +53,7 @@ class CharacterListScreen:
                 
     def removePlayer(self, username):
         for item in self.items:
-            if item.getText() == username:
+            if item["text"] == username:
                 self.CharListFrame.scrolledList.removeItem(item)
         
     def unloadScreen(self):

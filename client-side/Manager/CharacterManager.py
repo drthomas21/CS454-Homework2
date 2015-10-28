@@ -12,12 +12,12 @@ class CharacterManager:
         self.loader = loader
     
     def createCharacter(self,username="", modelName="", pos=(0.0,0.0,0.0), hpr=(0.0,0.0,0.0)):
-        model = None
+        model = self.getModel(username)
         if modelName == "panda1":
             model = PandaCharacter(World=self.World,render=self.render,base=self.base,loader=self.loader)
         elif modelName == "ralph1":
             model = RalphCharacter(World=self.World,render=self.render,base=self.base,loader=self.loader)
-        elif model == "vehicle1":
+        elif modelName == "vehicle1":
             model = VehicleCharacter(World=self.World,render=self.render,base=self.base,loader=self.loader)
         else:
             model = RalphCharacter(World=self.World,render=self.render,base=self.base,loader=self.loader)
@@ -26,9 +26,18 @@ class CharacterManager:
         model.username = username
         
         self.characters.append(model)
-        self.World.NotificationScreen.updateStatus(model.username)
+        self.World.NotificationScreen.joinStatus(model.username)
         self.World.CharacterListScreen.addPlayer(model.username)
         return model
+    
+    def removeCharacter(self,username=""):
+        model = self.getModel(username)
+        if model != None:
+            self.World.NotificationScreen.leftStatus(model.username)
+            self.World.CharacterListScreen.removePlayer(model.username)
+            model.actor.delete()
+            self.characters.remove(model)
+            
     
     def moveCharacter(self, username, time, pos):
         pos = pos.split(',')

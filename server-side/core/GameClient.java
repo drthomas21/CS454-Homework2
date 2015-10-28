@@ -14,6 +14,7 @@ import java.util.Date;
 import java.util.LinkedList;
 import java.util.Queue;
 
+
 // Custom Imports
 //import dataAccessLayer.PlayerDAO;
 import metadata.Constants;
@@ -21,6 +22,7 @@ import metadata.GameRequestTable;
 //import model.Player;
 import networking.request.GameRequest;
 import networking.response.GameResponse;
+import networking.response.ResponseDisconnected;
 import utility.DataReader;
 import utility.Player;
 
@@ -143,7 +145,11 @@ public class GameClient extends Thread {
 
 		System.out.println(new SimpleDateFormat("MM/dd/yyyy HH:mm:ss").format(new Date()));
 		System.out.println("The client stops playing.");
+		ResponseDisconnected response = new ResponseDisconnected();
+		response.setUsername(player.getUsername());
+		getServer().addResponseForAllOnlinePlayers(getId(), (GameResponse) response);
 		getServer().removeActivePlayer(player.getID());
+		
 
 		/*
 		 * if (player != null) { try { long seconds =

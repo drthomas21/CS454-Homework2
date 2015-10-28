@@ -3,12 +3,16 @@ from direct.gui.OnscreenText            import OnscreenText
 from direct.gui.DirectGui               import *
 from panda3d.core                       import *
 from Network.models.AuthConnectionModel import AuthConnectionModel
+from Network.models.NullConnectionModel import NullConnectionModel
 
 class AuthScreen:
     def __init__(self,World,render,base):
         self.World = World;
         self.authConnection = AuthConnectionModel(self)
+        self.nullConnection = NullConnectionModel()
+        self.taskName = "nullTask"
         self.World.ServerConnection.setupConnectionModel(self.authConnection)
+        self.World.ServerConnection.setupConnectionModel(self.nullConnection)
         
         boxloc = Vec3(0.0, 0.0, 0.0)
         p = boxloc
@@ -34,13 +38,19 @@ class AuthScreen:
         
         p = boxloc + Vec3(0, -0.4, 0)
         self.LoginFrame.statusText = OnscreenText(parent=self.LoginFrame, text = "", pos = p, scale = 0.075, fg = (1, 0, 0, 1), align=TextNode.ACenter)
+        
+        self.World.taskMgr.doMethodLater(5,self.sendNullSignal,self.taskName)
 
+    def sendNullSignal(self,task):
+        self.nullConnection.sendNull()
+        return task.again
         
     def updateStatus(self, statustext):
         self.LoginFrame.statusText.setText(statustext)
         
     def unloadScreen(self):
         self.LoginFrame.destroy()
+        self.World.taskMgr.remove(self.taskName)
         
     def attemptRegister(self):
         self.whichAction = 1      
