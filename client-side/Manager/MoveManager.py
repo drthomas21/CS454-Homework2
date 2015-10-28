@@ -1,6 +1,6 @@
-from Models3D.Characters.PandaCharacter import PandaCharacter
-from Models3D.Characters.RalphCharacter import RalphCharacter
-from Models3D.Characters.VechileCharacter import VechileCharacter
+from Models3D.Characters.PandaCharacter     import PandaCharacter
+from Models3D.Characters.RalphCharacter     import RalphCharacter
+from Models3D.Characters.VehicleCharacter   import VehicleCharacter
 from Network.models.PositionConnectionModel import PositionConnectionModel
 
 class MoveManager:

@@ -9,7 +9,7 @@ from direct.actor.Actor                         import Actor
 from direct.showbase.DirectObject               import DirectObject
 from Models3D.Characters.PandaCharacter         import PandaCharacter
 from Models3D.Characters.RalphCharacter         import RalphCharacter
-from Models3D.Characters.VechileCharacter       import VechileCharacter
+from Models3D.Characters.VehicleCharacter       import VehicleCharacter
 from Models3D.StaticModelEarth                  import StaticModelEarth
 from Models3D.StaticModelSun                    import StaticModelSun
 from Models3D.StaticModelVenus                  import StaticModelVenus
@@ -18,6 +18,7 @@ from Screen.CharacterSelectScreen               import CharacterSelectScreen
 from Screen.ChatScreen                          import ChatScreen
 from Screen.PrivateChatScreen                   import PrivateChatScreen
 from Screen.NotificationScreen                  import NotificationScreen
+from Screen.CharacterListScreen                 import CharacterListScreen
 from Network.ServerConnection                   import ServerConnection
 from Network.models.EndSessionConnectionModel   import EndSessionConnectionModel
 from Network.models.HeartbeatConnectionModel    import HeartbeatConnectionModel
@@ -61,6 +62,8 @@ class World(DirectObject):
         self.jumpTo = self.config['jumpTo']
         self.ServerConnection = ServerConnection()
         self.NotificationScreen = NotificationScreen(self)
+        self.CharacterListScreen = CharacterListScreen(self)
+        self.CharacterListScreen.hideScreen()
         
         
         if not self.bypassServer:
@@ -89,13 +92,14 @@ class World(DirectObject):
         self.characterModels = []
         self.characterModels.append(["Ralph",RalphCharacter(self,render,base,loader)])
         self.characterModels.append(["Panda",PandaCharacter(self,render,base,loader)])
-        self.characterModels.append(["Motocycle",VechileCharacter(self,render,base,loader)])
+        self.characterModels.append(["Motocycle",VehicleCharacter(self,render,base,loader)])
         
         self.selectScreen = CharacterSelectScreen(self,render,base,camera)
     
     def doGameScreen(self):
         self.heartbeatConnection = HeartbeatConnectionModel()
         self.ServerConnection.setupConnectionModel(self.heartbeatConnection)
+        self.accept("tab",self.CharacterListScreen.toggleScreen)
         self.stopHeartbeat = False
         self.stopSendingMovement = False
         

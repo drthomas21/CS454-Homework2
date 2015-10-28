@@ -60,8 +60,6 @@ class BaseCharacter(BaseModel3D):
 
         startpos = self.actor.getPos()
 
-        #print self.actor.name
-        #print self.World.keyMap
         if (self.World.keyMap["left"]!=0):
             self.actor.setH(self.actor.getH() + 300 * globalClock.getDt())
         if (self.World.keyMap["right"]!=0):

@@ -3,12 +3,12 @@ from panda3d.core                       import *
 from pandac.PandaModules                import *
 from direct.actor.Actor                 import Actor
 
-class VechileCharacter(BaseCharacter):
+class VehicleCharacter(BaseCharacter):
     count=0
     def __init__(self,World, render,base,loader):
         BaseCharacter.__init__(self,World, render,base,loader)
-        VechileCharacter.count += 1
-        self.node = render.attachNewNode('vehicle'+str(VechileCharacter.count))
+        VehicleCharacter.count += 1
+        self.node = render.attachNewNode('vehicle'+str(VehicleCharacter.count))
         
         self.car = loader.loadModel("models/knucklehead")
         self.car_tex = loader.loadTexture("models/knucklehead.jpg")
@@ -48,8 +48,6 @@ class VechileCharacter(BaseCharacter):
 
         startpos = self.actor.getPos()
 
-        #print self.actor.name
-        #print self.World.keyMap
         if (self.World.keyMap["left"]!=0):
             self.actor.setH(self.actor.getH() + 300 * globalClock.getDt())
         if (self.World.keyMap["right"]!=0):

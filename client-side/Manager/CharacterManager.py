@@ -1,6 +1,6 @@
-from Models3D.Characters.PandaCharacter import PandaCharacter
-from Models3D.Characters.RalphCharacter import RalphCharacter
-from Models3D.Characters.VechileCharacter import VechileCharacter
+from Models3D.Characters.PandaCharacter     import PandaCharacter
+from Models3D.Characters.RalphCharacter     import RalphCharacter
+from Models3D.Characters.VehicleCharacter   import VehicleCharacter
 
 class CharacterManager:
     characters = []
@@ -18,7 +18,7 @@ class CharacterManager:
         elif modelName == "ralph1":
             model = RalphCharacter(World=self.World,render=self.render,base=self.base,loader=self.loader)
         elif model == "vehicle1":
-            model = VechileCharacter(World=self.World,render=self.render,base=self.base,loader=self.loader)
+            model = VehicleCharacter(World=self.World,render=self.render,base=self.base,loader=self.loader)
         else:
             model = RalphCharacter(World=self.World,render=self.render,base=self.base,loader=self.loader)
         model.actor.setPos(float(pos[0]),float(pos[1]),float(pos[2]))
@@ -27,10 +27,10 @@ class CharacterManager:
         
         self.characters.append(model)
         self.World.NotificationScreen.updateStatus(model.username)
+        self.World.CharacterListScreen.addPlayer(model.username)
         return model
     
     def moveCharacter(self, username, time, pos):
-        print "Move:",username,pos
         pos = pos.split(',')
         model = self.getModel(username)
         if model == None:
@@ -41,7 +41,6 @@ class CharacterManager:
     
     def getModel(self,username):
         for model in self.characters:
-            print model.username,username
             if(model.username == username):
                 return model
         return None
