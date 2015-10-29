@@ -40,13 +40,16 @@ class CharacterManager:
             
     
     def moveCharacter(self, username, time, pos):
-        pos = pos.split(',')
+        list = pos.split(',')
         model = self.getModel(username)
         if model == None:
             #model = self.createCharacter(username,"",pos)
             return False
-        
-        model.moveCharacterTo(pos)
+        pos = (list[0],list[1],list[2])
+        if len(list) == 3:
+            model.moveCharacterTo(pos)
+        else:
+            model.moveCharacterTo(pos,list[3])        
     
     def getModel(self,username):
         for model in self.characters:

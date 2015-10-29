@@ -107,5 +107,7 @@ class CharacterSelectScreen:
         
     def parseResponse(self,data):
         pos = data.split(',')
-        if len(pos) == 3:
+        if len(pos) >= 3:
             self.World.Character.actor.setPos(float(pos[0]),float(pos[1]),float(pos[2]))
+        elif len(pos) >= 4:
+            self.World.Character.actor.setH(float(pos[3]))

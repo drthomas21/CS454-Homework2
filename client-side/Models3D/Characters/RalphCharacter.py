@@ -69,8 +69,9 @@ class RalphCharacter(BaseCharacter):
         if (self.World.keyMap["backward"]!=0):
             self.actor.setY(self.actor, 25 * globalClock.getDt())
     
-            
-        self.World.MoveManager.appendAction(left = self.World.keyMap["left"], right = self.World.keyMap["right"], forward = self.World.keyMap["forward"], pos = self.actor.getPos())
+        list = self.actor.getPos()
+        pos = Vec4(list[0],list[1],list[2],self.actor.getH())
+        self.World.MoveManager.appendAction(pos)
 
         #self.actor.stop()
 
@@ -104,11 +105,14 @@ class RalphCharacter(BaseCharacter):
 
         return task.cont
     
-    def moveCharacterTo(self,pos):
-        self.World.taskMgr.remove(self.taskName)
-        self.floater.setPos(float(pos[0]),float(pos[1]),float(pos[2]))
-        self.lookAt(self.floater)
-        self.actor.setPos(float(pos[0]),float(pos[1]),float(pos[2]))
+    def moveCharacterTo(self,pos,heading=None):
+        if heading == None:
+            self.floater.setPos(float(pos[0]),float(pos[1]),float(pos[2]))
+            self.lookAt(self.floater)
+            self.actor.setPos(float(pos[0]),float(pos[1]),float(pos[2]))
+        else:
+            self.actor.setPos(float(pos[0]),float(pos[1]),float(pos[2]))
+            self.actor.setH(heading)
         
         if not self.isMoving:
             self.isMoving = True
