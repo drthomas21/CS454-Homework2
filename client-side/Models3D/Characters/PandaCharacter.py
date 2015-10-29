@@ -39,6 +39,11 @@ class PandaCharacter(BaseCharacter):
         self.actor.lookAt(model)
         hpr = self.actor.getHpr()
         self.actor.setHpr(hpr[0]+180,hpr[1],hpr[2])
+     
+     
+    def setZofPlayer(self):
+        self.actor.setZ(0)
+    
         
     def move(self, task):
 
@@ -50,6 +55,7 @@ class PandaCharacter(BaseCharacter):
 
         startpos = self.actor.getPos()
 
+        self.setZofPlayer()
         if (self.World.keyMap["left"]!=0):
             self.actor.setH(self.actor.getH() + 300 * globalClock.getDt())
         if (self.World.keyMap["right"]!=0):
@@ -63,6 +69,11 @@ class PandaCharacter(BaseCharacter):
                 self.actor.loop("walk")
             self.actor.setY(self.actor, -2000 * globalClock.getDt())
             
+        if (self.World.keyMap["backward"]!=0):
+            if not self.actor.getAnimControl("walk").isPlaying():
+                self.actor.loop("walk")
+            self.actor.setY(self.actor, 1000 * globalClock.getDt())     
+           
         self.World.MoveManager.appendAction(left = self.World.keyMap["left"], right = self.World.keyMap["right"], forward = self.World.keyMap["forward"], pos = self.actor.getPos())
 
         #self.actor.stop()
@@ -70,7 +81,7 @@ class PandaCharacter(BaseCharacter):
         #if (self.World.keyMap["backward"]!=0):
         #    self.actor.setY(self.actor, 25 * globalClock.getDt())
 
-        if (self.World.keyMap["forward"]!=0) or (self.World.keyMap["left"]!=0) or (self.World.keyMap["right"]!=0):
+        if (self.World.keyMap["forward"]!=0) or (self.World.keyMap["left"]!=0) or (self.World.keyMap["right"]!=0 or (self.World.keyMap["backward"]!=0)):
             if self.isMoving is False:
                 self.actor.loop("run")
                 self.isMoving = True

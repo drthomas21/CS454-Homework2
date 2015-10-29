@@ -12,16 +12,18 @@ class BaseCharacter(BaseModel3D):
         self.isMoving = False
 
     def setControls(self):
-        self.World.keyMap = {"left":0, "right":0, "forward":0, "cam-left":0, "cam-right":0}
+        self.World.keyMap = {"left":0, "right":0, "forward":0, "backward":0,"cam-left":0, "cam-right":0}
         self.World.accept("escape", self.World.endSession)
         self.World.accept("a", self.setKey, ["left",1])
         self.World.accept("d", self.setKey, ["right",1])
         self.World.accept("w", self.setKey, ["forward",1])
+        self.World.accept("s", self.setKey, ["backward",1])
         self.World.accept("q", self.setKey, ["cam-left",1])
         self.World.accept("e", self.setKey, ["cam-right",1])
         self.World.accept("a-up", self.setKey, ["left",0])
         self.World.accept("d-up", self.setKey, ["right",0])
         self.World.accept("w-up", self.setKey, ["forward",0])
+        self.World.accept("s-up", self.setKey, ["backward",0])
         self.World.accept("q-up", self.setKey, ["cam-left",0])
         self.World.accept("e-up", self.setKey, ["cam-right",0])
         self.World.accept("shift-w",self.setKey, ["forward",5])
@@ -36,6 +38,7 @@ class BaseCharacter(BaseModel3D):
         self.World.ignore("a-up")
         self.World.ignore("d-up")
         self.World.ignore("w-up")
+        self.World.ignore("s-up")
         self.World.ignore("q-up")
         self.World.ignore("e-up")
         self.World.ignore("shift-w")
@@ -49,6 +52,10 @@ class BaseCharacter(BaseModel3D):
         
     # Accepts arrow keys to move either the player or the menu cursor,
     # Also deals with grid checking and collision detection
+    def setZofPlayer(self):
+        self.actor.setZ(0)
+        
+    
     def move(self, task):
 
         self.base.camera.lookAt(self.actor)
@@ -58,7 +65,8 @@ class BaseCharacter(BaseModel3D):
             self.base.camera.setX(self.base.camera, +20 * globalClock.getDt())
 
         startpos = self.actor.getPos()
-
+        
+        self.setZofPlayer()
         if (self.World.keyMap["left"]!=0):
             self.actor.setH(self.actor.getH() + 300 * globalClock.getDt())
         if (self.World.keyMap["right"]!=0):
@@ -75,6 +83,15 @@ class BaseCharacter(BaseModel3D):
             self.actor.play("walk")
             self.actor.loop("walk")
             self.actor.setY(self.actor, -2000 * globalClock.getDt())
+            
+            
+        if self.World.keyMap["backward"]!=0 and self.actor.name == 'Ralph':
+            self.actor.setY(self.actor, 25 * globalClock.getDt())
+            
+        if (self.World.keyMap["backward"]!=0 and self.actor.name != 'Ralph'):
+            self.actor.play("walk")
+            self.actor.loop("walk")
+            self.actor.setY(self.actor, 1000 * globalClock.getDt())
 
         self.World.MoveManager.appendAction(left = self.World.keyMap["left"], right = self.World.keyMap["right"], forward = self.World.keyMap["forward"], pos = self.actor.getPos())
         #self.actor.stop()

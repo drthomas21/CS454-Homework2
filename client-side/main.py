@@ -25,6 +25,7 @@ from Network.models.HeartbeatConnectionModel    import HeartbeatConnectionModel
 from Manager.MoveManager                        import MoveManager
 from Manager.CharacterManager                   import CharacterManager
 import random, sys, os, math, json
+from direct.task.TaskManagerGlobal import taskMgr
 
 SPEED = 0.5
 # Function to put instructions on the screen.
@@ -110,6 +111,7 @@ class World(DirectObject):
         self.Character.actor.setHpr(0,0,0)
         taskMgr.add(self.Character.move,"moveTask")
         
+        
         self.title = addTitle("Panda3D Tutorial: Multiplayer (Walking on the Moon)")
         self.inst = []
         self.inst.append(addInstructions(0.95, "[ESC]: Quit/Close Chat Window"))
@@ -146,6 +148,8 @@ class World(DirectObject):
         taskMgr.add(self.staticRefEarth.stopRotateEarth,"stopRotateEarth")
         taskMgr.add(self.staticRefSun.stopRotateSun,"stopRotateSun")
         taskMgr.add(self.staticRefVenus.stopRotateVenus,"stopRotateVenus")
+        taskMgr.add(self.setToGround, "setToGround")
+        
         if not self.bypassServer:
             taskMgr.doMethodLater(self.config['heartbeatRate'],self.doHeartbeat,"heartbeat")
             taskMgr.doMethodLater(self.config['sendMoveRate'],self.MoveManager.sendMoves,"movement")
@@ -185,6 +189,12 @@ class World(DirectObject):
         collNode.addSolid(solid)
         collisionNodepath = nodepath.attachNewNode(collNode)
         return collisionNodepath
+    
+    def setToGround(self, task):
+        self.sun.setZ(0)
+        self.venus.setZ(0)
+        self.earth.setZ(0)
+        return task.cont
     
     def endSession(self):
         self.stopHeartbeat = True
