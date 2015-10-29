@@ -12,7 +12,7 @@ class BaseCharacter(BaseModel3D):
         self.isMoving = False
 
     def setControls(self):
-        self.World.keyMap = {"left":0, "right":0, "forward":0, "backward":0,"cam-left":0, "cam-right":0}
+        self.World.keyMap = {"left":0, "right":0, "forward":0, "backward":0,"cam-left":0, "cam-right":0,"mag":1}
         self.World.accept("escape", self.World.endSession)
         self.World.accept("a", self.setKey, ["left",1])
         self.World.accept("d", self.setKey, ["right",1])
@@ -26,10 +26,13 @@ class BaseCharacter(BaseModel3D):
         self.World.accept("s-up", self.setKey, ["backward",0])
         self.World.accept("q-up", self.setKey, ["cam-left",0])
         self.World.accept("e-up", self.setKey, ["cam-right",0])
-        self.World.accept("shift-w",self.setKey, ["forward",5])
-        self.World.accept("shift-s",self.setKey, ["backward",5])
-        self.World.accept("shift-w-a",self.setKey, ["forward",5,"left",1])
-        self.World.accept("shift-s-d",self.setKey, ["backward",5,"right",1])
+        self.World.accept("shift",self.setKey, ["mag",5])
+        self.World.accept("shift-a",self.setKey, ["left",1])
+        self.World.accept("shift-d",self.setKey, ["right",1])
+        self.World.accept("shift-w",self.setKey, ["forward",1])
+        self.World.accept("shift-s",self.setKey, ["backward",1])
+        self.World.accept("shift-up",self.setKey, ["mag",1])
+        
         
     def blockControls(self):
         self.World.ignore("escape")
@@ -47,8 +50,8 @@ class BaseCharacter(BaseModel3D):
         self.World.ignore("e-up")
         self.World.ignore("shift-w")
         self.World.ignore("shift-s")
-        self.World.ignore("shift-w-a")
-        self.World.ignore("shift-s-d")
+        self.World.ignore("shift-a")
+        self.World.ignore("shift-d")
     
     def setCharacter(self, _Actor):
         self.actor = _Actor

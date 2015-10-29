@@ -59,15 +59,15 @@ class VehicleCharacter(BaseCharacter):
             self.actor.setH(self.actor.getH() + 300 * globalClock.getDt())
         if (self.World.keyMap["right"]!=0):
             self.actor.setH(self.actor.getH() - 300 * globalClock.getDt())
-        if (self.World.keyMap["forward"]!=0 and self.World.keyMap["forward"]!=5):
+        if (self.World.keyMap["forward"]!=0 and self.World.keyMap["mag"]!=5):
             self.actor.setY(self.actor, -25 * globalClock.getDt())
-        if (self.World.keyMap["forward"]!=0 and self.World.keyMap["forward"]!=1):
+        if (self.World.keyMap["forward"]!=0 and self.World.keyMap["mag"]!=1):
             self.actor.setY(self.actor, -100 * globalClock.getDt())
            
-        if (self.World.keyMap["backward"]!=0 and self.World.keyMap["backward"]!=5):
+        if (self.World.keyMap["backward"]!=0 and self.World.keyMap["mag"]!=5):
             self.actor.setY(self.actor, 25 * globalClock.getDt())
             
-        if (self.World.keyMap["backward"]!=0 and self.World.keyMap["backward"]!=5):
+        if (self.World.keyMap["backward"]!=0 and self.World.keyMap["mag"]!=1):
             self.actor.setY(self.actor, 100 * globalClock.getDt())    
 
         list = self.actor.getPos()
@@ -103,7 +103,6 @@ class VehicleCharacter(BaseCharacter):
         return task.cont
     
     def moveCharacterTo(self,pos,heading=None):
-        self.World.taskMgr.remove(self.taskName)
         if heading == None:
             self.floater.setPos(float(pos[0]),float(pos[1]),float(pos[2]))
             self.lookAt(self.floater)

@@ -60,21 +60,21 @@ class PandaCharacter(BaseCharacter):
             self.actor.setH(self.actor.getH() + 300 * globalClock.getDt())
         if (self.World.keyMap["right"]!=0):
             self.actor.setH(self.actor.getH() - 300 * globalClock.getDt())
-        if (self.World.keyMap["forward"]!=0 and self.World.keyMap["forward"]!=5):
+        if (self.World.keyMap["forward"]!=0 and self.World.keyMap["mag"]!=5):
             if not self.actor.getAnimControl("walk").isPlaying():
                 self.actor.loop("walk")
             self.actor.setY(self.actor, -1000 * globalClock.getDt())
-        if (self.World.keyMap["forward"]!=0 and self.World.keyMap["forward"]!=1):
+        if (self.World.keyMap["forward"]!=0 and self.World.keyMap["mag"]!=1):
             if not self.actor.getAnimControl("walk").isPlaying():
                 self.actor.loop("walk")
             self.actor.setY(self.actor, -2000 * globalClock.getDt())
         
-        if (self.World.keyMap["backward"]!=0 and self.World.keyMap["backward"]!=5):
+        if (self.World.keyMap["backward"]!=0 and self.World.keyMap["mag"]!=5):
             if not self.actor.getAnimControl("walk").isPlaying():
                 self.actor.loop("walk")
             self.actor.setY(self.actor, 1000 * globalClock.getDt())
             
-        if (self.World.keyMap["backward"]!=0 and self.World.keyMap["backward"]!=1):
+        if (self.World.keyMap["backward"]!=0 and self.World.keyMap["mag"]!=1):
             if not self.actor.getAnimControl("walk").isPlaying():
                 self.actor.loop("walk")
             self.actor.setY(self.actor, 2000 * globalClock.getDt())   
