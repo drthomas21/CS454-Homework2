@@ -112,7 +112,7 @@ class RalphCharacter(BaseCharacter):
             self.actor.setPos(float(pos[0]),float(pos[1]),float(pos[2]))
         else:
             self.actor.setPos(float(pos[0]),float(pos[1]),float(pos[2]))
-            self.actor.setH(heading)
+            self.actor.setH(float(heading))
         
         if not self.isMoving:
             self.isMoving = True
