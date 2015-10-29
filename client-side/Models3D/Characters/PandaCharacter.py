@@ -68,11 +68,16 @@ class PandaCharacter(BaseCharacter):
             if not self.actor.getAnimControl("walk").isPlaying():
                 self.actor.loop("walk")
             self.actor.setY(self.actor, -2000 * globalClock.getDt())
-            
-        if (self.World.keyMap["backward"]!=0):
+        
+        if (self.World.keyMap["backward"]!=0 and self.World.keyMap["backward"]!=5):
             if not self.actor.getAnimControl("walk").isPlaying():
                 self.actor.loop("walk")
-            self.actor.setY(self.actor, 1000 * globalClock.getDt())     
+            self.actor.setY(self.actor, 2000 * globalClock.getDt())
+            
+        if (self.World.keyMap["backward"]!=0 and self.World.keyMap["backward"]!=1):
+            if not self.actor.getAnimControl("walk").isPlaying():
+                self.actor.loop("walk")
+            self.actor.setY(self.actor, 1000 * globalClock.getDt())   
            
         list = self.actor.getPos()
         pos = Vec4(list[0],list[1],list[2],self.actor.getH())

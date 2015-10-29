@@ -64,7 +64,10 @@ class VehicleCharacter(BaseCharacter):
         if (self.World.keyMap["forward"]!=0 and self.World.keyMap["forward"]!=1):
             self.actor.setY(self.actor, -100 * globalClock.getDt())
            
-        if (self.World.keyMap["backward"]!=0):
+        if (self.World.keyMap["backward"]!=0 and self.World.keyMap["backward"]!=5):
+            self.actor.setY(self.actor, 100 * globalClock.getDt())
+            
+        if (self.World.keyMap["backward"]!=0 and self.World.keyMap["backward"]!=5):
             self.actor.setY(self.actor, 25 * globalClock.getDt())    
 
         list = self.actor.getPos()

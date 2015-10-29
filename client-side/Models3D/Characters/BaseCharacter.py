@@ -27,12 +27,14 @@ class BaseCharacter(BaseModel3D):
         self.World.accept("q-up", self.setKey, ["cam-left",0])
         self.World.accept("e-up", self.setKey, ["cam-right",0])
         self.World.accept("shift-w",self.setKey, ["forward",5])
+        self.World.accept("shift-s",self.setKey, ["backward",5])
         
     def blockControls(self):
         self.World.ignore("escape")
         self.World.ignore("a")
         self.World.ignore("d")
         self.World.ignore("w")
+        self.World.ignore("s")
         self.World.ignore("q")
         self.World.ignore("e")
         self.World.ignore("a-up")

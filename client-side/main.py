@@ -122,9 +122,10 @@ class World(DirectObject):
         self.inst.append(addInstructions(0.70, "[shift+w]: Move Player Fast"))
         self.inst.append(addInstructions(0.65, "[q]: Rotate Camera Left"))
         self.inst.append(addInstructions(0.60, "[e]: Rotate Camera Right"))
+        self.inst.append(addInstructions(0.55, "[tab]: Show players"))
         if not self.bypassServer:
-            self.inst.append(addInstructions(0.55, "[t]: Display Chat Window"))
-            self.inst.append(addInstructions(0.50, "[p]: Display PM Window")) 
+            self.inst.append(addInstructions(0.50, "[t]: Display Chat Window"))
+            self.inst.append(addInstructions(0.45, "[p]: Display PM Window")) 
         
         # Set up the environment
         self.environ = loader.loadModel("models/square")
