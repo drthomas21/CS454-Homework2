@@ -26,11 +26,6 @@ public class Constants {
     public final static short SMSG_SAVE_EXIT_GAME = 219;
    
 
-    //Test Request + Response
-    public final static short RAND_INT = 1;
-    public final static short RAND_STRING = 2;
-    public final static short RAND_SHORT = 3;
-    public final static short RAND_FLOAT = 4;
     // Other
     public static final int SAVE_INTERVAL = 60000;
     public static final String CLIENT_VERSION = "1.00";

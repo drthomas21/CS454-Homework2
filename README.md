@@ -28,7 +28,7 @@ CS454 Multiplayer - Homework 2
     - Short : 1 for successful register and authentication
     - Short : 0 for failure
 - Code: 105 = Moving request (let other clients know that this player moved)
-  - String: position (formated as "x, y, z")
+  - String: position (formated as "x, y, z, h" h for orientation)
   - *Return values* **Code: 205**
     - *To all other clients* String : username
     - *To all other clients* String : position

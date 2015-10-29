@@ -2,9 +2,6 @@ package networking.request;
 
 // Java Imports
 import java.io.IOException;
-
-import networking.response.GameResponse;
-import networking.response.ResponseChat;
 import networking.response.ResponsePosition;
 // Custom Imports
 //import core.GameServer;
@@ -14,7 +11,7 @@ public class RequestPosition extends GameRequest {
 
 	// Data
 	private String position;
-	private double x, y, z;
+	private double x, y, z, h; 
 	private Boolean skipbusiness;
 	// Responses
 	private ResponsePosition responsepos;
@@ -35,6 +32,7 @@ public class RequestPosition extends GameRequest {
 			x = Double.parseDouble(parts[0]);
 			y = Double.parseDouble(parts[1]);
 			z = Double.parseDouble(parts[2]);
+			h = Double.parseDouble(parts[3]);
 		} catch (Exception e) {
 			this.skipbusiness = true;
 			e.printStackTrace();
@@ -44,7 +42,7 @@ public class RequestPosition extends GameRequest {
 	@Override
 	public void doBusiness() throws Exception {
 		if (skipbusiness == false) {
-			responsepos.setPosition(x, y, z);
+			responsepos.setPosition(x, y, z, h);
 			responsepos.setUsername(client.getPlayer().getUsername());
 			client.getServer().addResponseForAllOnlinePlayers(client.getId(), responsepos);
 		}

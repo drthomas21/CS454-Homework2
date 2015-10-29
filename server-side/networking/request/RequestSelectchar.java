@@ -2,11 +2,8 @@ package networking.request;
 
 // Java Imports
 import java.io.IOException;
-
-import core.GameClient;
 import dataAccessLayer.Connexion;
 import networking.response.GameResponse;
-import networking.response.ResponseInt;
 import networking.response.ResponseOnline;
 import networking.response.ResponseSelectchar;
 // Custom Imports
@@ -18,7 +15,7 @@ public class RequestSelectchar extends GameRequest {
 	private String character;
 	private ResponseSelectchar responseSelect;
 	private ResponseOnline responseOnline;
-	private String x, y, z, position;
+	private String x, y, z, h, position;
 
 	public RequestSelectchar() {
 		responses.add(responseSelect = new ResponseSelectchar());
@@ -42,13 +39,13 @@ public class RequestSelectchar extends GameRequest {
 		position = db.lastPostion(character, client.getPlayer().getID());
 		if (position != null) {
 			String data[] = position.split(",");
-
 			x = data[0];
 			y = data[1];
 			z = data[2];
+			h = data[3];
 
 			responseSelect.setPosition(Double.valueOf(x).longValue(), Double.valueOf(y).longValue(),
-					Double.valueOf(z).longValue());
+					Double.valueOf(z).longValue(), Double.valueOf(h).longValue());
 		} else { //If the character's player is new, empty array
 			responseSelect.setPosition();
 		}

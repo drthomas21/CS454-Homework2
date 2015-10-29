@@ -2,8 +2,6 @@ package networking.request;
 
 // Java Imports
 import java.io.IOException;
-
-import core.GameClient;
 import networking.response.ResponsePrivateChat;
 // Custom Imports
 //import core.GameServer;

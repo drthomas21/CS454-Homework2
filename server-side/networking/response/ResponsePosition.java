@@ -25,8 +25,8 @@ public class ResponsePosition extends GameResponse {
 		return position;
 	}
 
-	public void setPosition(double x, double y, double z) {
-		this.position = x + "," + y + "," + z;
+	public void setPosition(double x, double y, double z, double h) {
+		this.position = x + "," + y + "," + z + "," + h;
 	}
 
 	public void setUsername(String username)

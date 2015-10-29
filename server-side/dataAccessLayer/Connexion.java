@@ -2,7 +2,6 @@ package dataAccessLayer;
 
 import java.sql.*;
 import java.util.*;
-import networking.response.ResponseString;
 
 public class Connexion {
 
@@ -31,16 +30,13 @@ public class Connexion {
 					connectionProps);
 
 		} catch (Exception e) {
-			System.out.println("Exception in connect :" + e);
+			System.out.println("Connexion failure with the database :" + e);
 			e.printStackTrace();
-			try {
-				conn.close();
-			} catch (Exception ee) {
-			}
+
 		}
 	}
 
-	// close the connection after every commit
+	// close the connection
 	public void close() {
 		try {
 			stmt.close();
@@ -75,17 +71,20 @@ public class Connexion {
 
 	}
 
-	// last position of character
+	//Saving last position of character on exit
 	public void UpdateIsPlaying(int player_id, int characterID, String position) throws SQLException {
+		//Boolean to know if it's the first time this player disconnect with this character
 		boolean result = false; 
 		System.out.println(position);
 		try {
+			//Finding the row to update
 			String selectSQL = "SELECT * FROM isPlaying WHERE Character_idCharacter = ? AND Player_idPlayer = ?";
 			PreparedStatement preparedStatement = conn.prepareStatement(selectSQL, rset.TYPE_SCROLL_INSENSITIVE,rset.CONCUR_UPDATABLE);
 			preparedStatement.setObject(1, characterID);
 			preparedStatement.setObject(2, player_id);
 			rset = preparedStatement.executeQuery();
 			while (rset.next()) {
+				//Updating the row
 				String selectSQL2 = "UPDATE isPlaying SET lastPosition  = ? WHERE Character_idCharacter = ? AND Player_idPlayer = ?";
 				PreparedStatement preparedStatement2 = conn.prepareStatement(selectSQL2);
 				preparedStatement2.setObject(1, position);
@@ -95,7 +94,7 @@ public class Connexion {
 				result = true; 
 				System.out.println("Hey");
 			}
-			if (result == false)
+			if (result == false) //If the row doesn't exixt (first time) creating it
 			{
 				String requete = "INSERT INTO isPlaying (Character_idCharacter, Player_idPlayer, lastPosition) VALUES (?, ?, ?)";
 				pstmt = conn.prepareStatement(requete);
@@ -113,6 +112,7 @@ public class Connexion {
 
 	}
 
+	//Getting the data and saving the last position
 	public void saveAndExit(String position, int player_id, String character)
 			throws SQLException, ClassNotFoundException {
 
@@ -123,6 +123,7 @@ public class Connexion {
 
 	}
 
+	//Creating a new player in the database
 	public int create(String username, String password) throws SQLException {
 		try {
 
@@ -158,6 +159,7 @@ public class Connexion {
 
 	}
 
+	//Get player ID from username (on creating)
 	public int getPlayerID(String username) {
 		try {
 			String selectSQL = "SELECT idPlayer FROM Player WHERE username = ?";
@@ -175,6 +177,7 @@ public class Connexion {
 
 	}
 
+	//Get the last position for the character - on login
 	public String lastPostion(String charactername, int player_idPlayer) {
 		String lastPosition = null;
 		try {		

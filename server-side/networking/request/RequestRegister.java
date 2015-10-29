@@ -6,7 +6,6 @@ import java.io.IOException;
 import dataAccessLayer.Connexion;
 // Custom Imports
 //import core.GameServer;
-import networking.response.ResponseInt;
 import networking.response.ResponseRegister;
 import utility.DataReader;
 import utility.Player;

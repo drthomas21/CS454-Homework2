@@ -8,7 +8,6 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.lang.reflect.Field;
 import java.net.Socket;
-//import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.LinkedList;
@@ -16,10 +15,8 @@ import java.util.Queue;
 
 
 // Custom Imports
-//import dataAccessLayer.PlayerDAO;
 import metadata.Constants;
 import metadata.GameRequestTable;
-//import model.Player;
 import networking.request.GameRequest;
 import networking.response.GameResponse;
 import networking.response.ResponseDisconnected;
@@ -41,7 +38,6 @@ public class GameClient extends Thread {
 	private OutputStream outputStream; // For use with outgoing responses
 	private DataInputStream dataInputStream; // For use with incoming requests
 	private DataInputStream dataInput;
-	// private Player player;
 	private boolean isPlaying;
 	private Queue<GameResponse> updates; // Temporarily store responses for
 											// client
@@ -112,7 +108,6 @@ public class GameClient extends Thread {
 							request.setGameClient(this);
 							// Pass input stream to the request object
 							request.setDataInputStream(dataInput);
-
 							// Parse the input stream
 							request.parse();
 							// Interpret the data

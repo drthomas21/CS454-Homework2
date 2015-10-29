@@ -6,8 +6,6 @@ import java.io.IOException;
 import dataAccessLayer.Connexion;
 import networking.response.ResponseSaveexit;
 // Custom Imports
-//import core.GameServer;
-import networking.response.ResponseString;
 import utility.DataReader;
 
 public class RequestSaveexit extends GameRequest {

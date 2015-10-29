@@ -4,9 +4,7 @@ package networking.request;
 import java.io.IOException;
 
 import dataAccessLayer.Connexion;
-import networking.response.GameResponse;
 import networking.response.ResponseAuth;
-import networking.response.ResponseOnline;
 // Custom Imports
 //import core.GameServer;
 import utility.DataReader;
