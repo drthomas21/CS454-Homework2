@@ -204,7 +204,7 @@ class World(DirectObject):
         self.ServerConnection.setupConnectionModel(self.endSession)
         
         if not self.bypassServer:
-            self.endSession.sendMessage(self.Character.actor.getPos())
+            self.endSession.sendMessage(self.Character.actor.getPos(),self.Character.actor.getH())
         
         #Forces an exit
         taskMgr.doMethodLater(3,self.exit,"forceExit")
