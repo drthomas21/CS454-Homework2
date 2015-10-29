@@ -56,3 +56,5 @@ CS454 Multiplayer - Homework 2
   - *Return values* **Code 219**
     - Short : 1 for success
     - Short : 0 for failure
+- Code: 208 = Disconnected reponse
+    - *To all other clients* String : username (of the disconnected player)
