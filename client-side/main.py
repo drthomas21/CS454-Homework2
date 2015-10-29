@@ -52,6 +52,7 @@ class World(DirectObject):
         
         base.cTrav = CollisionTraverser()
         self.pusher = CollisionHandlerPusher()
+        self.floor = CollisionHandlerFloor()
         floorNode = render.attachNewNode("Floor NodePath")
         # Create a collision plane solid.
         collPlane = CollisionPlane(Plane(Vec3(0, 0, 1), Point3(0, 0, 0)))
@@ -112,7 +113,6 @@ class World(DirectObject):
         taskMgr.add(self.Character.move,"moveTask")
         
         
-        self.title = addTitle("Panda3D Tutorial: Multiplayer (Walking on the Moon)")
         self.inst = []
         self.inst.append(addInstructions(0.95, "[ESC]: Quit/Close Chat Window"))
         self.inst.append(addInstructions(0.90, "[a]: Rotate Player Left"))

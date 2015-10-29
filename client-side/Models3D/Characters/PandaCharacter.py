@@ -72,12 +72,12 @@ class PandaCharacter(BaseCharacter):
         if (self.World.keyMap["backward"]!=0 and self.World.keyMap["backward"]!=5):
             if not self.actor.getAnimControl("walk").isPlaying():
                 self.actor.loop("walk")
-            self.actor.setY(self.actor, 2000 * globalClock.getDt())
+            self.actor.setY(self.actor, 1000 * globalClock.getDt())
             
         if (self.World.keyMap["backward"]!=0 and self.World.keyMap["backward"]!=1):
             if not self.actor.getAnimControl("walk").isPlaying():
                 self.actor.loop("walk")
-            self.actor.setY(self.actor, 1000 * globalClock.getDt())   
+            self.actor.setY(self.actor, 2000 * globalClock.getDt())   
            
         list = self.actor.getPos()
         pos = Vec4(list[0],list[1],list[2],self.actor.getH())
@@ -116,6 +116,7 @@ class PandaCharacter(BaseCharacter):
         return task.cont
     
     def moveCharacterTo(self,pos,heading=None):
+        self.World.taskMgr.remove(self.taskName)
         if heading == None:
             self.floater.setPos(float(pos[0]),float(pos[1]),float(pos[2]))
             self.lookAt(self.floater)

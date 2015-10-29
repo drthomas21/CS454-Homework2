@@ -28,6 +28,8 @@ class BaseCharacter(BaseModel3D):
         self.World.accept("e-up", self.setKey, ["cam-right",0])
         self.World.accept("shift-w",self.setKey, ["forward",5])
         self.World.accept("shift-s",self.setKey, ["backward",5])
+        self.World.accept("shift-w-a",self.setKey, ["forward",5,"left",1])
+        self.World.accept("shift-s-d",self.setKey, ["backward",5,"right",1])
         
     def blockControls(self):
         self.World.ignore("escape")
@@ -44,6 +46,9 @@ class BaseCharacter(BaseModel3D):
         self.World.ignore("q-up")
         self.World.ignore("e-up")
         self.World.ignore("shift-w")
+        self.World.ignore("shift-s")
+        self.World.ignore("shift-w-a")
+        self.World.ignore("shift-s-d")
     
     def setCharacter(self, _Actor):
         self.actor = _Actor

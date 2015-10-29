@@ -15,7 +15,7 @@ class StaticModelSun(BaseModel3D):
         self.sun.setTexture(self.sun_tex, 1)
         self.sun.reparentTo(self.orbit_root_sun)
         self.sun.reparentTo(render)
-        self.sun.setPos(-30,20,1)
+        self.sun.setPos(-30,20,0)
         self.sun.setScale(2 * 0.4)
 
         self.sunCNode = CollisionNode('sun')
@@ -42,6 +42,7 @@ class StaticModelSun(BaseModel3D):
         return task.cont
 
     def getDistance(self):
+        self.sun.setPos(-30,20,0)
         distanceVector = self.World.Character.actor.getPos()-self.sun.getPos()
         for model in self.World.CharacterManager.getCharacters():
             temp = model.actor.getPos()-self.sun.getPos()

@@ -1,8 +1,8 @@
 {
-	"host":"localhost",
+	"host":"superlunchvote.com",
 	"port":9252,
-	"heartbeatRate":0.1,
-	"sendMoveRate": 0.1,
+	"heartbeatRate":0.01,
+	"sendMoveRate": 0.01,
 	"bypassServer":false,
 	"jumpTo":1
 }

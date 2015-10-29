@@ -41,6 +41,7 @@ class StaticModelVenus(BaseModel3D):
         return task.cont
 
     def getDistance(self):
+        self.venus.setPos( 10, -20, .8)
         distanceVector = self.World.Character.actor.getPos()-self.venus.getPos()
         for model in self.World.CharacterManager.getCharacters():
             temp = model.actor.getPos()-self.venus.getPos()

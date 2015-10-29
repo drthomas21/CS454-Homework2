@@ -40,6 +40,7 @@ class StaticModelEarth(BaseModel3D):
         return self.earth
 
     def getDistance(self):
+        self.earth.setPos( 30, 20, 1)
         distanceVector = self.World.Character.actor.getPos()-self.earth.getPos()
         for model in self.World.CharacterManager.getCharacters():
             temp = model.actor.getPos()-self.earth.getPos()
