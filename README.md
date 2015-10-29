@@ -18,7 +18,7 @@ CS454 Multiplayer - Homework 2
   - String: username
   - String: password
   - *Return values* **Code: 201**
-    - Short : 2 for already looged in
+    - Short : 2 for already logged in
     - Short : 1 for successful authentication
     - Short : 0 for failure
 - Code: 103 = Register request (+Authentication)
@@ -28,7 +28,7 @@ CS454 Multiplayer - Homework 2
     - Short : 1 for successful register and authentication
     - Short : 0 for failure
 - Code: 105 = Moving request (let other clients know that this player moved)
-  - String: position (formated as "x, y, z, h" h for orientation)
+  - String: position (formatted as "x, y, z, h" h for orientation)
   - *Return values* **Code: 205**
     - *To all other clients* String : username
     - *To all other clients* String : position
@@ -45,7 +45,7 @@ CS454 Multiplayer - Homework 2
 - Code: 113 = Heartbeat request (demanding all the queue)
   - *Return values*
     - All the responses in the queue
-    - **Code: 213** Hearthbeat response
+    - **Code: 213** Hearthbeat response (used as an “alive” signal)
 - Code: 115 = Privatechat request (from a user to an other player)
   - String: message
   - *Return values* **Code 215**
